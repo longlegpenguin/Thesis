@@ -1,0 +1,33 @@
+\documentclass{elteikthesis}[2023/04/10]
+
+\usepackage[newfloat]{minted}
+
+\begin{document}
+\documentlang{english}
+
+\chapter{Minted source code example}
+\label{ch:chapter}
+
+\begin{listing}[H]
+\begin{minted}{cpp}
+#include <stdio>
+
+int main() 
+{
+	int c;
+	std::cout << "Hello World!" << std::endl;
+
+	std::cout << "Press any key to exit." << std::endl;
+	std::cin >> c;
+	
+	return 0;
+}
+\end{minted}
+\caption{Hello World in C++}
+\end{listing}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstcodelabel}
+\listoflistings
+
+\end{document}

@@ -1,0 +1,113 @@
+\documentclass[
+	%parspace, % Add vertical space between paragraphs
+	%noindent, % No indentation of first lines in each paragraph
+	%nohyp, % No hyphenation of words
+	%twoside, % Double sided format
+	%draft, % Quicker draft compilation without rendering images
+	%final, % Set final to hide todos
+]{elteikthesis}[2023/04/10]
+
+% The minted package is also supported for source highlighting
+% See elteikthesis_minted.tex for example
+%\usepackage[newfloat]{minted}
+
+% Document's metadata
+\title{Title of the thesis} % title
+\date{2023} % year of defense
+
+% Author's metadata
+\author{John Smith}
+\degree{Computer Science BSc}
+
+% Superivsor(s)' metadata
+\supervisor{John Doe} % internal supervisor's name
+\affiliation{Assistant Lecturer} % internal supervisor's affiliation
+%\extsupervisor{Jane Doe} % external supervisor's name
+%\extaffiliation{Senior Developer} % external supervisor's affiliation
+
+% University's metadata
+\university{Eötvös Loránd University} % university's name
+\faculty{Faculty of Informatics} % faculty's name
+\department{Dept. of Software Technology and Methodology} % department's name
+\city{Budapest} % city
+\logo{elte_cimer_szines} % logo
+
+% Add bibliography file
+\addbibresource{elteikthesis.bib}
+
+% The document
+\begin{document}
+
+% Set document language
+%\documentlang{hungarian}
+\documentlang{english}
+
+% List of todos (not in the final document)
+%\listoftodos[\todolabel]
+
+% Title page (mandatory)
+\maketitle
+% Topic declaration page (mandatory) - can also be attached instead
+%\includepdf{topicdeclaration.pdf}
+
+% Table of contents (mandatory)
+\tableofcontents
+\cleardoublepage
+
+% Main content
+\input{samples_en/intro.tex}
+\cleardoublepage
+
+\input{samples_en/user.tex}
+\cleardoublepage
+
+\input{samples_en/impl.tex}
+\cleardoublepage
+
+\input{samples_en/sum.tex}
+\cleardoublepage
+
+% Acknowledgements (optional) - in case your thesis received funding or would like to express special thanks to someone
+\chapter*{\acklabel}
+\addcontentsline{toc}{chapter}{\acklabel}
+In case your thesis received financial support from a project or the university, it is usually required to indicate the proper attribution in the thesis itself. Special thanks can also be expressed towards teachers, fellow students and colleagues who helped you in the process of creating your thesis.
+
+% Appendices (optional) - useful for detailed information in long tables, many and/or large figures, etc.
+\appendix
+\input{samples_en/sim.tex}
+\cleardoublepage
+
+% Bibliography (mandatory)
+\phantomsection
+\addcontentsline{toc}{chapter}{\biblabel}
+\printbibliography[title=\biblabel]
+\cleardoublepage
+
+% List of figures (optional) - useful over 3-5 figures
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstfigurelabel}
+\listoffigures
+\cleardoublepage
+
+% List of tables (optional) - useful over 3-5 tables
+\phantomsection
+\addcontentsline{toc}{chapter}{\lsttablelabel}
+\listoftables
+\cleardoublepage
+
+% List of algorithms (optional) - useful over 3-5 algorithms
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstalgorithmlabel}
+\listofalgorithms
+\cleardoublepage
+
+% List of codes (optional) - useful over 3-5 code samples
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstcodelabel}
+\lstlistoflistings
+\cleardoublepage
+
+% List of symbols (optional)
+%\printnomenclature
+
+\end{document}
