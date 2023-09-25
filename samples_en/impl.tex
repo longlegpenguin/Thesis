@@ -1,10 +1,66 @@
 \chapter{Developer documentation}
 \label{ch:impl}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nibh leo, dapibus in elementum nec, aliquet id sem. Suspendisse potenti. Nullam sit amet consectetur nibh. Donec scelerisque varius turpis at tincidunt.
+This chapter gives the very details of involved technologies, development environment, analysis, implementations and considerations.
+
+\section{Environment Requirements}
+The application is supported to be ran and developed both locally and with dedicated cloud application: 
+\begin{enumerate}
+    \item Possible toolkit for Local environment
+        \begin{itemize}
+            \item Eclipse with Spring Tools and CAP extensions
+            \item Visual Studio Code with SAP CAP extensions
+        \end{itemize}
+    \item Possible toolkit for Cloud environment
+        \begin{itemize}
+            \item SAP Business Application Studio with Full-Stack Development dev-space (recommanded, used in this thesis)
+        \end{itemize}
+\end{enumerate}
+
+For local development, up to date Java JDK, node.js and CAP extensions are hard requirements. The specific set up can be find \hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{here}.
+
+This thesis used SAP Business Application Studio (BAS) as development tool, which is ready for use. 
+
+A snapshot of versions at the time of development:
+\begin{itemize}
+    \item Java
+    \item node.js
+    \item cap
+\end{itemize}
+
+\section{Run}
+The following commands can be used to run the application for testing.
 
 
-\section{Theorem-like environments}
+\begin{lstlisting}[language={bash}]
+cds watch # This ... explain!!
+\end{lstlisting}
+\begin{lstlisting}[language={bash}]
+mvn clean install
+mvn spring-boot:run
+\end{lstlisting}
+\lstset{caption={Hello World in C\#}, label=src:csharp}
+
+\section{Analysis and Design}
+\subsection{User Story}
+\subsection{User Cases}
+\subsection{User Diagrams}
+\section{Project Structure}
+\subsection{Overview}
+\subsection{Components}
+\subsection{Packages}
+\section{Data Model Implementation}
+The 
+
+\section{UI Implementation}
+
+\section{Services Implementation}
+
+\section{Testing}
+\section{Deployment}
+
+\section{Data Model}
+\section{Technologies and Terms}
 
 \begin{definition}
 Mauris tristique sollicitudin ultrices. Etiam tristique quam sit amet metus dictum imperdiet. Nunc id lorem sed nisl pulvinar aliquet vitae quis arcu. Morbi iaculis eleifend porttitor.
@@ -127,3 +183,4 @@ Source of example: \href{https://www.inf.u-szeged.hu/actacybernetica/}{Acta Cybe
 \State \textbf{return} ${\cal L}_Q$
 \end{algorithmic}
 \end{algorithm}
+
