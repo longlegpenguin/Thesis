@@ -1,6 +1,16 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu egestas mauris. Quisque nisl elit, varius in erat eu, dictum commodo lorem. Sed commodo libero et sem laoreet consectetur. Fusce ligula arcu, vestibulum et sodales vel, venenatis at velit \cite{dahl1972structured}. Aliquam erat volutpat. Proin condimentum accumsan velit id hendrerit. Cras egestas arcu quis felis placerat, ut sodales velit malesuada. Maecenas et turpis eu turpis placerat euismod.\footnote{Maecenas a urna viverra, scelerisque nibh ut, malesuada ex.}
+Alongside the rapid growth of e-commerce and delivery capability, waiting for delivery has became an unavoidable situation for a person. In most of the cases, parcels arrive during the working hours, and it is ineffective and not always possible for someone to stay for the delivery. Thereby, SAP offers its employees with a solution, parcel collection service. Employees could deliver their personal deliveries to the address of the company. By the time it arrives, it is first accepted by the 24/7 reception desk and is able to be picked by the employee any time later.
 
-Aliquam suscipit dignissim tempor. Praesent tortor libero, feugiat et tellus porttitor, malesuada eleifend felis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus \cite{cormen2009algorithms,krasner1988mvc}. Nullam eleifend imperdiet lorem, sit amet imperdiet metus pellentesque vitae. Donec nec ligula urna. Aliquam bibendum tempor diam, sed lacinia eros dapibus id. Donec sed vehicula turpis. Aliquam hendrerit sed nulla vitae convallis. Etiam libero quam, pharetra ac est nec, sodales placerat augue. \citeauthor{dijkstra1979goto} praesent eu consequat purus \cite{dijkstra1979goto}. 
+Digital Lab is a team aiming to provide internal applications to improve employees' life at SAP. Throughout the years, dozens of solutions were created and deployed to SAP BTP Neo platform. With the deprecation of Neo, the old solutions will soon be forced to retire due to their dependence on the platform, including the parcel collection service.
+
+This thesis creates a brand-new parcel collection application to fit in the gap. The application is designed to be platform independent and to optimize the using experience of every targeted groups of users (administrator, manager, receptionist and end-user). It provides a simplified work stream that is, receptionist register a new package, receptionist confirms a new package by allocating it a slot, end-user receives email and confirms the pick up. It also provides the authorized party actions to manage the storage, parcels and delivery companies. Own histories can be reviewed by registered users.
+
+Technically, the application is implemented as a MTA following CAP programming model and runs on SAP BTP, Cloud Foundry environment. It consists of 7 micro services. The data model and UI of the application is modeled and annotated with CDS language, which is the backbone of CAP. The back-end services are also defined in CDS and custom logic are implemented with the help of Java Spring Boot framework. 
+
+The more specific usages and implementations can be checked later in Chapter 2 and Chapter 3.
+
+ velit \cite{dahl1972structured}. euismod.\footnote{Maecenas a urna viverra, scelerisque nibh ut, malesuada ex.}
+
+ mus \cite{cormen2009algorithms,krasner1988mvc}. bibendum  \citeauthor{dijkstra1979goto}  purus \cite{dijkstra1979goto}. 
