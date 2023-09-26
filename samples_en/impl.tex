@@ -22,16 +22,31 @@ For local development, up to date Java JDK, node.js and CAP extensions are hard 
 This thesis used SAP Business Application Studio (BAS) as development tool, which is ready for use. 
 
 A snapshot of versions at the time of development:
-\begin{itemize}
-    \item Java
-    \item node.js
-    \item cap
-\end{itemize}
+
+\lstset{caption={Version check}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+> java --version
+# openjdk 17.0.4.1 2022-08-12 LTS
+# OpenJDK Runtime Environment SapMachine (build 17.0.4.1+1-LTS)
+# OpenJDK 64-Bit Server VM SapMachine (build 17.0.4.1+1-LTS, mixed mode, sharing)
+> cds version
+# @sap/cds: 7.2.1
+# @sap/cds-compiler: 4.0.2
+# @sap/cds-dk: 7.2.0
+# @sap/cds-dk (global): 7.2.0
+# @sap/cds-fiori: 1.1.0
+# @sap/cds-foss: 4.0.2
+# @sap/cds-mtxs: 1.11.0
+# @sap/eslint-plugin-cds: 2.6.3
+# Node.js: v18.14.2
+
+\end{lstlisting}
+
 
 \section{Run}
 The following commands can be used to run the application for testing.
 
-
+\lstset{caption={Run commands}, label=src:bash}
 \begin{lstlisting}[language={bash}]
 cds watch # This ... explain!!
 \end{lstlisting}
@@ -39,148 +54,136 @@ cds watch # This ... explain!!
 mvn clean install
 mvn spring-boot:run
 \end{lstlisting}
-\lstset{caption={Hello World in C\#}, label=src:csharp}
+
 
 \section{Analysis and Design}
 \subsection{User Story}
 \subsection{User Cases}
 \subsection{User Diagrams}
-\section{Project Structure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=250px]{images/User_Diagram-StorageService.png}
+	\caption{Storage Service}
+	\label{fig:service-1}
+\end{figure}
+\section{Application Structure}
 \subsection{Overview}
-\subsection{Components}
-\subsection{Packages}
-\section{Data Model Implementation}
-The 
+\subsection{Project Structure}
+\section{Data Model}
+Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is seperated into 2 parts: solution specific data models and common data models.
+\subsection{Specification}
+\subsubsection{Solution specific data model}
+picture
+\subsubsection{General common data model}
+picture
+\subsection{Implementation}
+All data models are modeled by CDS' definition language. Single entities are put into their own \textit{EntityName.cds} files. The main goal is to model out the exact relationships as illustrate in the specification section.
 
-\section{UI Implementation}
+Here list the structure of folders:
+\lstset{caption={Structure of folders - data model}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+root/
+    |- db/
+        |- data
+        |- model
+            |- packagehandling 
+                |- *.cds # Definition of solution specific data model
+            |- common
+                |- *.cds # Definition of common data model
+\end{lstlisting}
 
-\section{Services Implementation}
+The solution-specific and common data models are also seperated in the sense of names spaces by define the following accordingly at the top of the entities definitions.
+
+\lstset{caption={cds namespaces for data model}, label=src:cds}
+\begin{lstlisting}[language={c++}]
+namespace com.sap.internal.digitallab.packagehandling.common; // namespace for reusful 
+namespace com.sap.internal.digitallab.packagehandling.core; // namespace for solution-specific
+\end{lstlisting}
+
+To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. It can be seen as "extend" in the object-orient way, or more speificly "interface" in Java. Aspects are defined in a similiar way as entities, consists of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extend" with its own properties. 
+
+\begin{definition}
+    \textbf{CDS's aspects} allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They're based on a mixin approach as known from Aspect-oriented Programming methods.
+\end{definition}
+
+Here records the common aspects used by this thesis. \textit{managed} comes with 4 elements: created, created, changed, changed, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides a out of box way of implementing enumeration like data structures and supports automatic localization.
+
+\lstset{caption={Aspect managed from @sap/cds/common}, label=src:bash}
+\begin{lstlisting}[language={c++}]
+aspect managed {
+  createdAt  : Timestamp @cds.on.insert : $now;
+  createdBy  : User      @cds.on.insert : $user;
+  modifiedAt : Timestamp @cds.on.insert : $now  @cds.on.update : $now;
+  modifiedBy : User      @cds.on.insert : $user @cds.on.update : $user;
+}
+\end{lstlisting}
+
+\lstset{caption={Aspect cuid from @sap/cds/common}, label=src:bash}
+\begin{lstlisting}[language={c++}]
+aspect cuid {
+  key ID : UUID; //> automatically filled in
+}
+\end{lstlisting}
+
+\lstset{caption={Aspect CodeList from @sap/cds/common}, label=src:bash}
+\begin{lstlisting}[language={c++}]
+aspect CodeList @(
+    cds.autoexpose,
+    cds.persistence.skip : 'if-unused'
+) {
+    name  : localized String(255)  @title : '{i18n>Name}';
+    descr : localized String(1000) @title : '{i18n>Description}';
+}
+\end{lstlisting}
+
+Below captures two examples from the thesis on usage of aspects coupled with the SQL DDL corresponding to the cds definition.
+\lstset{caption={managed, cuid delivery company entity and corresponding SQL DDL}, label=src:sql}
+\begin{lstlisting}[language={sql}]
+entity DeliveryCompany : cuid, managed {
+    name     : String(255) not null;
+    logo     : String(255)  @Core.IsURL  @Core.IsMediaType;
+    packages : Association to many Package
+                   on packages.deliveryCompany = $self;
+}
+
+CREATE TABLE com_sap_internal_digitallab_packagehandling_core_DeliveryCompany (
+  ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP_TEXT,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP_TEXT,
+  modifiedBy NVARCHAR(255),
+  name NVARCHAR(255) NOT NULL,
+  logo NVARCHAR(255),
+  PRIMARY KEY(ID)
+);
+\end{lstlisting}
+
+\lstset{caption={codelist package type entity and corresponding SQL DDL}, label=src:sql}
+\begin{lstlisting}[language={sql}]
+entity PackageType : sap.common.CodeList {
+    key code : String(255) not null;
+}
+
+CREATE TABLE com_sap_internal_digitallab_packagehandling_core_PackageType (
+  name NVARCHAR(255),
+  descr NVARCHAR(1000),
+  code NVARCHAR(255) NOT NULL,
+  PRIMARY KEY(code)
+);
+\end{lstlisting}
+
+\section{UI}
+\subsection{Specification}
+\subsection{Implementation}
+
+\section{Services}
+\subsection{Specification}
+\subsection{Implementation}
 
 \section{Testing}
 \section{Deployment}
 
 \section{Data Model}
+
 \section{Technologies and Terms}
-
-\begin{definition}
-Mauris tristique sollicitudin ultrices. Etiam tristique quam sit amet metus dictum imperdiet. Nunc id lorem sed nisl pulvinar aliquet vitae quis arcu. Morbi iaculis eleifend porttitor.
-\end{definition}
-
-Maecenas rutrum eros sem, pharetra interdum nulla porttitor sit amet. In vitae viverra ante. Maecenas sit amet placerat orci, sed tincidunt velit. Vivamus mattis, enim vel suscipit elementum, quam odio venenatis elit, et mollis nulla nunc a risus. Praesent purus magna, tristique sed lacus sit amet, convallis malesuada magna. Phasellus faucibus varius purus, nec tristique enim porta vitae.
-
-\begin{theorem}
-Nulla finibus ante vel arcu tincidunt, ut consectetur ligula finibus. Mauris mollis lectus sed ipsum bibendum, ac ultrices erat dictum. Suspendisse faucibus euismod lacinia. Etiam vel odio ante.
-\end{theorem}
-\begin{proof}
-Etiam pulvinar nibh quis massa auctor congue. Pellentesque quis odio vitae sapien molestie vestibulum sit amet et quam. Pellentesque vel dui eget enim hendrerit finibus at sit amet libero. Quisque sollicitudin ultrices enim, nec porta magna imperdiet vitae. Cras condimentum nunc dui.
-\end{proof}
-
-Donec dapibus sodales ante, at scelerisque nunc laoreet sit amet. Mauris porttitor tincidunt neque, vel ullamcorper neque pulvinar et. Integer eu lorem euismod, faucibus lectus sed, accumsan felis. 
-
-\begin{remark}
-Nunc ornare mi at augue vulputate, eu venenatis magna mollis. Nunc sed posuere dui, et varius nulla. Sed mollis nibh augue, eget scelerisque eros ornare nec. Praesent porta, metus eget eleifend consequat, eros ligula eleifend ex, a pellentesque mi est vitae urna. Vivamus turpis nunc, iaculis non leo eget, mattis vulputate tellus.
-\end{remark}
-
-Fusce in aliquet neque, in pretium sem. Donec tincidunt tellus id lectus pretium fringilla. Nunc faucibus, erat pretium tempus tempor, tortor mi fringilla neque, ac congue ex dui vitae mauris. Donec pretium et quam a cursus.
-
-\begin{note}
-Aliquam vehicula luctus mi a pretium. Nulla quam neque, maximus nec velit in, aliquam mollis tortor. Aliquam erat volutpat. Curabitur vitae laoreet turpis. Integer id diam ligula.
-\end{note}
-
-Ut sollicitudin tempus urna et mollis. Aliquam et aliquam turpis, sed fermentum mauris. Nulla eget ex diam. Donec eget tellus pharetra, semper neque eget, rutrum diam.
-
-\subsection{Equations, formulas}
-
-Duis suscipit ipsum nec urna blandit, $2 + 2 = 4$ pellentesque vehicula quam fringilla. Vivamus euismod, lectus sit amet euismod viverra, dolor metus consequat sapien, ut hendrerit nisl nulla id nisi. Nam in leo eu quam sollicitudin semper a quis velit.
-
-$$a^2 + b^2 = c^2$$
-
-Phasellus mollis, elit sed convallis feugiat, dolor quam dapibus nibh, suscipit consectetur lacus risus quis sem. Vivamus scelerisque porta odio, vitae euismod dolor accumsan ut.
-
-In mathematica, identitatem Euleri (equation est scriptor vti etiam notum) sit aequalitatem Equation~\ref{eq:euler}:
-\begin{equation}\label{eq:euler}
-e^{i \times \pi} + 1 = 0
-\end{equation}
-
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam pulvinar purus at pharetra elementum.
-Aequationes adsignans aequationis signum:
-\begin{align}
-	A & = \frac{\pi r^2}{2} \\
-	& = \frac{1}{2} \pi r^2
-\end{align}
-
-Proin tempor risus a efficitur condimentum. Cras lobortis ligula non sollicitudin euismod. Fusce non pellentesque nibh, non elementum tellus.
-Omissa numeratione aliquarum aequationum:
-\begin{align}
-	f(u) & =\sum_{j=1}^{n} x_jf(u_j) \nonumber \\
-	& =\sum_{j=1}^{n} x_j \sum_{i=1}^{m} a_{ij}v_i \nonumber \\
-	& =\sum_{j=1}^{n} \sum_{i=1}^{m} a_{ij}x_jv_i
-\end{align}
-
-\section{Source code samples}
-
-Nulla sodales purus id mi consequat, eu venenatis odio pharetra. Cras a arcu quam. Suspendisse augue risus, pulvinar a turpis et, commodo aliquet turpis. Nulla aliquam scelerisque mi eget pharetra. Mauris sed posuere elit, ac lobortis metus. Proin lacinia sit amet diam sed auctor. Nam viverra orci id sapien sollicitudin, a aliquam lacus suscipit. Quisque ac tincidunt leo Code~\ref{src:cpp} and \ref{src:csharp}:
-
-\lstset{caption={Hello World in C++}, label=src:cpp}
-\begin{lstlisting}[language={C++}]
-#include <stdio>
-
-int main() 
-{
-	int c;
-	std::cout << "Hello World!" << std::endl;
-
-	std::cout << "Press any key to exit." << std::endl;
-	std::cin >> c;
-	
-	return 0;
-}
-\end{lstlisting}
-
-\lstset{caption={Hello World in C\#}, label=src:csharp}
-\begin{lstlisting}[language={[Sharp]C}]
-using System;
-namespace HelloWorld
-{
-	class Hello 
-	{
-		static void Main() 
-		{
-			Console.WriteLine("Hello World!");
-			
-			Console.WriteLine("Press any key to exit.");
-			Console.ReadKey();
-		}
-	}
-}
-\end{lstlisting}
-
-\subsection{Algorithms}
-
-A general Interval Branch and Bound algorithm is shown in Algorithm~\ref{alg:ibb}. An appropriate selection rule is applied in Step~\ref{step:selrule}.\\
-Source of example: \href{https://www.inf.u-szeged.hu/actacybernetica/}{Acta Cybernetica (this is a hyperlink)}.
-
-\begin{algorithm}[H]
-\caption{A general interval B\&B algorithm} 
-\label{alg:ibb} 
-\textbf{\underline{Funct}} IBB($S,f$)
-\begin{algorithmic}[1] % display line numbers before every n line, here n = 1
-\State Set the working list ${\cal L}_W$ := $\{S\}$ and the final list ${\cal L}_Q$ := $\{\}$     
-\While{( ${\cal L}_W \neq \emptyset$ )} \label{alg:igoend}
-	\State  Select an interval $X$ from ${\cal L}_W$ \label{step:selrule}\Comment{Selection rule}  
-	\State Compute $lbf(X)$ \Comment{Bounding rule}		  
-	\If{$X$ cannot be eliminated} \Comment{Elimination rule}
-		\State Divide $X$ into $X^j,\ j=1,\dots, p$, subintervals   \Comment{Division rule}
-		\For{$j=1,\ldots,p$}
-			\If{$X^j$ satisfies the termination criterion} \Comment{Termination rule}
-				\State Store $X^j$ in ${\cal L}_W$ 
-			\Else
-				\State Store $X^j$ in ${\cal L}_W$ 
-			\EndIf
-		\EndFor  
-	\EndIf
-\EndWhile
-\State \textbf{return} ${\cal L}_Q$
-\end{algorithmic}
-\end{algorithm}
-
