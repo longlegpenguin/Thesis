@@ -68,6 +68,9 @@ mvn spring-boot:run
 	\label{fig:service-1}
 \end{figure}
 \section{Application Structure}
+
+The application is developed under the guidence of CAP and is a multi-tenant application. i.e. all three essential parts of the application, front-end, back-end and database are being developed at the same place/project, as a plugged in service, deployed at the same time and interacting with each other on the run time.
+
 \subsection{Overview}
 \subsection{Project Structure}
 \section{Data Model}
@@ -172,9 +175,70 @@ CREATE TABLE com_sap_internal_digitallab_packagehandling_core_PackageType (
   PRIMARY KEY(code)
 );
 \end{lstlisting}
+\section{Security}
+The application is defined and developed for internal use of company, that is, can be accessed only from SAP devices. The application uses XSA Security and Authentication Service (XSUAA) as for Authentication. Authorization of the application is enforced in the sense of roles' accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles is done centrally on the Business Technology Platform (BTP), some mock users are also defined for the local development environment.
+
+
+\subsection{Roles Specification}
+All role-specific are set up in the file \textit{root/xs-security.json}. The according restriction on services are defined in \textit{root/srv/services/*-auth.cds} files. As illustrated below.
+
+\lstset{caption={File locations - Security}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+root/
+    |- srv/
+        |- src
+        |- gen
+        |- services
+            |- ServiceName 
+                |- *.cds # Definition of service
+                |- *-auth.cds # Access restriction on roles.
+    |- xs-security.json # list of roles
+\end{lstlisting}
+
+The access rules of the 4 roles are listed below:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|} \hline 
+         &  End-User&  Facility Manager&  Administrator&  Receptionist \\ \hline 
+         Manage Storage& No  & Yes & Yes & No  \\ \hline 
+         Manage Delivery Companies& No & Yes & Yes & No  \\ \hline 
+         Manage Packages& No & Yes & Yes & Yes \\ \hline 
+         Package Pickup& Yes & Yes & Yes & Yes  \\ \hline 
+         Package Registration& No & Yes & Yes & Yes \\ \hline 
+         My History& No & Yes & Yes & No \\ \hline
+    \end{tabular}
+    \caption{Roles Access Rules}
+    \label{tab:Access Rule}
+\end{table}
+
+\subsection{Mock Users}
+To support local development and testing, 4 mock users are defined under \textit{application.yaml}, which will be used in the default spring boot run-time.
+
+Here pasted an example of mock user.
+
+\lstset{caption={Mock Users - Security}, label=src:yaml}
+\begin{lstlisting}[language={bash}]
+security:
+    authentication.normalize-provider-tenant: true
+    mock.users:
+        admin:
+            password: admin
+            roles:  
+                - Administrator 
+        user:
+            password: user
+                - User
+        manager:
+            password: manager
+            roles:
+                - FacilityManager
+\end{lstlisting}
 
 \section{UI}
-\subsection{Specification}
+The application utilized UI5 Fiori elements. Every UI related modules are packed under \textit{root/app} folder. In short, Fiori elements are assembled into pages using cds annotations on the exposed services. App router is added to direct urls throughout backend OData services and frontend Fiori web application. End-points are defined again inside \textit{application.yaml}.
+
+\subsection{Folder Structure}
 \subsection{Implementation}
 
 \section{Services}
