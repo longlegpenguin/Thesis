@@ -10,6 +10,7 @@ The application is supported to be ran and developed both locally and with dedic
         \begin{itemize}
             \item Eclipse with Spring Tools and CAP extensions
             \item Visual Studio Code with SAP CAP extensions
+            \item Intellij with SAP CAP extensions (recommanded for java development)
         \end{itemize}
     \item Possible toolkit for Cloud environment
         \begin{itemize}
@@ -48,11 +49,13 @@ The following commands can be used to run the application for testing.
 
 \lstset{caption={Run commands}, label=src:bash}
 \begin{lstlisting}[language={bash}]
-cds watch # This ... explain!!
+cds watch # The quickest way to check the exposed services on a browser.
 \end{lstlisting}
+
+If custom Java code is added, use the following command to run the services as a spring-boot application.
 \begin{lstlisting}[language={bash}]
-mvn clean install
-mvn spring-boot:run
+mvn clean install # This will compile *.cds files and create gen folder.
+mvn spring-boot:run # THis will start the server at port 8084
 \end{lstlisting}
 
 
@@ -67,21 +70,67 @@ mvn spring-boot:run
 	\caption{Storage Service}
 	\label{fig:service-1}
 \end{figure}
+
+% -----------------------------------------------
+% Application Structure
+
+
 \section{Application Structure}
 
-The application is developed under the guidence of CAP and is a multi-tenant application. i.e. all three essential parts of the application, front-end, back-end and database are being developed at the same place/project, as a plugged in service, deployed at the same time and interacting with each other on the run time.
+The application is developed under the guidence of CAP (Cloud Application Programming Model) which is heavily based on CDS (Central Domain Service). Generally speaking, it contains one Java Spring-boot application as back-end and 7 Fiori UI applications dedicated to the 7 provided services. The communication between front-end and back-end is ensured under OData protocol over HTTPs. CDS views are used for data modelling and CDS annotations are used for service related definition and UI implementations.
 
-\subsection{Overview}
+\subsection{App structure}
+
+The overall view of the application is the following:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=250px]{images/Application_Structure.png}
+	\caption{Application Structure Overview}
+	\label{fig:appStruct}
+\end{figure}
+
+\subsection{Development Component}
+
+All three essential parts of the application, front-end, back-end and database model are being developed at the same place/project/root directory. The implementations and definitions located in different directories of the project are logically packaged into seperate namespaces (namespace in CDS, package declaration in Java), as shown following:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=400px]{images/Package_Diagram.png}
+	\caption{Namespace Diagram}
+	\label{fig:packStruc}
+\end{figure}
+
+
 \subsection{Project Structure}
+
+The general directory structure of the application, which is a default CAP project set-up, can be peeked as the following:
+
+\lstset{caption={Base project folders}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+root/
+    |- srv # contains back-end service related implementations
+    |- db # contains data model definitions and initial data
+    |- app # contains all Fiori front-end applications
+\end{lstlisting}
+
+The details of inner parts of each directory will be introduced later in corresponding sections.
+
 \section{Data Model}
-Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is seperated into 2 parts: solution specific data models and common data models.
+Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is seperated into 2 parts: solution specific data models and common data models, where the common data models are implemented separately of their own services. At the development time of this application, the common data service is not constructed yet, so they are implemented as part of the application as a PoC.
+
 \subsection{Specification}
 \subsubsection{Solution specific data model}
+
+Here is a ER diagram of the solution specific data model.
 picture
 \subsubsection{General common data model}
+
+Here is a ER diagram of the common data model.
 picture
+
 \subsection{Implementation}
-All data models are modeled by CDS' definition language. Single entities are put into their own \textit{EntityName.cds} files. The main goal is to model out the exact relationships as illustrate in the specification section.
+All data models are modeled by CDS' definition language as a CDS view. Single entities are put into their own \textit{EntityName.cds} files. The main goal is to model out the exact relationships as illustrate in the specification section.
 
 Here list the structure of folders:
 \lstset{caption={Structure of folders - data model}, label=src:bash}
@@ -96,13 +145,25 @@ root/
                 |- *.cds # Definition of common data model
 \end{lstlisting}
 
-The solution-specific and common data models are also seperated in the sense of names spaces by define the following accordingly at the top of the entities definitions.
+The correctness of the relationship implementation can be checked by running a command:
+
+\lstset{caption={Generate schema from CDS view}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+> cds compile ./db/models/common/ --to sql > schema.sql
+\end{lstlisting}
+
+In the root directory, one can find \textit{schema.sql} which will contains the DDLs of generated tables in HANA SQL.
+
+The namespaces (as mentioned in application structure section) of the solution-specific and common data models are defined accordingly at the top of each entity definition.
 
 \lstset{caption={cds namespaces for data model}, label=src:cds}
 \begin{lstlisting}[language={c++}]
-namespace com.sap.internal.digitallab.packagehandling.common; // namespace for reusful 
-namespace com.sap.internal.digitallab.packagehandling.core; // namespace for solution-specific
+// namespace for reused
+namespace com.sap.internal.digitallab.packagehandling.common; 
+// namespace for solution-specific
+namespace com.sap.internal.digitallab.packagehandling.core; 
 \end{lstlisting}
+
 
 To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. It can be seen as "extend" in the object-orient way, or more speificly "interface" in Java. Aspects are defined in a similiar way as entities, consists of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extend" with its own properties. 
 
@@ -140,9 +201,12 @@ aspect CodeList @(
 }
 \end{lstlisting}
 
+Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
+
 Below captures two examples from the thesis on usage of aspects coupled with the SQL DDL corresponding to the cds definition.
-\lstset{caption={managed, cuid delivery company entity and corresponding SQL DDL}, label=src:sql}
+\lstset{caption={managed, cuid delivery company entity with unique constraint and corresponding SQL DDL}, label=src:sql}
 \begin{lstlisting}[language={sql}]
+@assert.unique: {nbunique: [name]}
 entity DeliveryCompany : cuid, managed {
     name     : String(255) not null;
     logo     : String(255)  @Core.IsURL  @Core.IsMediaType;
@@ -152,14 +216,15 @@ entity DeliveryCompany : cuid, managed {
 
 CREATE TABLE com_sap_internal_digitallab_packagehandling_core_DeliveryCompany (
   ID NVARCHAR(36) NOT NULL,
-  createdAt TIMESTAMP_TEXT,
+  createdAt TIMESTAMP(7),
   createdBy NVARCHAR(255),
-  modifiedAt TIMESTAMP_TEXT,
+  modifiedAt TIMESTAMP(7),
   modifiedBy NVARCHAR(255),
   name NVARCHAR(255) NOT NULL,
   logo NVARCHAR(255),
-  PRIMARY KEY(ID)
-);
+  PRIMARY KEY(ID),
+  CONSTRAINT core_DeliveryCompany_nbunique UNIQUE (name)
+); 
 \end{lstlisting}
 
 \lstset{caption={codelist package type entity and corresponding SQL DDL}, label=src:sql}
@@ -176,7 +241,7 @@ CREATE TABLE com_sap_internal_digitallab_packagehandling_core_PackageType (
 );
 \end{lstlisting}
 \section{Security}
-The application is defined and developed for internal use of company, that is, can be accessed only from SAP devices. The application uses XSA Security and Authentication Service (XSUAA) as for Authentication. Authorization of the application is enforced in the sense of roles' accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles is done centrally on the Business Technology Platform (BTP), some mock users are also defined for the local development environment.
+The application is defined and developed for internal use of company, that is, can be accessed only from SAP devices. The application uses XSA Security and Authentication Service (XSUAA) as for Authentication. Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles is done centrally on the Business Technology Platform (BTP), some mock users are also defined for the local development environment.
 
 
 \subsection{Roles Specification}
@@ -236,18 +301,96 @@ security:
 \end{lstlisting}
 
 \section{UI}
-The application utilized UI5 Fiori elements. Every UI related modules are packed under \textit{root/app} folder. In short, Fiori elements are assembled into pages using cds annotations on the exposed services. App router is added to direct urls throughout backend OData services and frontend Fiori web application. End-points are defined again inside \textit{application.yaml}.
+The application utilized UI5 Fiori elements. Every UI related modules are packed under \textit{root/app} folder and then into its dedicate \textit{servicename-ui} folder. In short, Fiori elements are assembled into pages using cds annotations on the exposed services. App router is added to direct urls throughout backend OData services and frontend Fiori web application and \textit{appconfig} compiles the used UIs onto Fiori Launchpad. End-points are defined again inside \textit{application.yaml}.
 
 \subsection{Folder Structure}
+
+\lstset{caption={File locations - UI}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+root/
+    |- app/
+        |- servicename-ui
+            |- webapp
+            |- annotation.cds # Custom UI for entities exposed by the service.
+        |- appconfig # UIs' config for Fiori Launchpad sandbox.
+        |- router
+        |- fiori.html # welcome page for app router.
+        |- index.html # welcome page in case of backend start by maven.
+\end{lstlisting}
+
 \subsection{Implementation}
 
+The main way to add a UI for a service is to create a standard-alone UI5 application using the dedicate service under the app folder, customize the UI with annotations and register it inside appconfig.
+
+With the annotations, the type of components (lists, object, etc.) is defined for each entities exposed by certain service in the places (header, body, footer).
 \section{Services}
-\subsection{Specification}
-\subsection{Implementation}
+
+As mentioned in the above sections, 7 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
+
+\subsection{Back-end Architecture Overview}
+
+The first step of implementing any service is to define its CDS view, which provides instructions on:
+\begin{compactenum}
+	\item The data model in database to be exposed by the service.
+	\item The desired input validations.
+	\item The capabilites of action controls.
+    \item The role restrictions on the access of the application.
+    \item (Optional) actions and functions dedicated to the service.
+\end{compactenum}
+
+
+The second step is the Java codes which implements the business logic. CAP project provides a out-of-box default implementation of CRUD operations, in some cases shall be override/replaced. The Java codes should applies the following:
+\begin{compactenum}
+	\item Implementations of custom CRUD operations
+	\item Implementations of virtual fields calculations
+	\item Implementations of actions and functions defined in CDS view.
+\end{compactenum}
+
+
+The back-end architecture follows the recommendations of CAP, Spring MVC and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) communicating with CQN execution engine. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=400px]{images/backend_architecture.png}
+	\caption{Back-end architecture}
+	\label{fig:backArch}
+\end{figure}
+
+The blocks in red of the above figure indicates the necessary Java implementation parts. In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service. In the manager and repository layers, a \textit{<EntityName>Manager} or \textit{<EntityName>Repository} class is defined for every entities.
+
+Below one can also find an illustration of the real folder structures.
+
+\lstset{caption={Directories guide - Back-end}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+root/
+    |- srv/
+        |- src # Java codes for custom business logics
+            |- main/java/com/sap/internal/digitallab/
+                |- packagehandling
+                    |- handlers
+                        |- <ServiceName>Handler.java
+                    |- managers
+                        |- <EntityName>Manager.java
+                    |- repositories
+                        |- <EntityName>Repository.java
+        |- gen # generated java codes from CDS views
+        |- services # Service definitions in CDS annotation
+            |- ServiceName 
+                |- *.cds # otehr definition of service
+                |- *-auth.cds # Access restriction on roles.
+\end{lstlisting}
+
+\subsection{Storage Service}
+
+
+\subsection{Company Service}
+\subsection{Package Service}
+\subsection{Registration Service}
+\subsection{Pickup Service}
+\subsection{History Service}
+\subsection{Analytics Service}
 
 \section{Testing}
 \section{Deployment}
-
-\section{Data Model}
 
 \section{Technologies and Terms}
