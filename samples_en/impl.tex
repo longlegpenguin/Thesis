@@ -24,7 +24,7 @@ This thesis used SAP Business Application Studio (BAS) as development tool, whic
 
 A snapshot of versions at the time of development:
 
-\lstset{caption={Version check}, label=src:bash}
+\lstset{caption={Version check}, label=src:1}
 \begin{lstlisting}[language={bash}]
 > java --version
 # openjdk 17.0.4.1 2022-08-12 LTS
@@ -47,7 +47,7 @@ A snapshot of versions at the time of development:
 \section{Run}
 The following commands can be used to run the application for testing.
 
-\lstset{caption={Run commands}, label=src:bash}
+\lstset{caption={Run commands}, label=src:22}
 \begin{lstlisting}[language={bash}]
 cds watch # The quickest way to check the exposed services on a browser.
 \end{lstlisting}
@@ -106,7 +106,7 @@ All three essential parts of the application, front-end, back-end and database m
 
 The general directory structure of the application, which is a default CAP project set-up, can be peeked as the following:
 
-\lstset{caption={Base project folders}, label=src:bash}
+\lstset{caption={Base project folders}, label=src:3}
 \begin{lstlisting}[language={bash}]
 root/
     |- srv # contains back-end service related implementations
@@ -133,7 +133,7 @@ picture
 All data models are modeled by CDS' definition language as a CDS view. Single entities are put into their own \textit{EntityName.cds} files. The main goal is to model out the exact relationships as illustrate in the specification section.
 
 Here list the structure of folders:
-\lstset{caption={Structure of folders - data model}, label=src:bash}
+\lstset{caption={Structure of folders - data model}, label=src:4}
 \begin{lstlisting}[language={bash}]
 root/
     |- db/
@@ -156,7 +156,7 @@ In the root directory, one can find \textit{schema.sql} which will contains the 
 
 The namespaces (as mentioned in application structure section) of the solution-specific and common data models are defined accordingly at the top of each entity definition.
 
-\lstset{caption={cds namespaces for data model}, label=src:cds}
+\lstset{caption={cds namespaces for data model}, label=src:6}
 \begin{lstlisting}[language={c++}]
 // namespace for reused
 namespace com.sap.internal.digitallab.packagehandling.common; 
@@ -173,7 +173,7 @@ To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, 
 
 Here records the common aspects used by this thesis. \textit{managed} comes with 4 elements: created, created, changed, changed, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides a out of box way of implementing enumeration like data structures and supports automatic localization.
 
-\lstset{caption={Aspect managed from @sap/cds/common}, label=src:bash}
+\lstset{caption={Aspect managed from @sap/cds/common}, label=src:7}
 \begin{lstlisting}[language={c++}]
 aspect managed {
   createdAt  : Timestamp @cds.on.insert : $now;
@@ -183,14 +183,14 @@ aspect managed {
 }
 \end{lstlisting}
 
-\lstset{caption={Aspect cuid from @sap/cds/common}, label=src:bash}
+\lstset{caption={Aspect cuid from @sap/cds/common}, label=src:8}
 \begin{lstlisting}[language={c++}]
 aspect cuid {
   key ID : UUID; //> automatically filled in
 }
 \end{lstlisting}
 
-\lstset{caption={Aspect CodeList from @sap/cds/common}, label=src:bash}
+\lstset{caption={Aspect CodeList from @sap/cds/common}, label=src:9}
 \begin{lstlisting}[language={c++}]
 aspect CodeList @(
     cds.autoexpose,
@@ -204,7 +204,7 @@ aspect CodeList @(
 Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
 
 Below captures two examples from the thesis on usage of aspects coupled with the SQL DDL corresponding to the cds definition.
-\lstset{caption={managed, cuid delivery company entity with unique constraint and corresponding SQL DDL}, label=src:sql}
+\lstset{caption={managed, cuid delivery company entity with unique constraint and corresponding SQL DDL}, label=src:10}
 \begin{lstlisting}[language={sql}]
 @assert.unique: {nbunique: [name]}
 entity DeliveryCompany : cuid, managed {
@@ -227,7 +227,7 @@ CREATE TABLE com_sap_internal_digitallab_packagehandling_core_DeliveryCompany (
 ); 
 \end{lstlisting}
 
-\lstset{caption={codelist package type entity and corresponding SQL DDL}, label=src:sql}
+\lstset{caption={codelist package type entity and corresponding SQL DDL}, label=src:11}
 \begin{lstlisting}[language={sql}]
 entity PackageType : sap.common.CodeList {
     key code : String(255) not null;
@@ -247,7 +247,7 @@ The application is defined and developed for internal use of company, that is, c
 \subsection{Roles Specification}
 All role-specific are set up in the file \textit{root/xs-security.json}. The according restriction on services are defined in \textit{root/srv/services/*-auth.cds} files. As illustrated below.
 
-\lstset{caption={File locations - Security}, label=src:bash}
+\lstset{caption={File locations - Security}, label=src:12}
 \begin{lstlisting}[language={bash}]
 root/
     |- srv/
@@ -305,7 +305,7 @@ The application utilized UI5 Fiori elements. Every UI related modules are packed
 
 \subsection{Folder Structure}
 
-\lstset{caption={File locations - UI}, label=src:bash}
+\lstset{caption={File locations - UI}, label=src:14}
 \begin{lstlisting}[language={bash}]
 root/
     |- app/
@@ -329,6 +329,7 @@ As mentioned in the above sections, 7 OData end-points are maintain by the back-
 
 \subsection{Back-end Architecture Overview}
 
+\subsubsection{Things to Do}
 The first step of implementing any service is to define its CDS view, which provides instructions on:
 \begin{compactenum}
 	\item The data model in database to be exposed by the service.
@@ -338,6 +339,7 @@ The first step of implementing any service is to define its CDS view, which prov
     \item (Optional) actions and functions dedicated to the service.
 \end{compactenum}
 
+\bigskip
 
 The second step is the Java codes which implements the business logic. CAP project provides a out-of-box default implementation of CRUD operations, in some cases shall be override/replaced. The Java codes should applies the following:
 \begin{compactenum}
@@ -346,8 +348,24 @@ The second step is the Java codes which implements the business logic. CAP proje
 	\item Implementations of actions and functions defined in CDS view.
 \end{compactenum}
 
+\subsubsection{Pre-knowledge}
+To fully understand how to write these implementation, one should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here lists the very necessary pre-knowledges and factors on the generate code, before continuing with implementations. 
+\begin{compactenum}
+	\item \textit{srv/gen} folder is generated from all the \textit{*.cds} files using in the \textit{index.cds} (recursively used), for an entity or a service definition.
+    \item The generated code are in Java and are under the same package domain as specified in namespace of the \textit{*.cds} files.
+    \item For each entity and service a couple of \textit{EntityName.java} and \textit{EntityName\_.java} interface being generated. 
+    \item One can use \textit{EntityName\_.CDS\_NAME} in case of the need to clarify the usage of certain entity or service. Also \textit{EntityName\_.class} in CQN as an analogy of table names. 
+    \item One shall use \textit{EntityName} in case of the usage of the real entity or service, similiar to object model in JPA. Also in the case of CQN, constants of column names can be retrieved as static fields like this: \textit{EntityName.COLUMN\_NAME}, which should be encouraged over giving string expressions.
+\end{compactenum}
+
+\bigskip
+It is also important to understand the event processing of CAP. CAP provides out of box handling of CRUD event for every entity and the costume logics are implemented using the idea: what should happen before, on and after the event, with the help of method annotation \textbf{@Before, @On, @After}. Methods annotated with \textbf{@Before} and \textbf{@After}, as the name suggested, implements preprocessing and postprocessing logic. \textbf{@On} can be seen as an override of the origin defalut implementation of the event. For a custom event or action, it is obligaory to provide an \textbf{@On} method.
+
+\subsubsection{Architecture Design}
 
 The back-end architecture follows the recommendations of CAP, Spring MVC and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) communicating with CQN execution engine. 
+
+\subsubsection{Layers in Details}
 
 \begin{figure}[H]
 	\centering
@@ -356,11 +374,55 @@ The back-end architecture follows the recommendations of CAP, Spring MVC and mic
 	\label{fig:backArch}
 \end{figure}
 
-The blocks in red of the above figure indicates the necessary Java implementation parts. In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service. In the manager and repository layers, a \textit{<EntityName>Manager} or \textit{<EntityName>Repository} class is defined for every entities.
+The blocks in blue of the above figure indicates the necessary Java implementation parts. In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service and each handler implements the \textbf{EventHandler} from cds's came along package \textit{com.sap.cds.services.handler}. This ensures that the handler class will be fed with received events from the Consuming API. Also a Java annotation \textbf{@ServiceName(SomeService\_.CDS\_NAME)} is added at class level, to provide information on which service the handler is handling. The handlers classes are also marked with \textbf{@Component} annotation from the spring framework as a Bean, to get the most out of Spring-boot's dependency control. A base skeleton of handler class is embedded below:
+
+\lstset{caption={Handler skeleton - Backend}, label=src:2008}
+\begin{lstlisting}[language={java}]
+@Component
+@ServiceName(EnvolvedService_.CDS_NAME)
+public class EnvolvedServiceHandler implements EventHandler { }
+\end{lstlisting}
+
+In case of necessary usage of manager layer, private field and auto-wired constructor injection combination is used, as supported by the spring-boot framework. A base skeleton of class association (composition in spring-boot implementation aspect) below:
+
+\lstset{caption={Association class skeleton - Backend}, label=src:2018}
+\begin{lstlisting}[language={java}]
+private final UsedEntityManager manager;
+
+@Autowired
+public CompanyServiceHandler(UsedEntityManager manager) {
+    this.manager = manager;
+}
+\end{lstlisting}
+
+To explicitly watch an event (CRUD, custom events/actions/functions), methods should look like this:
+\lstset{caption={Listening method skeleton - Backend}, label=src:2019}
+\begin{lstlisting}[language={java}]
+@After(event = {CqnService.EVENT_DELETE})
+public void afterDeleteEvent(EventContext context) { }
+\end{lstlisting}
+
+\bigskip
+**Note: The complete reference of supported annotations and arguments types can be find inside the CDS documentation, and would not be detailed in this thesis. Only syntax essential for reading the thesis codes are explained.
+
+In the manager and repository layers, a \textit{<EntityName>Manager} or \textit{<EntityName>Repository} class is defined for every entities.
+
+
+zheli zheli haiyaoxizhi md sb
+
+\bigskip
+To support debugging, a \textbf{Logger} is added to every class to provide logging statements.
+
+\lstset{caption={Logger - Backend}, label=src:2009}
+\begin{lstlisting}[language={java}]
+ private static final Logger LOGGER = LoggerFactory.getLogger("name_logger");
+\end{lstlisting}
+
+
 
 Below one can also find an illustration of the real folder structures.
 
-\lstset{caption={Directories guide - Back-end}, label=src:bash}
+\lstset{caption={Directories guide - Back-end}, label=src:15}
 \begin{lstlisting}[language={bash}]
 root/
     |- srv/
@@ -381,7 +443,48 @@ root/
 \end{lstlisting}
 
 \subsection{Storage Service}
+Storage service serves the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. Entities being exposed by the service are:
 
+\begin{compactenum}
+	\item Storage (*)
+    \item StorageSlot (*)
+    \item Building (id, name, map, address, coordinates, phoneNumber)
+    \item BuidingFloor (id, name, map, building)
+    \item SlotStatus (*)
+\end{compactenum}
+
+In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
+
+Mandatory fields of storage service:
+\begin{compactenum}
+	\item Storage.name
+    \item Storage.buildingFloor
+    \item StorageSlot.name
+    \item StorageSlot.storage
+\end{compactenum}
+
+Read only fields of storage service:
+\begin{compactenum}
+	\item StorageSlot.status
+\end{compactenum}
+
+Reinforced foreign keys of storage service:
+\begin{compactenum}
+	\item StorageSlot.storage
+\end{compactenum}
+
+Note: Storage.buildingFloor is not checked as a foreign key here, because in the plan its reference should be replaced by a central data service.
+
+
+A custom action \textit{massCreate} is implemented, which creates multiple slots at one shot. The implementation also watches the read events of \textbf{Storage} and \textbf{StorageSlot}, after which virtual fields (\textit{total packages}, \textit{current packages}) and virtual action control fields (\textit{delete ac}) are calculated dynamically.
+
+Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
+    \caption{Storage Service UML}
+    \label{fig:storage_service_uml}
+\end{figure}
 
 \subsection{Company Service}
 \subsection{Package Service}
