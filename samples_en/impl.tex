@@ -405,12 +405,71 @@ public void afterDeleteEvent(EventContext context) { }
 \bigskip
 **Note: The complete reference of supported annotations and arguments types can be find inside the CDS documentation, and would not be detailed in this thesis. Only syntax essential for reading the thesis codes are explained.
 
-In the manager and repository layers, a \textit{<EntityName>Manager} or \textit{<EntityName>Repository} class is defined for every entities.
+\bigskip
+In the manager layer, a \textit{<EntityName>Manager} class is defined for every entities. Each class contains entity related methods to support the services. It holds every required calculations, processing, business logics partitioned by entities. It can be more or less analog to the service layer in a normal back-end spring-boot application.
 
+A base skeleton of manager class would be something like the following:
 
-zheli zheli haiyaoxizhi md sb
+ \lstset{caption={Manager class skeleton - Backend}, label=src:3000}
+\begin{lstlisting}[language={java}]
+@Component
+public class OneEntityManager {
+    private final OneEntityRepository repo1;
+    private final OneOtherEntityRepository repo2;
+    private final OtherEntityManager mgr;
+    ...
+
+    @Autowired
+    public PackageManager(OneEntityRepository repo1, OneOtherEntityRepository repo2, OtherEntityManager mgr) {
+        this.repo1 = repo1;
+        this.repo2 = repo2;
+        this.mgr = mgr;
+    }
+
+    public void someMethodHandlingTheRequestsFromHandlerClass() {}
+    private void someHelperMethod() {}
+}
+\end{lstlisting}
+
 
 \bigskip
+In the repository layer, a \textit{<EntityName>Repository} class is defined for every entities. This layer can be seen as the model layer in MVC architecture. It is responsible for any direct interaction with the database. In CAP, the connection to database is provided through a persistence service implementation (\textbf{com.sap.cds.services.persistence.PersistenceService}) so that different databases (sqlite at development environment, HANA at deployment) can be used and switched seamless. CQN builders are also provided under \textbf{com.sap.cds.ql.cqn} supporting a SQL like syntax for building a SQL statement in Java.
+
+ A base skeleton of repository class is shown below:
+
+ \lstset{caption={Repository class skeleton - Backend}, label=src:3000}
+\begin{lstlisting}[language={java}]
+@Component
+public class DeliveryCompanyRepository {
+    private final PersistenceService db;
+
+    @Autowired
+    public DeliveryCompanyRepository(PersistenceService db) {
+        this.db = db;
+    }
+}
+\end{lstlisting}
+
+To interacted with the database, a CQN example is provided here:
+
+ \lstset{caption={CQN method skeleton - Backend}, label=src:3001}
+\begin{lstlisting}[language={java}]
+/**
+ * SELECT * FROM delivery_company WHERE id = $id;
+ *
+ * @param id company UUID to check.
+ * @return resulting rows
+ */
+public Result selectById(String id) {
+    CqnSelect select = Select
+            .from(DeliveryCompany_.class)
+            .byId(id);
+    return db.run(select);
+}
+\end{lstlisting}
+
+\subsubsection{Debug}
+
 To support debugging, a \textbf{Logger} is added to every class to provide logging statements.
 
 \lstset{caption={Logger - Backend}, label=src:2009}
@@ -419,7 +478,7 @@ To support debugging, a \textbf{Logger} is added to every class to provide loggi
 \end{lstlisting}
 
 
-
+\subsubsection{File structure}
 Below one can also find an illustration of the real folder structures.
 
 \lstset{caption={Directories guide - Back-end}, label=src:15}
@@ -445,6 +504,8 @@ root/
 \subsection{Storage Service}
 Storage service serves the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. Entities being exposed by the service are:
 
+\subsubsection{Details}
+
 \begin{compactenum}
 	\item Storage (*)
     \item StorageSlot (*)
@@ -453,8 +514,10 @@ Storage service serves the purpose of holding information on the possible storag
     \item SlotStatus (*)
 \end{compactenum}
 
+\bigskip
 In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
 
+\bigskip
 Mandatory fields of storage service:
 \begin{compactenum}
 	\item Storage.name
@@ -463,20 +526,25 @@ Mandatory fields of storage service:
     \item StorageSlot.storage
 \end{compactenum}
 
+\bigskip
 Read only fields of storage service:
 \begin{compactenum}
 	\item StorageSlot.status
 \end{compactenum}
 
+\bigskip
 Reinforced foreign keys of storage service:
 \begin{compactenum}
 	\item StorageSlot.storage
 \end{compactenum}
 
-Note: Storage.buildingFloor is not checked as a foreign key here, because in the plan its reference should be replaced by a central data service.
+\bigskip
+**Note: Storage.buildingFloor is not checked as a foreign key here, because in the plan its reference should be replaced by a central data service.
 
 
 A custom action \textit{massCreate} is implemented, which creates multiple slots at one shot. The implementation also watches the read events of \textbf{Storage} and \textbf{StorageSlot}, after which virtual fields (\textit{total packages}, \textit{current packages}) and virtual action control fields (\textit{delete ac}) are calculated dynamically.
+
+\subsubsection{UML}
 
 Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
 \begin{figure}
@@ -487,7 +555,79 @@ Classes and methods related to storage service is illustrated in the UML. Privat
 \end{figure}
 
 \subsection{Company Service}
+Company service provides the possibilities for facaulty managers and administrators to CRUD the delivery companies and is exposed under the end-point \textbf{api/CompanySerive}.
+
+\subsubsection{Details}
+
+Enities being exposed by the service are:
+\begin{compactenum}
+	\item DeliveryCompany (*)
+\end{compactenum}
+
+\bigskip
+In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. 
+
+\bigskip
+Mandatory fields of storage service:
+\begin{compactenum}
+	\item DeliveryCompany.name
+\end{compactenum}
+
+\subsubsection{CRUD}
+CRUD are supported for a delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
+
+\subsubsection{UML}
+
+Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
+    \caption{Storage Service UML}
+    \label{fig:storage_service_uml}
+\end{figure}
+
+% -------------------------------------
+%  Package service
+%  -----------------------------------
 \subsection{Package Service}
+Package service provides receptionists, faculty managers and administrators the abilities to update and delete a package and reads its related information. It is exposed at OData end-point \textit{api/PackageService} 
+
+\subsubsection{Details}
+
+Enities being exposed by the service are:
+\begin{compactenum}
+	\item Package (*)
+    \item PackageType (*)
+    \item PackageStatus (*)
+    \item Storage (id, name, buildingFloor)
+    \item StorageSlot (id, name, buildingFloor)
+    \item DeliveryCompany (id, name, buildingFloor)
+    \item Building (id, name, buildingFloor)
+    \item BuildingFloor (id, name, buildingFloor)
+\end{compactenum}
+
+\bigskip
+In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. 
+
+\bigskip
+Mandatory fields of storage service:
+\begin{compactenum}
+	\item DeliveryCompany.name
+\end{compactenum}
+
+\subsubsection{CRUD}
+CRUD are supported for a delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
+
+\subsubsection{UML}
+
+Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
+    \caption{Storage Service UML}
+    \label{fig:storage_service_uml}
+\end{figure}
+
 \subsection{Registration Service}
 \subsection{Pickup Service}
 \subsection{History Service}
