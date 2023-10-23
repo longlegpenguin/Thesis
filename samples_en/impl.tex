@@ -325,12 +325,16 @@ The main way to add a UI for a service is to create a standard-alone UI5 applica
 With the annotations, the type of components (lists, object, etc.) is defined for each entities exposed by certain service in the places (header, body, footer).
 \section{Services}
 
-As mentioned in the above sections, 7 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
+As mentioned in the above sections, 6 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages, steps of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
 
 \subsection{Back-end Architecture Overview}
 
 \subsubsection{Things to Do}
-The first step of implementing any service is to define its CDS view, which provides instructions on:
+
+The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) and Java.
+
+\bigskip
+The first step of implementing any service is to define its CDS view using CDL, which provides instructions on:
 \begin{compactenum}
 	\item The data model in database to be exposed by the service.
 	\item The desired input validations.
@@ -341,7 +345,7 @@ The first step of implementing any service is to define its CDS view, which prov
 
 \bigskip
 
-The second step is the Java codes which implements the business logic. CAP project provides a out-of-box default implementation of CRUD operations, in some cases shall be override/replaced. The Java codes should applies the following:
+The second step is implementing the business logic using Java. CAP project provides a out-of-box default implementation of simple CRUD operations, in some cases shall be override/replaced. In most of the cases it involves explicit interactions with the persistence service and in this case a Java supported CQN (Core Query Notation) is used. The Java codes should applies the following:
 \begin{compactenum}
 	\item Implementations of custom CRUD operations
 	\item Implementations of virtual fields calculations
@@ -547,12 +551,13 @@ A custom action \textit{massCreate} is implemented, which creates multiple slots
 \subsubsection{UML}
 
 Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
-\begin{figure}
+\begin{figure}[!h]
     \centering
     \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
     \caption{Storage Service UML}
     \label{fig:storage_service_uml}
 \end{figure}
+\pagebreak
 
 \subsection{Company Service}
 Company service provides the possibilities for facaulty managers and administrators to CRUD the delivery companies and is exposed under the end-point \textbf{api/CompanySerive}.
@@ -579,12 +584,13 @@ CRUD are supported for a delivery company entity. Custom Java code ensures the r
 \subsubsection{UML}
 
 Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
-\begin{figure}
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
-    \caption{Storage Service UML}
-    \label{fig:storage_service_uml}
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/company_service_class_diagram.png}
+    \caption{Company Service UML}
+    \label{fig:company_service_uml}
 \end{figure}
+\pagebreak
 
 % -------------------------------------
 %  Package service
@@ -607,33 +613,206 @@ Enities being exposed by the service are:
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. 
+In the service's CDS view, input invalidation checks are defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
 
 \bigskip
-Mandatory fields of storage service:
+Mandatory fields of package service:
 \begin{compactenum}
-	\item DeliveryCompany.name
+	\item Package.recipient
+    \item Package.type
+    \item Package.receptionist
 \end{compactenum}
 
+\bigskip
+Read-only fields of package service:
+\begin{compactenum}
+	\item Package.recipient
+\end{compactenum}
+
+\bigskip
+Reinforced foreign keys of package service:
+\begin{compactenum}
+	\item Package.type
+\end{compactenum}
+
+\bigskip
+Two custom unbounded actions \textit{confirm} and \textit{pickup} are also defined in the CDS view, to facilitate the confirmation of a package (new -> confirmed) and the picked-up possibility of a package by a facility manager and administrator (confirmed -> pickup). Two action controls, \textit{confirm\_ac} and \textit{pickup\_ac} then are introduced coupling with the previous two actions, to make sure that the action button will only be available at desired time at the UI level. The bound is implemented with the \textit{@Capabilities} annotation. Furthermore, a delete action control is added on the package entity, which shall be activated only when a package is of status new / confirmed. This controls the activation of "delete" button at UI level specified by the \textit{@Capabilities} annotation. 
+
+\bigskip
+An useful detail here is that, the pickup action in the package service shall be used by receptionist and facility manager only, when the end-user cannot access to the pickup service (will be introduced later in the chapter). While both service have the same pickup action, the \textit{pickup\_ac} in package is shared by the two service.
+
 \subsubsection{CRUD}
-CRUD are supported for a delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
+Read, update and delete possibilities of an package entity are guaranteed by the package service. For the other exposed entities, only read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{PackageService.cds}. 
+
+\bigskip
+An useful note here is that, the create operation of the package is missing in this service, as there is a seperated registration service which is only responsible for the creation of new package, which will be detailed later.
 
 \subsubsection{UML}
 
-Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
-    \caption{Storage Service UML}
-    \label{fig:storage_service_uml}
-\end{figure}
+The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related slasses and methods can be checked in the UML. 
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/package_service_class_diagram.png}
+    \caption{Package Service UML}
+    \label{fig:package_service_uml}
+\end{figure}
+\pagebreak
+
+
+
+% -------------------------------------
+%  Registration service
+%  -----------------------------------
 \subsection{Registration Service}
+
+Registration service provides receptionists, faculty managers and administrators the abilities to create (register) a package and reads its related information. It is exposed at OData end-point \textit{api/RegistrationService}. 
+
+\bigskip
+One thing to remember is that at this stage a package is only created but not stored, the status is all new and the storage details shall be determined in the previous package service. More details of the business logic can be check in the user documentation.
+
+\subsubsection{Details}
+
+Enities being exposed by the service are:
+\begin{compactenum}
+	\item Package (*)
+    \item PackageType (*)
+    \item PackageStatus (*)
+    \item DeliveryCompany (id, name)
+\end{compactenum}
+
+\bigskip
+In the service's CDS view, input invalidation checks are defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
+
+\bigskip
+Mandatory fields of package service:
+\begin{compactenum}
+	\item Package.recipient
+    \item Package.type
+    \item Package.receptionist
+\end{compactenum}
+
+\bigskip
+Read-only fields of package service:
+\begin{compactenum}
+	\item Package.recipient
+\end{compactenum}
+
+\bigskip
+Reinforced foreign keys of package service:
+\begin{compactenum}
+	\item Package.type
+\end{compactenum}
+
+
+\subsubsection{CRUD}
+Create possibility of an package entity is guaranteed by the registration service. For the other exposed entities, only read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{RegistrationService.cds}. The reason behind these restrictions had already been discussed in the previous sector.
+
+\subsubsection{UML}
+
+This is a simpler service compare to the previous ones. No actions or action controls are defined for this service. Only a pre-processing (pre-fill the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML. 
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/registration_service_class_diagram.png}
+    \caption{Registration Service UML}
+    \label{fig:registration_service_uml}
+\end{figure}
+\pagebreak
+
+
+
+
+% -------------------------------------
+%  Pickup service
+%  -----------------------------------
 \subsection{Pickup Service}
+
+While the previous 4 services are doing uninteresting administration stuff and can be accessed only by nominated roles, here comes finally 2 service, opening to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception. It is exposed at OData end-point \textit{api/PickupService}. It is designed to be optimized for mobile use but this will be left to be discussed in the UI chapter.
+
+\subsubsection{Details}
+
+Entities being exposed in this service is almost the same as in the package service, with a little bit reduction, providing user with just enough necessary information. Entities exposed by the service are:
+\begin{compactenum}
+	\item Package (*)
+    \item PackageType (*)
+    \item PackageStatus (*)
+    \item Storage (id, name, locationInstructions)
+    \item StorageSlot (id, name)
+    \item DeliveryCompany (id, name)
+\end{compactenum}
+
+\bigskip
+In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything, other than click a confirm pickup button. As for the future pickup button, an action \textit{pickup} is defined. Its entanglement with the \textit{pickup\_ac} used by package service are discussed in the previous sector.
+
+\subsubsection{CRUD}
+The same idea goes in the CRUD possibilities - only read operation is supported for any entity.
+
+\subsubsection{UML}
+
+A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML. 
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{images/service_class_diagrams/pickup_service_class_diagram.png}
+    \caption{Pickup Service UML}
+    \label{fig:pickup_service_uml}
+\end{figure}
+\pagebreak
+
+% -------------------------------------
+%  History service
+%  -----------------------------------
 \subsection{History Service}
-\subsection{Analytics Service}
+History service serves for any authenticated user to check their package history.
+
+\subsubsection{Details}
+
+Entities being exposed in this service is almost the same as in the registration service, with every details, providing user with as much information as could. Entities exposed by the service are:
+\begin{compactenum}
+	\item Package (*)
+    \item PackageType (*)
+    \item PackageStatus (*)
+    \item DeliveryCompany (*)
+\end{compactenum}
+
+\bigskip
+In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything. Nevertheless, a restriction makes user to only read about hos or her own package is defined with a \textit{where} statement in the projection view. Codes can be checked in \textit{HistoryService.cds} file.
+
+\subsubsection{CRUD}
+The same idea goes in the CRUD possibilities - only read operation is supported for any entity and this is enforced by a \textit{@readonly} annotation on every entity projection.
+
+\subsubsection{UML}
+
+There are no need of Java code to support the behaviour of the history service and hence no UML is included here.
+
 
 \section{Testing}
+The test strategy of this thesis is "test as it goes". Right after the implementation of services, unit tests on methods and integration tests on services are added. The same goes for UI implementation.
+
+\subsection{Unit Testing}
+
+\subsubsection{Implementation}
+Unit testing focus on the methods and line coverage of the manager and the repository layer. JUnit 4 and spring test stater pack is used to write the tests. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
+
+\bigskip
+A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. Each test class is written under the following logic.
+
+\begin{compactenum}
+	\item An autowired instance of the class it is testing.
+    \item 1..many test cases for each public method.
+    \item Each test case calls a method and assert a desired output depends on the initial data in the csv files.
+    \item Intellij coverage test is executed at the end of implementation to ensure every branch / edge cases are covered.
+\end{compactenum}
+
+\subsubsection{Extending Advice}
+As stated in the above bullet points, the unit test depends largely on the existing test data. In case of any needs in the future that more test shall be added, it is advised to append completely new dedicated test data sets into csv. Delete or removing the existing data set can result in sever collapse of the current tests.
+
+\subsection{Integration Testing}
+Integration testing focus on the testing of back-end services, that is, on the handler layer. Rest Assure apit testing framework are used in couple with the spring's native api test SpringMockMvc.
+
+Now I do not know how to use. TO BE CONTINUED>>>
+
 \section{Deployment}
 
 \section{Technologies and Terms}
