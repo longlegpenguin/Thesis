@@ -60,16 +60,44 @@ mvn spring-boot:run # THis will start the server at port 8084
 
 
 \section{Analysis and Design}
-\subsection{User Story}
-\subsection{User Cases}
-\subsection{User Diagrams}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[height=250px]{images/User_Diagram-StorageService.png}
-	\caption{Storage Service}
-	\label{fig:service-1}
-\end{figure}
+This chapter explains the reason of the need of this application and lists the analysed necessary capabilities of the developed application.
+
+\subsection{Business Context}
+The application is aimed to provide an end to end streamlined procedure from the moment a parcel arrived at the reception to the second user confirm the pickup (package management). It also provides humane functions to ease the management of any parcel related information (storage and delivery companies management).
+
+These are detailed in the following sub-sections. For each management requirement, user stories and user diagrams are given.
+
+\subsection{Package Management}
+Package management is the most the and center function of the application. It is responsible for register a parcel, confirm a parcel, pickup a parcel and review the history of the parcel.
+
+\subsubsection{User Stories}
+\subsubsection{User Diagram}
+
+\subsection{Storage Management}
+
+\subsubsection{User Stories}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{2cm}|p{2.7cm}|p{2.7cm}|p{2.7cm}|p{2.7cm}|}
+\hline
+\textbf{As a} & \textbf{I Want To} & \textbf{Given} & \textbf{When} & \textbf{Then}\\
+\hline
+Player & Build a Road & I am in Road Construction mode. & I click on an empty general zone. & The program adds the road to the clicked zone. \\
+\hline
+Player & Build a Road & I am in Road Construction mode. & I click on a non-empty zone of any type & The program warns the player not able to build the road. \\
+\hline
+\end{tabular}
+\caption{User Stories}
+\end{table}
+
+\subsubsection{User Diagram}
+
+\subsection{Companies Management}
+\subsubsection{User Stories}
+
+\subsubsection{User Diagram}
 
 % -----------------------------------------------
 % Application Structure
@@ -119,7 +147,7 @@ The details of inner parts of each directory will be introduced later in corresp
 \section{Data Model}
 Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is seperated into 2 parts: solution specific data models and common data models, where the common data models are implemented separately of their own services. At the development time of this application, the common data service is not constructed yet, so they are implemented as part of the application as a PoC.
 
-\subsection{Specification}
+\subsection{ER Digram}
 \subsubsection{Solution specific data model}
 
 Here is a ER diagram of the solution specific data model.
@@ -301,10 +329,18 @@ security:
 \end{lstlisting}
 
 \section{UI}
+<<Introduce UI5>>
 The application utilized UI5 Fiori elements. Every UI related modules are packed under \textit{root/app} folder and then into its dedicate \textit{servicename-ui} folder. In short, Fiori elements are assembled into pages using cds annotations on the exposed services. App router is added to direct urls throughout backend OData services and frontend Fiori web application and \textit{appconfig} compiles the used UIs onto Fiori Launchpad. End-points are defined again inside \textit{application.yaml}.
 
-\subsection{Folder Structure}
+\subsection{Front-end Architecture Overview}
 
+\subsubsection{Things to Do}
+
+The main way to add a UI for a service is to create a standard-alone UI5 application using the dedicate service under the app folder, customize the UI with annotations and register it inside appconfig.
+
+With the annotations, the type of components (lists, object, etc.) is defined for each entities exposed by certain service in the places (header, body, footer).
+
+\subsubsection{File Structure}
 \lstset{caption={File locations - UI}, label=src:14}
 \begin{lstlisting}[language={bash}]
 root/
@@ -318,11 +354,31 @@ root/
         |- index.html # welcome page in case of backend start by maven.
 \end{lstlisting}
 
-\subsection{Implementation}
+\subsection{Manage Storage}
+\subsubsection{Manifest}
+\subsubsection{Components}
 
-The main way to add a UI for a service is to create a standard-alone UI5 application using the dedicate service under the app folder, customize the UI with annotations and register it inside appconfig.
+\subsection{Manage Company}
+\subsubsection{Manifest}
+\subsubsection{Components}
 
-With the annotations, the type of components (lists, object, etc.) is defined for each entities exposed by certain service in the places (header, body, footer).
+\subsection{Manage Package}
+\subsubsection{Manifest}
+\subsubsection{Components}
+
+\subsection{Register Package}
+\subsubsection{Manifest}
+\subsubsection{Components}
+
+\subsection{Pickup Package}
+\subsubsection{Manifest}
+\subsubsection{Components}
+
+\subsection{My Package}
+\subsubsection{Manifest}
+\subsubsection{Components}
+
+
 \section{Services}
 
 As mentioned in the above sections, 6 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages, steps of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
