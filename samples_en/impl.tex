@@ -71,8 +71,7 @@ These are detailed in the following sub-sections. For each management requiremen
 \subsection{Package Management}
 Package management is the most the and center function of the application. It is responsible for register a parcel, confirm a parcel, pickup a parcel and review the history of the parcel.
 
-\subsubsection{User Stories}
-\subsubsection{User Diagram}
+
 
 \subsection{Storage Management}
 
@@ -92,17 +91,12 @@ Player & Build a Road & I am in Road Construction mode. & I click on a non-empty
 \caption{User Stories}
 \end{table}
 
-\subsubsection{User Diagram}
-
 \subsection{Companies Management}
-\subsubsection{User Stories}
 
-\subsubsection{User Diagram}
+
 
 % -----------------------------------------------
 % Application Structure
-
-
 \section{Application Structure}
 
 The application is developed under the guidence of CAP (Cloud Application Programming Model) which is heavily based on CDS (Central Domain Service). Generally speaking, it contains one Java Spring-boot application as back-end and 7 Fiori UI applications dedicated to the 7 provided services. The communication between front-end and back-end is ensured under OData protocol over HTTPs. CDS views are used for data modelling and CDS annotations are used for service related definition and UI implementations.
@@ -329,29 +323,87 @@ security:
 \end{lstlisting}
 
 \section{UI}
-<<Introduce UI5>>
-The application utilized UI5 Fiori elements. Every UI related modules are packed under \textit{root/app} folder and then into its dedicate \textit{servicename-ui} folder. In short, Fiori elements are assembled into pages using cds annotations on the exposed services. App router is added to direct urls throughout backend OData services and frontend Fiori web application and \textit{appconfig} compiles the used UIs onto Fiori Launchpad. End-points are defined again inside \textit{application.yaml}.
+
+The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language.  This chapter explains in details the used framework concepts and the structure of each module.
+
+\begin{description}
+	\item[SAP UI5] is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more. \cite{fiorielements}
+ 
+	\item[SAP Fiori elements] is a framework that comprises the most commonly used floorplan templates and is designed to:
+         \begin{compactenum}
+        	\item Speed up development by reducing the amount of frontend code needed to build SAP Fiori apps.
+        	\item Drive UX consistency and compliance with the latest SAP Fiori design guidelines.
+        \end{compactenum}
+\end{description}
 
 \subsection{Front-end Architecture Overview}
 
-\subsubsection{Things to Do}
+\subsubsection{/app}
 
-The main way to add a UI for a service is to create a standard-alone UI5 application using the dedicate service under the app folder, customize the UI with annotations and register it inside appconfig.
+UI related modules are packed under \textit{root/app} folder of the project. There are 6 stand alone UI applications (modules) in total, corresponding to the 6 back-end service. Each application is named in the format of \textit{<action|entity>} and are initially generated using Fiori Application Generator, which creates basic skeletons of either free-style application or template application. 
 
-With the annotations, the type of components (lists, object, etc.) is defined for each entities exposed by certain service in the places (header, body, footer).
+A Fiori launchpad sandbox is configured under \textit{appconfig/fioriSandboxConfig.json}, which simulates the behaviour of the launchpad, provides a collection of application tiles and basic forward and backward navigation within the application. An \textit{index.html} file is also created at \textit{app/} level as the entry point of the launchpad.
+
+Furthermore, \textit{index.cds} files are created at every level of folder, as an aggregation collection of the cds annotations over the application.
+
+Model-View-Controller (MVC) concept is used in SAP UI5 development to keep the application data separate from the user interactions. This concept is natively adapted in free-style UIs and was kept, a little bit differently, in template UIs. The general structure of the both type of UI applications will be explained in the coming two sections. These two contains important common technical keywords and details, which will be omit later in the six application UI description sections, and should be referenced then in case of missing pre knowledge.
+
+\subsubsection{Template Module Explanation}
+
+For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for template customizing) folders.
+
+\subsubsection{Freestyle Module Explanation}
+For a freestyle application, the main implementations are under the \textbf{webapp} folder. The solution adapts MVC architecture and hence split further into three parts/folders: \textbf{view}, \textbf{model} and \textbf{controller}. The \textbf{view} collects all the views used by the app. These "view templates" are defined in \textbf{xml} with filename \textbf{*.view.xml}. The \textbf{model} folder collects the functions in case any creation of local data model (local json data model not defined in the manifest but shall be used as part of bindings). Those are loaded upon opening the application at component.js. The \textbf{controller} folder contains controllers (one controllers for one view) which will responds to any user interaction event (e.g. a click on the button), collects necessary data and dispatch the event to corresponding back-end services.
+
+It also contains three "descript" files: \textbf{index.html}, \textbf{Component.js} and \textbf{manifest.json}. \textbf{index.html} acts as the entry point of application.  \textbf{Component.js} inherits from sap UI5 UIComponent and would register the entire application as a UI component on the fiori launchpad. \textbf{manifest.json} specifies the module name, name space, service destination, service model, resources locations, and optionally some others, which will be constantly used when implementing the UI logics.
+
+In case css or image resources is specified in the manifest, two folders \textbf{css} and \textbf{images} are also added under specified path containing the necessary resources. Once configured under manifest, the css stylesheets and images can be used in all views under the same name space (root path).
+
+Three other not so involved folders are \textbf{i18n} (in case of text translation), \textbf{test} (auto generated for local test), \textbf{localService} (puts in local mock metadata of the used back-end service).
 
 \subsubsection{File Structure}
+
+A generic file structure of the UI part is displayed below to help visualize the folder partitions: 
+
 \lstset{caption={File locations - UI}, label=src:14}
 \begin{lstlisting}[language={bash}]
 root/
     |- app/
-        |- servicename-ui
+        |- <entity|action> # Generic template UI
             |- webapp
-            |- annotation.cds # Custom UI for entities exposed by the service.
+                |- ext
+                    |- component 
+                    |- controller
+                    |- view
+                    |- *css 
+                |- i18n
+                |- localService
+                |- test
+                |- Conponent.js
+                |- index.html
+                |- manifest.json
+            |- annotations
+                |- index.cds
+                |- labels.cds
+                |- ui.cds
+                |- value-help.cds
+            |- * # other config file for deployment
+        |- <entity|action> # Generic freestyle UI
+            |- webapp
+                |- controller
+                |- css
+                |- i18n
+                |- localService
+                |- model
+                |- test
+                |- Conponent.js
+                |- index.html
+                |- manifest.json
+            |- * # other config file for deployment
         |- appconfig # UIs' config for Fiori Launchpad sandbox.
-        |- router
-        |- fiori.html # welcome page for app router.
-        |- index.html # welcome page in case of backend start by maven.
+            |- fioriSandboxConfig.json # Defines how the UI apps are dispalyed and navigated.
+        |- index.html # Entry point of launchpad.
+        |- service.cds
 \end{lstlisting}
 
 \subsection{Manage Storage}
@@ -371,6 +423,11 @@ root/
 \subsubsection{Components}
 
 \subsection{Pickup Package}
+
+Pickup Package is an utility for all end users to pick a confirmed package. It consumes the \textbf{PickupService} from the back-end services and is a two-screen freestyle UI5 application. The implementation of the app located in the \textbf{pickuppackage} module and under the name space of \textbf{com.sap.internal.digitallab.packagehandling.app.pickup.package}.
+
+\subsubsection{Freestyle Module Explanation}
+The main implementation are under the \textbf{webapp} folder. The solution adapts MVC architecture and hence split futher into three parts: view, model and controller. Below is 
 \subsubsection{Manifest}
 \subsubsection{Components}
 
