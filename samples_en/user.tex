@@ -39,8 +39,8 @@ In the case of any user trying to accessing an unauthorised application, connect
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/overviews/MyHomeTab.png}
-	\caption{Illegal Access to Unauthorised Applications}
+	\includegraphics[width=1\linewidth]{images/user_doc/overviews/ConnectionError1.png}
+	\caption{Illegal Access to Unauthorised Applications - Possible Error}
 	\label{fig:IllegalAccesstoUnauthorised Applications}
 \end{figure}
 
@@ -58,13 +58,87 @@ As a logged in \textbf{End User}, one is granted to access the two applications 
 \end{figure}
 
 
+% ----------------------- MY PACKAGES ----------------------------
+% 
+%  ---------------------------------------------------------------
 
 \subsection{My Packages}
+
+The \textbf{My Packages} application is here for any \textbf{End User} who would want to check his/her own packages. Both the picked up ones, or the ones still under process can be checked here. One can only see one's own confirmed packages. 
+
+\subsubsection{Home Screen - Overview}
+As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen", which is the main and only screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/myPack/overview.png}
+	\caption{History Home Screen - Overview}
+	\label{fig:HistoryHome}
+\end{figure}
+
+\subsubsection{Home Screen - Filter Usage}
+One can type in free text of any possible content of the column in the "Search Bar". The free text supports in-completed keywords and is case insensitive. One can use the default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry). For drop down filters, one can click at the small drop down arrow and select zero to many options. For time entry, one shall click at the "double box" (filter help) on the right of the filter box. This will pops up a dialog, at where one can select the desired filtering option and enter the time with the clock uitility (as shown in the coming figure). One can also access to more filters (\textbf{Delivery Time} (time entry) by clicking at "Adapt Filters". WHile adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, run the filter by clicking the "Go" Button.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/myPack/searchbar.png}
+	\caption{My Package Home Screen - Search Bar}
+	\label{fig:mpSearchBar}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Status Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/statusFIlter.png}}
+	\hspace{5pt}
+	\subcaptionbox{Type Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/typeFIlter.png}}
+
+    \subcaptionbox{Company Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/companyFilter.png}}
+	\hspace{5pt}
+	\subcaptionbox{Time Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/timeFilter.png}}
+	\caption{My Package Home Screen - Default Filters}
+	\label{fig:MPHomeScreen-1}
+\end{figure}
+
+\begin{figure}[H]
+		\centering
+	\subcaptionbox{Time Filter Options Selections}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/timeFilter_Usage1.png}}
+	\hspace{5pt}
+	\subcaptionbox{Time Entry}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/timeFilter-Usage2.png}}
+    \caption{Time Filter Dialog - Adjust Filters}
+\end{figure}
+
+
+\begin{figure}[H]
+		\centering
+	\subcaptionbox{While Adjusting the Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/filterAdaptionScreen.png}}
+	\hspace{5pt}
+	\subcaptionbox{Clicked "Go"}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/FilterDoneScreen.png}}
+    \caption{My Package Home Screen - Adjust Filters}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=200pt]{images/user_doc/myPack/MoreFIlterOption.png}
+	\caption{My Package Filter Adaption Dialog - More Filters}
+	\label{fig:mpMOreFilterAdaption}
+\end{figure}
+% ----------------------- Package Pickup ----------------------------
+% 
+%  ---------------------------------------------------------------
 
 \subsection{Package Pickup}
 The \textbf{Package Pickup} application is used to pick up any confirmed parcels (registered at the reception and confirmed with a storage slot) of the logged in user. One can only see one's own confirmed packages. 
 
-Warning: The application supports only from mobile devices. In case an employee is unable to access his or her mobile at the moment of pickup, he or she shall ask the receptionist to pickup the package for him or her.
+\textbf{Hint}: The application supports only from mobile devices. In case an employee is unable to access his or her mobile at the moment of pickup, he or she shall ask the receptionist to pickup the package for him or her.
 
 \bigskip
 
@@ -89,24 +163,42 @@ In case there are existing packages, one can tick/untick the "Toggle All" select
 \begin{figure}[H]
 	\centering
 	\subcaptionbox{Home Screen Single Selection}{
-		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenSelectOne.png}}
+		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/HomeScreenSelectOne.png}}
 	\hspace{5pt}
 	\subcaptionbox{Home Screen Multiple Selection}{
-		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenMultiSelect.png}}
-	\caption{Pickup Home Screen - Selection Guide}
-	\label{fig:PickupHomeScreen-2}
-\end{figure}
+		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/HomeScreenMultiSelect.png}}
 
-\begin{figure}[H]
-	\centering
-	\subcaptionbox{Home Screen Select All}{
-		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenToggleAll.png}}
+    \subcaptionbox{Home Screen Select All}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/HomeScreenToggleAll.png}}
 	\hspace{5pt}
 	\subcaptionbox{Home Screen Deselect All}{
-		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenDeToggleAll.png}}
-	\caption{Pickup Home Screen - Selection Guide}
-	\label{fig:PickupHomeScreen-2}
+		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/HomeScreenDeToggleAll.png}}
+	\caption{Pickup Home Screen - Package Selection Guide}
+	\label{fig:PickupHomeScreen-1}
 \end{figure}
+
+
+% \begin{figure}[H]
+% 	\centering
+% 	\subcaptionbox{Home Screen Single Selection}{
+% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenSelectOne.png}}
+% 	\hspace{5pt}
+% 	\subcaptionbox{Home Screen Multiple Selection}{
+% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenMultiSelect.png}}
+% 	\caption{Pickup Home Screen - Selection Guide}
+% 	\label{fig:PickupHomeScreen-2}
+% \end{figure}
+
+% \begin{figure}[H]
+% 	\centering
+% 	\subcaptionbox{Home Screen Select All}{
+% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenToggleAll.png}}
+% 	\hspace{5pt}
+% 	\subcaptionbox{Home Screen Deselect All}{
+% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenDeToggleAll.png}}
+% 	\caption{Pickup Home Screen - Selection Guide}
+% 	\label{fig:PickupHomeScreen-2}
+% \end{figure}
 
 \subsubsection{Home Screen - Pickup}
 The "Pickup" button at right bottom corner will only be enabled if at least one package is selected. In case it is enabled, one can pick up the selected packages by left clicking the "Pickup" button, which will trigger a confirmation dialog. If one choose "Cancel", the dialog closes and no modification is made. If one choose "OK", then all packages selected will be marked as pickup, removed from the list and the user will be navigated to the "Done Screen". At this point, the process of the picked up package will be closed, the package data will never be deleted and \textbf{End User} can always go to \textbf{My Packages} application to check the package history.
@@ -150,12 +242,31 @@ As a logged in \textbf{Receptionist}, one is granted to access the two applicati
 
 
 \subsection{Register Packages}
-\subsubsection{User Stories}
-\subsubsection{User Diagram}
-\subsubsection{UX Guide}
 
 \subsection{Manage Packages}                     
 
+
+The \textbf{Manage Packages} application is designed for \textbf{Receptionist} to edit, confirm, pickup, check the existing packages in the system. The summarized main actions a \textbf{Receptionist} can take are listed here:
+
+\begin{compactenum}
+	\item Browse the existing packages
+    \item Confirm package(s) which status is new.
+    \item Pickup a package (single at a time) which status is confirmed. (As a backup manuvor in case the employee cannot access to mobile devices.
+    \item Delete package(s) which status is new or confirmed.
+    \item Edit package(s)' recipient, type, delivery company, and comment.
+\end{compactenum}
+\bigskip
+
+Further explanation and retrictions of these operations are detailed in the coming sections.
+
+
+\subsubsection{Browse}
+As an \textbf{Receptionist}, after clicking at the application tile, is redirected to the "Report Screen", which is the main screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
+
+\subsubsection{Confirm}
+\subsubsection{Pickup}
+\subsubsection{Delete}
+\subsubsection{Edit}
 \pagebreak
 
 \section{Facility Manager}
