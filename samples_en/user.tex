@@ -245,11 +245,23 @@ As a logged in \textbf{Receptionist}, one is granted to access the two applicati
 
 \subsection{Manage Packages}                     
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=200pt]{images/user_doc/managePack/ReportScreen/browse/Overview.png}
+	\caption{Manage Packages Report Screen - Overview}
+	\label{fig:PickupDialog}
+\end{figure}
 
 The \textbf{Manage Packages} application is designed for \textbf{Receptionist} to edit, confirm, pickup, check the existing packages in the system. The summarized main actions a \textbf{Receptionist} can take are listed here:
 
 \begin{compactenum}
-	\item Browse the existing packages
+	\item Browse the existing packages.
+        \begin{compactenum}
+            \item Filtering possibility.
+            \item Quick variant switch based on package status.
+            \item Report List of packages info with selection capability.
+            \item Detail page for single packages.
+        \end{compactenum}
     \item Confirm package(s) which status is new.
     \item Pickup a package (single at a time) which status is confirmed. (As a backup manuvor in case the employee cannot access to mobile devices.
     \item Delete package(s) which status is new or confirmed.
@@ -257,13 +269,149 @@ The \textbf{Manage Packages} application is designed for \textbf{Receptionist} t
 \end{compactenum}
 \bigskip
 
-Further explanation and retrictions of these operations are detailed in the coming sections.
+Further explanation and restrictions of these operations are detailed in the coming sections.
 
 
 \subsubsection{Browse}
-As an \textbf{Receptionist}, after clicking at the application tile, is redirected to the "Report Screen", which is the main screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
+As an \textbf{Receptionist}, after clicking at the application tile, is redirected to the "Report Screen", which is the main screen of this application. 
+The upper part displays the search bar and the possible filters. 
+In case the need of free text search of any possible content of the column, one can use the \textbf{"Search Bar"}. The search supports in-completed keywords and is case insensitive. One can also use the predefined filters, where value helps and entry helps are provided.
+The default predefined filters are: \textbf{I/C-Number} (free text SAP ID input), \textbf{Type} (drop down of all available types), \textbf{Delivery Company} (drop down of all available companies) and \textbf{Storage} (drop down of all available storage). 
+For drop down filters, one can click at the small drop down arrow and select zero to many options. When adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, one can run and review the filter result by clicking the "Go" Button.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/browse/FilterBar.png}
+	\caption{Manage Packages Report Screen - Filter Bar}
+	\label{fig:MPFIlterBar}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultSearchBarUsage.png}
+	\caption{Manage Packages Report Screen - Filter Bar - Search Bar Usage Guide}
+	\label{fig:MPSearchBar}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultFreeTextIdUsage.png}
+	\caption{Manage Packages Report Screen - Filter Bar - ID Filter Usage Guide}
+	\label{fig:MPIDFIlter}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Type Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultType.png}}
+	\hspace{5pt}
+	\subcaptionbox{Company Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultCompany.png}}
+
+    \subcaptionbox{Storage Filter}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultStorage.png}}
+	\caption{Manage Packages Report Screen - Filter Bar - Default Drop Down Filters Show Case}
+	\label{fig:MPDefaultDropDown}
+\end{figure}
+
+In the middle there is a variant bread cum on the left and three action buttons on the right. The variant breadcrumb shows the three possible status of the packages. When clicking on one of the variants, the list of packages with corresponding status are displayed. The three action buttons are by default inactivated. They will be activated when certain conditions are full filled (i.e. the action can be performed).
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Variants Bread}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/VariantsBread.png}}
+	\hspace{5pt}
+	\subcaptionbox{Action Buttons}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/buttonInactive.png}}
+  \caption{Manage Packages Report Screen - Middle Control}
+	\label{fig:MPMiddle}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/browse/defaultFreeTextIdUsage.png}
+	\caption{Manage Packages Report Screen - Middle Control - Breadcrumb Show Case}
+	\label{fig:MPIDFIlter}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{New Variant}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/NewVariant.png}}
+	\hspace{5pt}
+	\subcaptionbox{Confirmed Variant}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/ConfirmedVariant.png}}
+
+    \subcaptionbox{Picked Up Variant}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/pickedupVariant.png}}
+	\caption{Manage Packages Report Screen - Middle Control - Breadcrumb Show Case}
+	\label{fig:MPBreadCrumb}
+\end{figure}
+
+The lower part displays the list of packages. The information provides for each packages are: \textbf{Recipient} (the recipient info, full name and SAP ID), \textbf{Location} (the storage and storage slot info of the package, if applicable), \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Confirmation Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
+In case selection of package is needed, one can select a package by ticking the selection box before the listed package item. One can also select and de-select all packages by toggling the selection box at the left corner of the list header.
+In case contact info is needed for certain recipient, one can click at the \textbf{recipient}, a pop up contact card will display the email and phone number of the recipient.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Select All}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/listSelectAll.png}}
+	\hspace{5pt}
+	\subcaptionbox{Deselect All}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/listDeSelectAll.png}}
+    \caption{Manage Packages Report Screen - Report List - Selection Show Case}
+	\label{fig:MPListSelection}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=200pt]{images/user_doc/managePack/ReportScreen/browse/contactcard.png}
+	\caption{Manage Packages Report Screen - Report List - Contact Card Show Case}
+	\label{fig:MPReportCOntactCard}
+\end{figure}
+
+Further details of a package can be checked by clicking at the package list items. On click, one is navigated to the "Package Detail Screen" displaying \textbf{Basic}, \textbf{General Data} and \textbf{Administrative Data} of the package.
+
+In case the contact info of recipient or receptionist is needed, a contact card can be displayed by clicking on the person.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=200pt]{images/user_doc/managePack/DetailScreen/browse/overview.png}
+	\caption{Manage Packages Detail Screen - Overview}
+	\label{fig:MPReportCOntactCard}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Receptionist}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/DetailScreen/browse/contactcard_recep.png}}
+	\hspace{5pt}
+	\subcaptionbox{Recipient}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/DetailScreen/browse/contactcard_user.png}}
+    \caption{Manage Packages Detail Screen - Contact Card}
+	\label{fig:MPObjectContactCard}
+\end{figure}
 
 \subsubsection{Confirm}
+
+Confirm a package happens after a \textbf{Receptionist} registered a delivered package when the \textbf{Receptionist} would like to allocate the package a storage slot. Only packages with \textit{new} status can be confirmed. One to many \textit{new} packages can be confirmed at a single time.
+
+The \textbf{Confirm} button at the middle control part is used to trigger the confirm action. It is inactivated until the following conditions are all full filled:
+
+\begin{compactenum}
+    \item At the \textbf{New} variant.
+    \item At least one \textit{new} package is selected.
+\end{compactenum}
+
+Once the \textbf{Receptionist} selected the packages, the \textbf{Confirm} button is activated and clicked, a dialog pops up for the \textbf{Receptionist} to allocate a slot for the package(s). One should select the storage first from the \textbf{Storage} drop down list and then the slot from the \textbf{Slot} drop down list. The \textbf{Slot} drop down shows always the available slots under the selected storage.
+
+After selected the slot, if one clicks "Cancel", nothing will happen and dialog will be closed. If one clicks "Confirm", the packages will be confirmed (i.e. filled with the selected slot info and status changed to confirmed). The dialog will be closed, a message toast indicates the success confirm and the package(s) will be moved from the current \textbf{New} variant to \textbf{Confirmed} Variant.
+
+At this point, the package(s) are ready to be picked up, by employee through \textbf{Package Pickup} application or by \textbf{Receptionist} using the pickup backup function of this application.
+
+
+
 \subsubsection{Pickup}
 \subsubsection{Delete}
 \subsubsection{Edit}
