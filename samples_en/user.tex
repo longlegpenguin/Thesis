@@ -243,14 +243,89 @@ As a logged in \textbf{Receptionist}, one is granted to access the two applicati
 
 \subsection{Register Packages}
 
-\subsection{Manage Packages}                     
+When the delivery person arrived at the reception with the new parcels, the \textbf{Receptionist} shall use \textbf{Register Packages} application to register the newly arrived parcels into the system. 
+
+\subsubsection{Data Entry}
+
+As an \textbf{Receptionist}, by clicking at the \textbf{Register Packages} application tile, is redirected to the "Registration Form", which is the main and only screen of this application. At this point, \textbf{Recipient}, \textbf{Type}, \textbf{} and optionally \textbf{Comment} of the package are required by the form. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=200pt]{images/user_doc/managePack/ReportScreen/browse/Overview.png}
-	\caption{Manage Packages Report Screen - Overview}
-	\label{fig:MPReportOverview}
+	\includegraphics[width=1\linewidth]{images/user_doc/registration/overview.png}
+	\caption{Register Packages Form - Overview}
+	\label{fig:RPOverview}
 \end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Step 1: Choose Recipient}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry1.png}}
+   \hspace{5pt}
+    \subcaptionbox{Step 2: Choose Package Type}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry2.png}}
+  
+	\subcaptionbox{Step 3: Choose Delivery Company}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry3.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 4: Input any Comment if Needed}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry4.png}}
+
+    	\subcaptionbox{Step 3: Choose Responsible Receptionist}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry5.png}}
+  
+    \caption{Register Packages Form - Form Entry Guide}
+	\label{fig:RPformEntry}
+\end{figure}
+
+\subsubsection{Data Submitting}
+
+When \textbf{Receptionist} finished entering the form and click the "Save" button, the entered package details are submitted, a package with \textit{new} status is created in the system, a success message toast appears and \textbf{Receptionist} is then navigated automatically to the \textbf{Manage Package} application. 
+
+When \textbf{Receptionist} finished entering the form and click the "Save and New" button, the entered package details are submitted, a package with \textit{new} status is created in the system, a success message toast appears and the form is reset to default state. \textbf{Receptionist} may then start to register another package.
+
+When \textbf{Receptionist} finished entering the form and click the "Discard" button, the form is reset to default state and \textbf{Receptionist} is navigated back to the launch pad.
+
+\begin{figure}[H]
+	\centering
+    \begin{subfigure}{1\linewidth}
+        \centering
+        \subcaptionbox {Success Toast}{
+            \includegraphics[width=0.45\linewidth]{images/user_doc/registration/SaveToast.jpg}
+        }
+        \vspace{5pt}
+        \subcaptionbox {Target Navigation - Manage Package}{
+            \includegraphics[width=0.45\linewidth]{images/user_doc/registration/target.png}
+        }
+        \caption{Option 1: Save}
+        \label{fig:RPsaveOp}
+    \end{subfigure}%
+    \caption{Register Packages Form - Option 1: Save}
+    \label{fig:RPsaveOp}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+    \begin{subfigure}{1\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{images/user_doc/registration/saveAndNewToast.png}
+    \end{subfigure}
+    \caption{Register Packages Form - Option 2: Save and New}
+    \label{fig:RPsaveNewOp}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+    \begin{subfigure}{1\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{images/user_doc/registration/discardTarget.png}
+    \end{subfigure}
+    \caption{Register Packages Form - Option 3: Discard}
+    \label{fig:RPdiscardOp}
+\end{figure}
+
+\subsection{Manage Packages}                     
 
 The \textbf{Manage Packages} application is designed for \textbf{Receptionist} to edit, confirm, pickup, check the existing packages in the system. The summarized main actions a \textbf{Receptionist} can take are listed here:
 
@@ -267,8 +342,16 @@ The \textbf{Manage Packages} application is designed for \textbf{Receptionist} t
     \item Delete package(s) which status is new or confirmed.
     \item Edit package(s)' recipient, type, delivery company, and comment.
 \end{compactenum}
-\bigskip
 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=200pt]{images/user_doc/managePack/ReportScreen/browse/Overview.png}
+	\caption{Manage Packages Report Screen - Overview}
+	\label{fig:MPReportOverview}
+\end{figure}
+
+\bigskip
 Further explanation and restrictions of these operations are detailed in the coming sections.
 
 
