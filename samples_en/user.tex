@@ -729,9 +729,6 @@ In case the need of free text search of any possible content of the column, one 
 
 When adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, one can run and review the filter result by clicking the "Go" button or hit "Enter" on keyboard. In case a company is edited and the table content is not reflected, click the "Go" button or hit "Enter" on keyboard to refresh.
 
-In the lower part there is a variant bread cum on the left and three action buttons on the right. The variant breadcrumb shows the three possible status of the packages. When clicking on one of the variants, the list of packages with corresponding status are displayed. The three action buttons are by default inactivated. They will be activated when certain conditions are full filled (i.e. the action can be performed).
-
-
 The lower part displays the list of delivery companies. In the list header, number of total delivery companies in the list is displayed on the left and two action buttons, "Create" and "Delete" are placed on the right. 
 
 The information provides for each delivery companies in the list body (table) are: \textbf{Delivery Company} (company name with logo), \textbf{Created On} (the creation time of the company), \textbf{Created By} (the company creator's SAP ID).
@@ -845,7 +842,6 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 \begin{figure}[H]
 	\centering
-    \vspace{5pt}
 	\subcaptionbox{Step 1: Deletion Verification When Clicked "Delete"}{
 		\includegraphics[height=150pt]{images/user_doc/company/detail/deleteConfirmation.png}}
     \vspace{10pt}
@@ -857,6 +853,178 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 
 \subsection{Manage Storage}
+
+The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system. 
+For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and is not editable by the \textbf{FM}. 
+The summarized main actions the \textbf{FM} can take within the application are listed here:
+
+\begin{compactenum}
+	\item Browse the storage and slots in the storage.
+        \begin{compactenum}
+            \item Filtering possibility.
+            \item Report List of storage info.
+            \item Detail page for storage.
+                \begin{compactenum}
+                    \item Storage detailed info.
+                    \item List of slots info within a storage.
+                        \begin{compactenum}
+                            \item Detail page for storage slot.
+                        \end{compactenum}
+                \end{compactenum}
+        \end{compactenum}
+    \item Add new storage.
+    \item Edit existing storage.
+    \item Delete existing storage.
+    \item Add new storage slot.
+    \item Batch add new storage slots.
+    \item Edit existing storage slot (name and availability).
+    \item Delete existing storage slot.
+\end{compactenum}
+
+\subsubsection{Browse}
+
+As an \textbf{FM}, after clicking at the application tile, is redirected to the "Storage Report Screen", which is the main screen of the application. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/reportDefaultOverview.png}
+	\caption{Manage Storage - Storage Report Screen}
+	\label{fig:MSstorageReportPage}
+\end{figure}
+
+The upper part displays the search bar and the possible filters. 
+In case the need of free text search of any possible content of the column, one can use the \textbf{"Search Bar"}. The search supports in-completed keywords and is case insensitive. 
+\textbf{FM} can also use the default filters, "Building Floor" and "Building", which are two drop down of all available building floors and buildings. \textbf{FM} may use the "Adapt Filter" option (right most of the filter bar), through which \textbf{FM} can add more filters options onto the filter bar.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/reportFilterBar.png}
+	\caption{Manage Storage Storage Report Screen - Filter Bar}
+	\label{fig:MCdetailOVerview}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Drop Down of All Possible Building Floor Options}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/defaultFIlterBF.png}}
+    \hspace{5pt}
+    \subcaptionbox{Drop Down of All Possible Building Options}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/defaultFIlterBD.png}}
+    \caption{Manage Storage Storage Report Screen - Filter Drop down Show Case}
+	\label{fig:MSstorageReportFilterDefault}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Option Dialog 1: Simple List}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/filterOption.png}}
+    \hspace{5pt}
+    \subcaptionbox{Option Dialog 2: Grouped}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/filterOption2.png}}
+
+    \vspace{10pt}
+	\subcaptionbox{After Filter Adaption}{
+		\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/filterAdaption.png}}
+    \caption{Manage Storage Storage Report Screen - Filter Adaption Guide}
+	\label{fig:MSstorageReportFilterAdaption}
+\end{figure}
+
+When adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, one can run and review the filter result by clicking the "Go" button or hit "Enter" on keyboard. In case a storage is edited or deleted and the table content is not reflected, click the "Go" button or hit "Enter" on keyboard to refresh and get the freshest storage info.
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{While Adjusting the Filters the Storage List is Locked}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/listLock.png}}
+    \hspace{5pt}
+    \subcaptionbox{Clicked "Go" to Display the Filtering Results}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/filterAfterGo.png}}
+    \caption{Manage Storage Storage Report Screen - Filter Lock}
+	\label{fig:MSstorageReportFilterLock}
+\end{figure}
+
+\bigskip
+
+The lower part displays the list report of storage. In the list header, number of total storage in the list is displayed on the left and two action buttons, "Create" and "Delete", and a table column "setting" (icon) are placed on the right. 
+
+The default columns provides for each storage in the list body (table) are: \textbf{Name} (storage name), \textbf{Location} (the building floor the storage located on), \textbf{Location Instructions} (any helping info regarding the location of the storage), \textbf{Total Number of Packages} (the total number of the packages that had been confirmed in this storage since its creation), \textbf{Current Utilizations} (the number of packages that are currently confirmed in this storage), \textbf{Map} (a link, on click opens a new tab to the map of the location of the storage).
+
+\textbf{FM} may add more columns to the table by clicking the "setting" icon on the list header. A column adaption dialog will pop up for the \textbf{FM} to select the columns to show.
+
+\begin{figure}[H] % Storage List
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/reportList.png}
+	\caption{Manage Storage Storage Report Screen - Storage List}
+	\label{fig:MSrl}
+\end{figure}
+
+\begin{figure}[H] % MSstorageReportColumnAdaption
+	\centering
+	\subcaptionbox{Step 1: column "setting"}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/columnSettings.png}}
+    \hspace{5pt}
+	\subcaptionbox{Step 2: Column Selection Dialog}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/columnAdaptionDlg.png}}
+    
+    \vspace{10pt}
+    \subcaptionbox{Step 3: Selected Columns Displayed}{
+        \includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageReportPage/columnMOre.png}}
+    \caption{Manage Storage Storage Report Screen - Column Adaption Guide}
+	\label{fig:MSstorageReportColumnAdaption}
+\end{figure}
+
+In case selection of storage is needed, \textbf{FM} can select a package by ticking the selection box before the listed storage item. One can also deselect all storage by clicking at the selection box at the left corner of the table header.
+
+\bigskip
+
+When the \textbf{FM} click at one item of the table, the \textbf{FM} is redirected to the "Storage Detail Screen".
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/storageObjWithSlots.png}
+	\caption{Manage Storage Storage Detail Screen - Overview}
+	\label{fig:MSdetailOVerview}
+\end{figure}
+
+The header part of "Storage Detail Screen" displays the storage name as the title and location instruction as description on the left and two action buttons, "Delete" and "Edit" at the right.
+Under the title it displays important info of the storage (location, total utilization, current utilization and map). On click the map, the \textbf{FM} will be redirected out of the application to the map of the storage.
+
+\begin{figure}[H] % StorageObjHeader
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageObjectPage/StorageObjHeader.png}
+	\caption{Manage Storage Storage Detail Screen - Header}
+	\label{fig:MSstorageObjHeader}
+\end{figure}
+
+The bottom body part displays the list of slots contained by the given storage. The list of slots displays the following columns / information: \textbf{Name} (slot name), \textbf{Total Number of Packages} (total number of the packages stored in the slot since its creation date), \textbf{status} (the status of the slot). The availiable status of the slot are: inuse (indicates there is currently at least one package stored inside), empty (indicates there is no package inside) and unavailable (indicates the slot cannot be used due to some reasons).
+
+\begin{figure}[H] % slotList
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageObjectPage/slotList.png}
+	\caption{Manage Storage Storage Detail Screen - Slot List}
+	\label{fig:MSstorageObjSlotList}
+\end{figure}
+
+\bigskip
+
+When the \textbf{FM} clicks on one slot item in the slot list, the \textbf{FM} is redirected to slot's "Slot Detail Page".
+
+\begin{figure}[H] % slotObjOverview
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/SlotObjectPage/slotObjOverview.png}
+	\caption{Manage Storage Slot Detail Screen}
+	\label{fig:MSslotObjOverview}
+\end{figure}
+
+\subsubsection{Add Storage}
+\subsubsection{Edit Storage}
+\subsubsection{Delete Storage}
+
+\subsubsection{Add Storage Slot}
+\subsubsection{Batch Add Storage Slot}
+\subsubsection{Edit Storage Slot}
+\subsubsection{Delete Storage Slot}
 
 \pagebreak
 
