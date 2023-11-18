@@ -852,6 +852,7 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 \end{figure}
 
 
+
 \subsection{Manage Storage}
 
 The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system. 
@@ -1017,16 +1018,201 @@ When the \textbf{FM} clicks on one slot item in the slot list, the \textbf{FM} i
 	\label{fig:MSslotObjOverview}
 \end{figure}
 
+
 \subsubsection{Add Storage}
+
+\textbf{FM} can add new storage to the system at "Report Screen" by clicking the "Create" button.
+When the "Create" button is clicked, a creation dialog pops up. The \textbf{Name} waits for input of free text of the storage and should not be left empty. The \textbf{Map} waits for input of free text of a url to the location of the storage and can be left empty. The \textbf{Location Instruction} waits for input of free text and can be left empty.
+
+After filling the dialog form, if "Create" is clicked, the entered info will be submitted, the dialog will be closed, a success message toast is displayed and the entered storage appears in the table on the "Report Screen". If "Cancel" is clicked, the dialog will be closed, entered data is discarded and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Step 1: Open Create Dialog}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/createStorageDlg.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2.1: Data Entry - Select Building Floor}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/csdlgDropDown.png}}
+  
+    \vspace{10pt}
+    \subcaptionbox{Step 2.2: Data Entry - Bad Input Warning Example}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/csdlgBadInput.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2.2: Data Entry - Filled}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/csdlgFilled.png}}
+
+    \vspace{10pt}
+    \subcaptionbox{Step 3: Post Creation}{
+		\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/createdToast.png}}
+    
+    \caption{Manage Storage Storage Report Screen - Create Storage Dialog Guide}
+	\label{fig:MSreportCreateGuide}
+\end{figure}
+
+
 \subsubsection{Edit Storage}
+
+\textbf{FM} can edit a storage at "Storage Detail Screen".
+In case the \textbf{FM} is at "Storage Detail Screen" and want to edit the displayed company, the \textbf{FM} can use the "Edit" button at top right corner (page header). 
+When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{FM} to modified the \textbf{Name}, \textbf{Building Floor}, \textbf{Map}, \textbf{Location Instructions} of the company. Initially the fields are filled with current data of the storage. The entry rules are the same as creating the storage.
+When click "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects on the "Storage Detail Screen". When click "Close", any changes will be discard, the dialog simply closes.
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{Step 1: Edit Dialog}{
+		\includegraphics[width=0.30\linewidth]{images/user_doc/storage/StorageObjectPage/storageEditDlg.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2: Post Success Edit}{
+		\includegraphics[width=0.60\linewidth]{images/user_doc/storage/StorageObjectPage/storageEditedToast.png}}
+    \caption{Manage Storage Storage Detail Screen - Edit Dialog Guide}
+	\label{fig:MSDetailEditBtn}
+\end{figure}
+
 \subsubsection{Delete Storage}
 
+\textbf{FM} can delete a storage in two ways: Batch deletions at the "Storage Report Screen" or single deletion at "Storage Detail Screen". 
+The deletion of a storage implies that, the storage will be removed completely from the system. The deletion action is irreversible. 
+
+In case the \textbf{FM} is at "Storage Report Screen" and want to delete one to many storage, the \textbf{FM} can use the "Delete" button at the list header. The "Delete" button is in activated until the following conditions are full filled:
+
+\begin{compactenum}
+    \item At least one storage is selected.
+\end{compactenum}
+
+Once the \textbf{Delete} button is activated and clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete a storage. If one "Delete" is clicked, the selected storage will be deleted. The message box will be closed, a message toast indicates the success deletion. If "Cancel" is clicked, the message box is closed and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Step 1: Select Storage}{
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageReportPage/deleteEnable.png}}
+  
+    \vspace{10pt}
+    
+    \subcaptionbox{Step 2: Delete Verification}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageReportPage/deleteVerification.png}}
+  
+    \vspace{10pt}
+    
+    \subcaptionbox{Step 3: Deleted}{
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageReportPage/deleteToast.png}}
+
+    \caption{Manage Storage Storage Report Screen - Delete Storage Guide}
+	\label{fig:MSreportDeleteGuide}
+\end{figure}
+
+
+\bigskip
+In case the \textbf{FM} is at "Storage Detail Screen" and want to delete the displayed storage, the "Delete" button at the top right corner (page header) shall be used. 
+
+Once clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete the displayed storage. If "Delete" is clicked, the storage will be deleted. The message box will be closed, \textbf{FM} got navigated back to "Storage Report Screen" and a message toast indicates the success deletion. If "Cancel" is clicked, the message box is closed and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{On Click "Delete" - Deletion Verification}{
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageObjectPage/storageDeleteMsg.png}}
+
+    \caption{Manage Storage Storage Detail Screen - Delete Storage Guide}
+	\label{fig:MSobjDeleteGuide}
+\end{figure}
+
+
+
 \subsubsection{Add Storage Slot}
+
+\textbf{FM} can add new storage slot to the system at "Storage Detail Screen" by clicking the "Create" button on the top right corner of the slot list.
+When the "Create" button is clicked, a creation dialog pops up. The \textbf{Name} waits for input of free text of the storage slot and should not be left empty. The \textbf{Available} selection box sets if the slot will be in an unavailable status.
+
+After filling the dialog form, if "Create" is clicked, the entered info will be submitted, the dialog will be closed, a success message toast is displayed and the entered storage slot appears in the table on the "Storage Detail Screen". In case \textbf{Available} is selected, the created slot will by default "empty", otherwise, it displays "unavailable". If "Cancel" is clicked, the dialog will be closed, entered data is discarded and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Step 1: Open Create Dialog}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/createSlotDlg.png}}
+    \hspace{10pt}
+    \subcaptionbox{Step 2: Data Entry - Bad Input Warning Example}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/createSlotBadInput.png}}
+  
+    \vspace{10pt}
+    \subcaptionbox{Step 3: Post Creation}{
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageObjectPage/createdSlotToast.png}}
+    
+    \caption{Manage Storage Storage Detail Screen - Create Slot Dialog Guide}
+	\label{fig:MSobjCreateSlotGuide}
+\end{figure}
+
+
 \subsubsection{Batch Add Storage Slot}
+
+\textbf{FM} can add multiple new storage slots in a matrix way to the system at "Storage Detail Screen" by clicking the "Mass Create" button on the top right corner of the slot list.
+When the "Mass Create" button is clicked, a creation dialog pops up. The \textbf{Number of Rows} and \textbf{Number of Columns} waits for numeric integer inputs of desired number of rows and columns to create. The \textbf{Type of Row Identifiers} and \textbf{Type of Column Identifiers} has two options: Number and Letter, indicates how the created matrix of slot will be named (Row - Column). If "Letter" is selected then "A-Z" will be used, otherwise, "1-9". For example, an entry of (1, Letter, 2, Number) will create (A - 1, A - 2). The selection of row and column type should not be the same.
+
+After filling the dialog form, if "Create" is clicked, the entered info will be submitted, the dialog will be closed, a success message toast is displayed and the created storage slots appear in the table on the "Storage Detail Screen". If "Cancel" is clicked, the dialog will be closed, entered data is discarded and nothing happens.
+
+\begin{figure}[H] % MSobjmassCreateSlotGuide
+	\centering
+	\subcaptionbox{Step 1: Open Create Dialog}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/masCreateDlg.png}}
+
+    \vspace{10pt}
+    \subcaptionbox{Step 2.1: Data Entry - Row Type Selection}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/massCreateFilling1.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2.2: Data Entry - Column Type Selection}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/massCreateFilling2.png}}
+
+    \vspace{10pt}
+    \subcaptionbox{Step 2.1: Data Entry - Row Type Selection}{
+		\includegraphics[width=0.90\linewidth]{images/user_doc/storage/StorageObjectPage/massCreateSuccessToast.png}}
+    \caption{Manage Storage Storage Detail Screen - Mass Create Slot Dialog Guide}
+	\label{fig:MSobjmassCreateSlotGuide}
+\end{figure}
+
+
 \subsubsection{Edit Storage Slot}
+\textbf{FM} can edit a slot at "Slot Detail Screen".
+In case the \textbf{FM} is at "Slot Detail Screen" and want to edit the displayed slot, the \textbf{FM} can use the "Edit" button at top right corner (page header). 
+When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{FM} to modified the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot.
+When click "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects on the "Storage Detail Screen". When click "Close", any changes will be discard, the dialog simply closes.
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{Step 1: Edit Dialog}{
+		\includegraphics[width=0.30\linewidth]{images/user_doc/storage/SlotObjectPage/editSlotDlg.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2: Post Success Edit}{
+		\includegraphics[width=0.60\linewidth]{images/user_doc/storage/SlotObjectPage/editedslotToast.png}}
+    \caption{Manage Storage Slot Detail Screen - Edit Dialog Guide}
+	\label{fig:MSSlotDetailEditBtn}
+\end{figure}
+
 \subsubsection{Delete Storage Slot}
 
+\textbf{FM} can delete a storage slot at "Slot Detail Screen". 
+The deletion of a storage slot implies that, the storage slot will be removed completely from the system. The deletion action is irreversible. 
+
+In case the \textbf{FM} is at "Slot Detail Screen" and want to delete the displayed storage, the "Delete" button at the top right corner (page header) shall be used. 
+
+Once clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete the displayed slot. If "Delete" is clicked, the storage will be deleted. The message box will be closed, \textbf{FM} got navigated back to "Storage Detail Screen" and a message toast indicates the success deletion. \textbf{FM} should refresh the page to see the slot disappears from the slot list. If "Cancel" is clicked, the message box is closed and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{On Click "Delete" - Deletion Verification}{
+		\includegraphics[width=0.50\linewidth]{images/user_doc/storage/SlotObjectPage/deleteSlotDlg.png}}
+
+    \vspace{10pt}
+    
+    \subcaptionbox{Post Deletion - Navigated Back}{
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/SlotObjectPage/deletedSlotToast.png}}
+    \caption{Manage Storage Slot Detail Screen - Delete Slot Guide}
+	\label{fig:MSslotObjDeleteGuide}
+\end{figure}
+
+
 \pagebreak
+
+
 
 \section{Administrator}
 As a logged in \textbf{Administrator}, one has access to all the 6 applications. One shall move backward to dedicated sections depends on the needs. 
