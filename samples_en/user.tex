@@ -700,9 +700,165 @@ As a logged in \textbf{Facility Manager}, one is granted to access the two appli
 
 \subsection{Manage Companies}
 
+The \textbf{Manage Companies} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential delivery companies delivering the package in the system. For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and is not editable by the \textbf{FM}. The summarized main actions the \textbf{FM} can take within the application are listed here:
+
+\begin{compactenum}
+	\item Browse the delivery companies.
+        \begin{compactenum}
+            \item Filtering possibility.
+            \item Report List of delivery companies info.
+            \item Detail page for single delivery company.
+        \end{compactenum}
+    \item Add new delivery companies. (name and logo)
+    \item Edit existing delivery companies (name and logo).
+    \item Delete package(s) which status is new or confirmed.
+\end{compactenum}
+
+\subsubsection{Browse}
+As an \textbf{FM}, after clicking at the application tile, is redirected to the "Report Screen", which is the main screen of the application. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/company/report/overview.png}
+	\caption{Manage Companies - Overview}
+	\label{fig:CompanyOverview}
+\end{figure}
+
+The upper part displays the search bar and the possible filters. 
+In case the need of free text search of any possible content of the column, one can use the \textbf{"Search Bar"}. The search supports in-completed keywords and is case insensitive. One can also use the fixed filters for administration data. "Created By" and "Last Updated By" accepts free text of any valid SAP ID. "Created On" and "Last Updated On" requires entries of time stamps. \textbf{FM} can click at the double square at the right of input bar to open a filter help dialog, where specific criteria (e.g. between, equal, contains, etc.) can be chosen and a time entry clock can be used to enter time stamps.
+
+When adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, one can run and review the filter result by clicking the "Go" button or hit "Enter" on keyboard. In case a company is edited and the table content is not reflected, click the "Go" button or hit "Enter" on keyboard to refresh.
+
+In the lower part there is a variant bread cum on the left and three action buttons on the right. The variant breadcrumb shows the three possible status of the packages. When clicking on one of the variants, the list of packages with corresponding status are displayed. The three action buttons are by default inactivated. They will be activated when certain conditions are full filled (i.e. the action can be performed).
+
+
+The lower part displays the list of delivery companies. In the list header, number of total delivery companies in the list is displayed on the left and two action buttons, "Create" and "Delete" are placed on the right. 
+
+The information provides for each delivery companies in the list body (table) are: \textbf{Delivery Company} (company name with logo), \textbf{Created On} (the creation time of the company), \textbf{Created By} (the company creator's SAP ID).
+
+In case selection of package is needed, one can select a package by ticking the selection box before the listed package item. One can also de-select all packages by clicking at the selection box at the left corner of the table header.
+
+\bigskip
+
+When the \textbf{FM} click at one item of the table, the \textbf{FM} is redirected to the "Detail Screen" displays the details of the selected item.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/company/detail/DetailOverview.png}
+	\caption{Manage Company Detail Screen - Overview}
+	\label{fig:MCdetailOVerview}
+\end{figure}
+
+The "Detail Screen" displays the company name as the title on the left and two action buttons, "Delete" and "Edit" at the right in the header, and its full administration data in the body.
+
+\subsubsection{Add}
+
+\textbf{FM} can add new delivery company to the system at "Report Screen" by clicking the "Create" button.
+When the "Create" button is clicked, a creation dialog pops up, where the \textbf{Name} and the \textbf{Logo} info of the company should be entered. The \textbf{Name} waits for input of free text of the company name and should not be left empty. The \textbf{Logo} waits for input of free text of a url to the image of the company's logo and can be left empty.
+
+After filling the dialog form, if "Create" is clicked, the entered info will be submitted, the dialog will be closed, a success message toast is displayed and the entered company appears in the table on the "Report Screen". If "Cancel" is clicked, the dialog will be closed, entered data is discarded and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Step 1: Create Dialog}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/company/report/createDlg.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2: Data Entry}{
+		\includegraphics[width=0.45\linewidth]{images/user_doc/company/report/createDlgEntries.png}}
+    \vspace{10pt}
+   \subcaptionbox{Step 3: Post Creation}{
+		\includegraphics[width=1\linewidth]{images/user_doc/company/report/createdToast.png}}
+    \caption{Manage Company Report Screen - Create Dialog Guide}
+	\label{fig:MCreportCreateStep12}
+\end{figure}
+
+\subsubsection{Edit}
+
+Edit a delivery company can be done at "Detail Screen" by the \textbf{FM}.
+\bigskip
+
+In case the \textbf{FM} is at "Detail Screen" and want to edit the displayed company, the \textbf{FM} can use the "Edit" button at top right corner (page header). 
+When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{FM} to modified the \textbf{Name}, \textbf{Logo} of the company. Initially the fields are filled with current data of the company. The \textbf{Name} should contain free text of the company's name and should not be left empty. The \textbf{Logo} should contain free text of a url to the logo image and can be left empty.
+When click "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects on the "Detail Screen". When click "Close", any changes will be discard, the dialog simply closes.
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{Step 1: Edit Dialog}{
+		\includegraphics[width=0.35\linewidth]{images/user_doc/company/detail/EditDlg.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2: Post Success Edit}{
+		\includegraphics[width=0.55\linewidth]{images/user_doc/company/detail/EditToast.png}}
+    \caption{Manage Company Detail Screen - Edit Dialog Guide}
+	\label{fig:MCDetailEditBtn}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{Empty Company Name}{
+		\includegraphics[width=0.35\linewidth]{images/user_doc/company/detail/EditBadInput.png}}
+    \hspace{5pt}
+    \subcaptionbox{Step 2: Error Message}{
+		\includegraphics[width=0.55\linewidth]{images/user_doc/company/detail/editBadInputErrorMsg.png}}
+    \caption{Manage Companies Detail Screen - Edit Dialog - Bad Inputs Example}
+	\label{fig:MCDetailEditDlgBad}
+\end{figure}
+
+\subsubsection{Delete}
+
+Delete an existing delivery company can be done in two ways: Batch deletions at the "Report Screen" or single deletion at "Detail Screen". The deletion of a company implies that, the delivery company will be removed completely and any association of existing packages to this company is automatically removed as well. This means those packages will no longer holds any company information. The deletion action is irreversible. 
+
+In case the \textbf{FM} is at "Report Screen" and want to delete one to many companies, one can use the "Delete" button at the list header. The "Delete" button is inactivated until the following conditions are full filled:
+
+\begin{compactenum}
+    \item At least one delivery company is selected.
+\end{compactenum}
+
+Once the \textbf{Delete} button is activated and clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete a package. If "OK" is clicked, the company(s) will be deleted. The message box will be closed, a message toast indicates the success deletion and the package will be removed from everywhere. If "Cancel" is clicked, the message box is closed and nothing happens.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.90\linewidth]{images/user_doc/company/report/deleteBtnEnable.png}
+	\caption{Manage Companies - Delete - Step 1: Select Company to Delete}
+	\label{fig:MCReportDeleteStep1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=100pt]{images/user_doc/company/report/deleteConfirmaton2.png}
+	\caption{Manage Companies - Delete - Step 2: Delete Dialog}
+	\label{fig:MCReportDeleteDlg}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.90\linewidth]{images/user_doc/company/report/deleteToast.png}
+	\caption{Manage Companies - Delete - Step 3: Post Delete}
+	\label{fig:MCReportDeleteStep3}
+\end{figure}
+
+\bigskip
+In case the \textbf{FM} is at "Detail Screen" and want to delete the displayed company, the "Delete" button at the top right corner (page header) shall be used. 
+
+Once clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete the displayed company. If "Delete" is clicked, the company will be deleted. The message box will be closed, \textbf{FM} got navigated back to "Report Screen" and a message toast indicates the success deletion. If "Cancel" is clicked, the message box is closed and nothing happens.
+
+\begin{figure}[H]
+	\centering
+    \vspace{5pt}
+	\subcaptionbox{Step 1: Deletion Verification When Clicked "Delete"}{
+		\includegraphics[height=150pt]{images/user_doc/company/detail/deleteConfirmation.png}}
+    \vspace{10pt}
+	\subcaptionbox{Step 2: Navigated Back After Deletion}{
+		\includegraphics[width=1\linewidth]{images/user_doc/company/detail/AfterDeletionBack.png}}
+    \caption{Manage Companies Detail Screen - Delete Company Guide}
+	\label{fig:MPDetailDeleteGuide}
+\end{figure}
+
 
 \subsection{Manage Storage}
 
+\pagebreak
 
 \section{Administrator}
 As a logged in \textbf{Administrator}, one has access to all the 6 applications. One shall move backward to dedicated sections depends on the needs. 
