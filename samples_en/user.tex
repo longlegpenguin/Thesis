@@ -63,8 +63,18 @@ As a logged in \textbf{End User}, one is granted to access the two applications 
 %  ---------------------------------------------------------------
 
 \subsection{My Packages}
+\label{subsec:ph}
 
-The \textbf{My Packages} application is here for any \textbf{End User} who would want to check his/her own packages. Both the picked up ones, or the ones still under process can be checked here. One can only see one's own confirmed packages. 
+The \textbf{My Packages} application is here for any \textbf{End User} who would want to check his/her own packages. One can only see one's own packages. 
+The summarized main actions the \textbf{End User} can take within the application are listed here:
+
+\begin{compactenum}
+	\item Browse the owned package history.
+        \begin{compactenum}
+        	\item Filter possibility.
+            \item List report for packages.
+        \end{compactenum}
+\end{compactenum}
 
 \subsubsection{Home Screen - Overview}
 As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen", which is the main and only screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
@@ -136,17 +146,23 @@ One can type in free text of any possible content of the column in the "Search B
 %  ---------------------------------------------------------------
 
 \subsection{Package Pickup}
-The \textbf{Package Pickup} application is used to pick up any confirmed parcels (registered at the reception and confirmed with a storage slot) of the logged in user. One can only see one's own confirmed packages. 
+\label{subsec:pp}
 
-\textbf{Hint}: The application supports only from mobile devices. In case an employee is unable to access his or her mobile at the moment of pickup, he or she shall ask the receptionist to pickup the package for him or her.
+The \textbf{Package Pickup} application is used to pick up any confirmed parcels (registered at the reception and confirmed with a storage slot) of the logged in user. One can only see one's own confirmed packages. 
+The summarized main actions the \textbf{End User} can take within the application are listed here:
+
+\begin{compactenum}
+	\item Browse the owned packages that can be picked up.
+    \item Pickup the listed owned packages.
+\end{compactenum}
 
 \bigskip
+\textbf{Hint}: The application supports only from mobile devices. In case an employee is unable to access his or her mobile at the moment of pickup, he or she shall ask the receptionist to pickup the package for him or her.
+
 
 \subsubsection{Home Screen - Selection}
 As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen". If there exists at least one package to pickup, the home screen shows the list of packages. The list items lists \textbf{the type with icon, the delivery company, the registration time and the location} of the packages. If no package exists to pickup, it shows only the no package info. The package list title shows the total number of packages that can be pickup.
-
 In case there are existing packages, one can select one or multiple packages from the list to pickup. 
-
 In case there are existing packages, one can tick/untick the "Toggle All" selection box to select or deselect the package all at once. 
 
 \begin{figure}[H]
@@ -242,8 +258,16 @@ As a logged in \textbf{Receptionist}, one is granted to access the two applicati
 
 
 \subsection{Register Packages}
+\label{subsec:rp}
 
-When the delivery person arrived at the reception with the new parcels, the \textbf{Receptionist} shall use \textbf{Register Packages} application to register the newly arrived parcels into the system. 
+When the delivery person arrived at the reception with the new parcels, the \textbf{Receptionist} shall use \textbf{Register Packages} application to register the newly arrived parcels into the system. After the registration, \textbf{Receptionist} will be automatically redirected to  \textbf{Manage Packages}.
+The summarized main actions the \textbf{Receptionist} can take within the application are listed here:
+
+\begin{compactenum}
+	\item Register a newly arrived package.
+    \item Register multiple newly arrived packages.
+    \item Discard current registration.
+\end{compactenum}
 
 \subsubsection{Data Entry}
 
@@ -326,6 +350,7 @@ When \textbf{Receptionist} finished entering the form and click the "Discard" bu
 \end{figure}
 
 \subsection{Manage Packages}                     
+\label{subsec:mp}
 
 The \textbf{Manage Packages} application is designed for \textbf{Receptionist} to edit, confirm, pickup, check the existing packages in the system. The summarized main actions a \textbf{Receptionist} can take are listed here:
 
@@ -355,7 +380,7 @@ The \textbf{Manage Packages} application is designed for \textbf{Receptionist} t
 Further explanation and restrictions of these operations are detailed in the coming sections.
 
 
-\subsubsection{Browse}
+\subsubsection{Browse Packages}
 As an \textbf{Receptionist}, after clicking at the application tile, is redirected to the "Report Screen", which is the main screen of this application. 
 The upper part displays the search bar and the possible filters. 
 In case the need of free text search of any possible content of the column, one can use the \textbf{"Search Bar"}. The search supports in-completed keywords and is case insensitive. One can also use the predefined filters, where value helps and entry helps are provided.
@@ -486,7 +511,7 @@ In case the contact info of recipient or receptionist is needed, a contact card 
 	\label{fig:MPObjectContactCard}
 \end{figure}
 
-\subsubsection{Confirm}
+\subsubsection{Confirm Packages}
 
 Confirm a package happens after a \textbf{Receptionist} registered a delivered package when the \textbf{Receptionist} would like to allocate the package a storage slot. Only packages with \textit{new} status can be confirmed. One to many \textit{new} packages can be confirmed at a single time.
 
@@ -497,12 +522,14 @@ The \textbf{Confirm} button at the middle control part is used to trigger the co
     \item At least one \textit{new} package is selected.
 \end{compactenum}
 
+\bigskip
 Once the \textbf{Receptionist} selected the packages, the \textbf{Confirm} button is activated and clicked, a dialog pops up for the \textbf{Receptionist} to allocate a slot for the package(s). One should select the storage first from the \textbf{Storage} drop down list and then the slot from the \textbf{Slot} drop down list. The \textbf{Slot} drop down shows always the available slots under the selected storage.
 
 After selected the slot, if one clicks "Close", nothing will happen and dialog will be closed. If one clicks "Save", the packages will be confirmed (i.e. filled with the selected slot info and status changed to confirmed). The dialog will be closed, a message toast indicates the success confirm and the package(s) will be moved from the current \textbf{New} variant to \textbf{Confirmed} Variant.
 
 At this point, the package(s) are ready to be picked up, by employee through \textbf{Package Pickup} application or by \textbf{Receptionist} using the pickup backup function of this application.
 
+\bigskip
 Note that the confirm action is not irreversible, i.e. a \textit{confirmed} package can no longer be reset to \textit{new} and the confirmed package location can no longer be changed.
 
 \begin{figure}[H]
@@ -541,7 +568,7 @@ Note that the confirm action is not irreversible, i.e. a \textit{confirmed} pack
 	\label{fig:MPReportConfirmDlgButton}
 \end{figure}
 
-\subsubsection{Pickup}
+\subsubsection{Pickup Package}
 
 Pickup a package happens when the recipients (package owners) came to the reception trying to pickup their confirmed packages and are unable to access the \textbf{Pickup Packages} application on their own. In this case a \textbf{Receptionist} may pickup the package in system on behalf of the recipients. Only packages with \textit{confirmed} status can be confirmed. Only one \textit{confirmed} package at one time can be pickup.
 
@@ -552,8 +579,10 @@ The \textbf{Pickup} button at the middle control part is used to trigger the pic
     \item Exactly one \textit{confirmed} package is selected.
 \end{compactenum}
 
+\bigskip
 Once the \textbf{Confirm} button is activated and clicked, a warning message box pops up verifying the \textbf{Receptionist}'s intention to mark a package as pickup. If one "Ok" is clicked, the packages will be picked up (i.e. status is changed to pickup, all related processes are closed, package logs can no longer be removed from the system). The dialog will be closed, a message toast indicates the success pickup and the package will be moved from the current \textbf{Confirmed} variant to \textbf{Picked Up} Variant.
 
+\bigskip
 Note that the confirm action is not irreversible, i.e. a \textit{picked up} package can no longer be reset to \textit{confirm} or \textit{new}. However, the picked up package's information can still be modified (see section edit).
 
 \begin{figure}[H]
@@ -581,10 +610,11 @@ Note that the confirm action is not irreversible, i.e. a \textit{picked up} pack
 	\label{fig:MPReportPickupDlgButton}
 \end{figure}
 
-\subsubsection{Delete}
+\subsubsection{Delete Packages}
 
-Delete a package can be done in two ways: Batch deletions at the "Report Screen" or single deletion at "Detail Screen". Only packages with \textit{confirmed} or \textit{new} status can be deleted. Packages with \textit{picked up} status can no longer be removed.
+Delete a package can be done in two ways: Batch deletions at the "Report Screen" or single deletion at "Detail Screen". Only packages with \textit{confirmed} or \textit{new} status can be deleted. Packages with \textit{picked up} status can no longer be removed. Note that the deletion action is not irreversible.
 
+\bigskip
 In case the \textbf{Receptionist} is at "Report Screen" and want to delete one to many package, one can use the "Delete" button at the middle control bar. The "Delete" button is in activated until the following conditions are full filled:
 
 \begin{compactenum}
@@ -592,17 +622,16 @@ In case the \textbf{Receptionist} is at "Report Screen" and want to delete one t
     \item At least one package is selected.
 \end{compactenum}
 
+\bigskip
 Once the \textbf{Delete} button is activated and clicked, a warning message box pops up verifying the \textbf{Receptionist}'s intention to delete a package. If one "Ok" is clicked, the packages will be deleted (i.e. the package no longer exist in the system). The message box will be closed, a message toast indicates the success deletion and the package will be removed from everywhere. If "Cancel" is clicked, the message box is closed and nothing happens.
-
-Note that the deletion action is not irreversible.
 
 \begin{figure}[H]
 	\centering
 	\subcaptionbox{Enabled}{
-		\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/delete/deleteEnabled.png}}
+		\includegraphics[width=0.95\linewidth]{images/user_doc/managePack/ReportScreen/delete/deleteEnabled.png}}
 
 	\subcaptionbox{Disabled for Picked Up Packages}{
-		\includegraphics[width=1\linewidth]{images/user_doc/managePack/ReportScreen/delete/deleteDisabled.png}}
+		\includegraphics[width=0.95\linewidth]{images/user_doc/managePack/ReportScreen/delete/deleteDisabled.png}}
     \caption{Manage Packages Report Screen - Delete Step 1 - Select Packages}
 	\label{fig:MPReportDeleteBtn}
 \end{figure}
@@ -624,22 +653,20 @@ Note that the deletion action is not irreversible.
 
 \bigskip
 In case the \textbf{Receptionist} is at "Detail Screen" and want to delete the displayed package, the "Delete" button at the top right corner (page header) shall be used. 
-
 The Delete" button is activated if the following conditions are full filled:
 
 \begin{compactenum}
     \item The displayed package is in the status \textbf{new} or \textbf{confirmed}
 \end{compactenum}
 
-if the "Delete" button is activated and once clicked, a warning message box pops up verifying the \textbf{Receptionist}'s intention to delete the displayed package. If "Delete" is clicked, the packages will be deleted (i.e. the package no longer exist in the system). The message box will be closed, \textbf{Receptionist} got navigated back to "Report Screen" and a message toast indicates the success deletion. The package will be removed from everywhere. If "Cancel" is clicked, the message box is closed and nothing happens.
-
-Note that the deletion action is not irreversible.
+\bigskip
+If the "Delete" button is activated and once clicked, a warning message box pops up verifying the \textbf{Receptionist}'s intention to delete the displayed package. If "Delete" is clicked, the packages will be deleted (i.e. the package no longer exist in the system). The message box will be closed, \textbf{Receptionist} got navigated back to "Report Screen" and a message toast indicates the success deletion. The package will be removed from everywhere. If "Cancel" is clicked, the message box is closed and nothing happens.
 
 \begin{figure}[H]
 	\centering
     \vspace{5pt}
 	\subcaptionbox{Step 1: Deletion Enabled for Non-picked Up Packages}{
-		\includegraphics[width=1\linewidth]{images/user_doc/managePack/DetailScreen/delete/deleteEnabled2.png}}
+		\includegraphics[width=0.95\linewidth]{images/user_doc/managePack/DetailScreen/delete/deleteEnabled2.png}}
     \vspace{10pt}
 	\subcaptionbox{Step 2: Deletion Verification}{
 		\includegraphics[height=150pt]{images/user_doc/managePack/DetailScreen/delete/deleteDialog2.png}}
@@ -650,11 +677,9 @@ Note that the deletion action is not irreversible.
 	\label{fig:MPReportDeleteBtn}
 \end{figure}
 
-\subsubsection{Edit}
+\subsubsection{Edit Package}
 
-Edit a package can be done at "Detail Screen". All packages can be edited.
-\bigskip
-
+Edit a package can be done at "Detail Screen".
 In case the \textbf{Receptionist} is at "Detail Screen" and want to edit the displayed package, one can use the "Edit" button at top right corner (page header). 
 When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{Receptionist} to modified the \textbf{Recipient}, \textbf{Type}, \textbf{Delivery Company}, \textbf{Comment} of the package. 
 When click "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects ont the "Detail Screen". When click "Close", any changes will be discard, the dialog simply closes.
@@ -699,6 +724,7 @@ As a logged in \textbf{Facility Manager}, one is granted to access the two appli
 
 
 \subsection{Manage Companies}
+\label{subsec:mc}
 
 The \textbf{Manage Companies} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential delivery companies delivering the package in the system. For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and is not editable by the \textbf{FM}. The summarized main actions the \textbf{FM} can take within the application are listed here:
 
@@ -769,7 +795,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 	\label{fig:MCreportCreateStep12}
 \end{figure}
 
-\subsubsection{Edit}
+\subsubsection{Edit Company}
 
 Edit a delivery company can be done at "Detail Screen" by the \textbf{FM}.
 \bigskip
@@ -802,7 +828,7 @@ When click "Save", the modified details are submitted, the dialog closes, a mess
 	\label{fig:MCDetailEditDlgBad}
 \end{figure}
 
-\subsubsection{Delete}
+\subsubsection{Delete Company}
 
 Delete an existing delivery company can be done in two ways: Batch deletions at the "Report Screen" or single deletion at "Detail Screen". The deletion of a company implies that, the delivery company will be removed completely and any association of existing packages to this company is automatically removed as well. This means those packages will no longer holds any company information. The deletion action is irreversible. 
 
@@ -854,32 +880,49 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 
 \subsection{Manage Storage}
+\label{subsec:ms}
 
-The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system. 
-For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and is not editable by the \textbf{FM}. 
+The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system.  
 The summarized main actions the \textbf{FM} can take within the application are listed here:
 
 \begin{compactenum}
 	\item Browse the storage and slots in the storage.
         \begin{compactenum}
             \item Filtering possibility.
-            \item Report List of storage info.
+            \item Report List of storage.
             \item Detail page for storage.
-                \begin{compactenum}
-                    \item Storage detailed info.
-                    \item List of slots info within a storage.
-                        \begin{compactenum}
-                            \item Detail page for storage slot.
-                        \end{compactenum}
-                \end{compactenum}
+            \item Detail page for slot.
         \end{compactenum}
     \item Add new storage.
+        \begin{compactenum}
+            \item At Storage Report Page.
+        \end{compactenum}
     \item Edit existing storage.
+        \begin{compactenum}
+            \item At Storage Detail Page.
+        \end{compactenum}
     \item Delete existing storage.
+        \begin{compactenum}
+            \item At Storage Report Page.
+            \item At Storage Detail Page.
+        \end{compactenum}
     \item Add new storage slot.
+        \begin{compactenum}
+            \item At Storage Detail Page.
+        \end{compactenum}
     \item Batch add new storage slots.
-    \item Edit existing storage slot (name and availability).
+        \begin{compactenum}
+            \item At Storage Detail Page.
+        \end{compactenum}
+    \item Edit existing storage slot.
+        \begin{compactenum}
+            \item At Slot Detail Page.
+        \end{compactenum}
     \item Delete existing storage slot.
+        \begin{compactenum}
+            \item At Slot Detail Page.
+            \item At Storage Detail Page.
+        \end{compactenum}
 \end{compactenum}
 
 \subsubsection{Browse}
@@ -1216,3 +1259,12 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 \section{Administrator}
 As a logged in \textbf{Administrator}, one has access to all the 6 applications. One shall move backward to dedicated sections depends on the needs. 
+
+\begin{itemize}
+    \item \ref{subsec:ph} My Packages
+    \item \ref{subsec:pp} Pickup Packages
+    \item \ref{subsec:rp} Register Packages
+    \item \ref{subsec:mp} Manage Packages
+    \item \ref{subsec:mc} Manage Companies
+    \item \ref{subsec:ms} Manage Storage
+\end{itemize}
