@@ -324,7 +324,7 @@ security:
 
 \section{UI}
 
-The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language.  This chapter explains in details the used framework concepts and the structure of each module.
+The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language. This chapter explains in details the used framework concepts and the structure of each module.
 
 \begin{description}
 	\item[SAP UI5] is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more. \cite{fiorielements}
@@ -346,20 +346,39 @@ A Fiori launchpad sandbox is configured under \textit{appconfig/fioriSandboxConf
 
 Furthermore, \textit{index.cds} files are created at every level of folder, as an aggregation collection of the cds annotations over the application.
 
-Model-View-Controller (MVC) concept is used in SAP UI5 development to keep the application data separate from the user interactions. This concept is natively adapted in free-style UIs and was kept, a little bit differently, in template UIs. The general structure of the both type of UI applications will be explained in the coming two sections. These two contains important common technical keywords and details, which will be omit later in the six application UI description sections, and should be referenced then in case of missing pre knowledge.
-
-\subsubsection{Template Module Explanation}
-
-For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for template customizing) folders.
+Model-View-Controller (MVC) concept is used in SAP UI5 development to keep the application data separate from the user interactions. This concept is natively adapted in free-style UIs and was kept, a little bit differently, in template UIs. The general structure of the both type of UI applications will be explained in the coming two sections. 
 
 \subsubsection{Freestyle Module Explanation}
-For a freestyle application, the main implementations are under the \textbf{webapp} folder. The solution adapts MVC architecture and hence split further into three parts/folders: \textbf{view}, \textbf{model} and \textbf{controller}. The \textbf{view} collects all the views used by the app. These "view templates" are defined in \textbf{xml} with filename \textbf{*.view.xml}. The \textbf{model} folder collects the functions in case any creation of local data model (local json data model not defined in the manifest but shall be used as part of bindings). Those are loaded upon opening the application at component.js. The \textbf{controller} folder contains controllers (one controllers for one view) which will responds to any user interaction event (e.g. a click on the button), collects necessary data and dispatch the event to corresponding back-end services.
+For a freestyle application, the main implementations are under the \textbf{webapp} folder. The solution adapts MVC architecture and hence split further into three parts/folders: \textbf{view}, \textbf{model} and \textbf{controller}. The \textbf{view} collects all the views used by the app. These "view templates" are defined in \textbf{xml} with filename \textbf{*.view.xml}. The \textbf{model} folder collects the functions in case any creation of "local data model" (local json data model not defined in the manifest but shall be used as part of bindings). Those are loaded upon opening the application at component.js. The \textbf{controller} folder contains controllers (one controllers for one view) which will responds to any user interaction event (e.g. a click on the button), collects necessary data and dispatch the event to corresponding back-end services.
 
-It also contains three "descript" files: \textbf{index.html}, \textbf{Component.js} and \textbf{manifest.json}. \textbf{index.html} acts as the entry point of application.  \textbf{Component.js} inherits from sap UI5 UIComponent and would register the entire application as a UI component on the fiori launchpad. \textbf{manifest.json} specifies the module name, name space, service destination, service model, resources locations, and optionally some others, which will be constantly used when implementing the UI logics.
+It also contains three "descript" files: \textbf{index.html}, \textbf{Component.js} and \textbf{manifest.json}. \textbf{index.html} acts as the entry point of application.  \textbf{Component.js} inherits from sap UI5 UIComponent and would register the entire application as a UI component on the fiori launchpad based on the manifest and its init function. \textbf{manifest.json} specifies the module name, name space, service destination, service model, resources locations (css, images), and optionally some others, which will be constantly used when implementing the UI logics.
 
 In case css or image resources is specified in the manifest, two folders \textbf{css} and \textbf{images} are also added under specified path containing the necessary resources. Once configured under manifest, the css stylesheets and images can be used in all views under the same name space (root path).
 
 Three other not so involved folders are \textbf{i18n} (in case of text translation), \textbf{test} (auto generated for local test), \textbf{localService} (puts in local mock metadata of the used back-end service).
+
+\subsubsection{Template Module Explanation}
+
+For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for customizing fiori elements templates) folders.
+
+\bigskip
+Under the \textbf{webapp} collects almost the same set of folders / files as in the \textbf{webapp} of freestyle UIs. The main difference here is that there is no longer normal views (\textbf{view} folder) for the application, instead the common fiori element templates (List Report Page \& Object Page in this thesis) are defined in the \textbf{manifest.js}. Those templates are loaded from SAP UI5 standard library as the view of the application. They use their own standard controllers and would consume the entity data directly from the OData v2 / v4 models defined in the \textbf{manifest.json}. Hence, the ordinary \textbf{model}, \textbf{view}, \textbf{controller} folders no longer exists directly \textbf{webapp}.
+
+However, in most of the cases custom actions / columns have to be added to the used templates (mostly as buttons). The location of action buttons / columns (within the template page) is defined in the \textbf{manifest.json}, while their business logics / representations are implemented under the \textbf{webapp/ext} folder. Here splits into three more folders: \textbf{component} (the controllers for corresponding dialog fragments), \textbf{view} (the fragment xml of column or dialog used by the actions), \textbf{controller} (the master collection of action handler functions).
+
+\bigskip
+Last but not least, under the \textbf{annotations} collects the cds annotations on the entities, which are combined with the base templates during the rendering.
+Those annotations, based on their usages / effects, are put into three cds files (\textbf{labels.cds, ui.cds, value-help.cds}) and are aggregated with an \textbf{index.cds} file.
+The following customizations are done using the annotations:
+
+\begin{compactenum}
+    \item Label text of properties of displayed entities.
+    \item Displayed filters and fields. (default/non-default/hidden)
+    \item highlighting/linking/quick previews of fields.
+    \item Define section facets/components of templates.
+    \item value helps for property filters.
+    \item Quick variant based on fields values.
+\end{compactenum}
 
 \subsubsection{File Structure}
 
@@ -375,13 +394,13 @@ root/
                     |- component 
                     |- controller
                     |- view
-                    |- *css 
                 |- i18n
                 |- localService
                 |- test
                 |- Conponent.js
                 |- index.html
                 |- manifest.json
+                |- *css 
             |- annotations
                 |- index.cds
                 |- labels.cds
@@ -407,33 +426,215 @@ root/
 \end{lstlisting}
 
 \subsection{Manage Storage}
-\subsubsection{Manifest}
-\subsubsection{Components}
+
+Manage Storage is an utility for facility managers to maintain the information regarding the possible storage and slots storing the packages and is a template UI.
+The application consumes the \textbf{StorageService} back-end services.
+The implementation of the app
+located in the \textbf{managestorage} module and under the name space of
+\textbf{com.sap.internal.digitallab.packagehandling.app.manage.storages}.
+Entity \textbf{Storage} is used as main OData entity and \textbf{StorageSlot} as the child entity.
+List Report and Object Page are defined for storage and List Report is defined for slots: \textit{List Report of storage} navigates to \textit{Object Page of storage} contains \textit{Line Items of 
+slots} navigates to \textit{Object Page of slot}.
+
+\subsubsection{Annotations}
+Labels are defined for every properties of exposed entities by the back-end service. Filter value helps are defined for \textbf{Building Floor} and \textbf{Building}.
+Line items and facets, filters displays are customized for storage and slot.
+
+\subsubsection{Extension}
+
+The following dialog fragments are implemented:
+\begin{compactenum}
+    \item Slot creation dialog
+    \item Storage creation dialog
+    \item Slot edit dialog
+    \item Storage edit dialog
+    \item Slot mass creation dialog
+\end{compactenum}
+
+\bigskip
+The following column fragmants are added:
+\begin{compactenum}
+    \item Map column with link to external site.
+\end{compactenum}
+
+\bigskip
+The following components are implemented:
+\begin{compactenum}
+    \item Slot creation dialog controller
+    \item Storage creation dialog controller
+    \item Slot edit dialog controller
+    \item Storage edit dialog controller
+    \item Slot mass creation dialog controller
+\end{compactenum}
+
+\bigskip
+The following controller(s) are implemented:
+\begin{compactenum}
+    \item App master controller
+    \item Slot deletion message box controller
+\end{compactenum}
 
 \subsection{Manage Company}
-\subsubsection{Manifest}
-\subsubsection{Components}
+
+Manage Company is an utility for facility managers to maintain the information regarding the possible companies delivering the packages and is a template UI.
+The application consumes the \textbf{CompanyService} back-end services.
+The implementation of the app
+located in the \textbf{managecompany} module and under the name space of
+\textbf{com.sap.internal.digitallab.packagehandling.app.manage.companies}.
+Entity \textbf{DeliveryCompany} exposed by  \textbf{CompanyService} is used as main OData entity.
+List Report and Object Page are defined for companies: \textit{List Report of companies} navigates to \textit{Object Page of company}.
+
+\subsubsection{Annotations}
+Labels are defined for every properties of \textbf{DeliveryCompany} exposed by \textbf{CompanyService}. 
+Line items, facets, filters displays are customized.
+
+\subsubsection{Extension}
+
+The following dialog fragments are implemented:
+\begin{compactenum}
+    \item Company creation dialog
+    \item Company edit dialog
+\end{compactenum}
+
+\bigskip
+The following column fragments are added:
+\begin{compactenum}
+    \item Company column displays company logo and name.
+\end{compactenum}
+
+\bigskip
+The following components are implemented:
+\begin{compactenum}
+    \item Company creation dialog controller
+    \item Company edit dialog controller
+\end{compactenum}
+
+\bigskip
+The following controller(s) are implemented:
+\begin{compactenum}
+    \item App master controller
+\end{compactenum}
+
+\bigskip
+The following cascading style sheets(s) are added:
+\begin{compactenum}
+    \item style.css
+\end{compactenum}
 
 \subsection{Manage Package}
-\subsubsection{Manifest}
-\subsubsection{Components}
+
+Manage Package is the app for packages managements within package handling solution and is a template UI.
+The application consumes the \textbf{PackageService} back-end services.
+The implementation of the app
+located in the \textbf{managepackage} module and under the name space of
+\textbf{com.sap.internal.digitallab.packagehandling.app.manage.package}.
+Entity \textbf{Package} exposed by  \textbf{PackageService} is used as main OData entity.
+List Report and Object Page are defined for packages: \textit{List Report of packages} navigates to \textit{Object Page of package}.
+
+\subsubsection{Annotations}
+Labels are defined for every properties of entities exposed by \textbf{PackageService} (StorageSlot, Storage, Package, Building, BuildingFloor, PackageType, PackageStatus, DeliveryCompany, User). 
+Filter value helps are defined for \textbf{PackageType}, \textbf{Storage}, \textbf{PackageStatus}, \textbf{DeliveryCompany}, \textbf{Building Floor} as drop downs.
+Line items, facets, filters displays are customized.
+Contact card is defined for \textbf{User}.
+Three variants (new, confirmed, picked up) are defined based on the status of the \textbf{Package} entity.
+
+\subsubsection{Extension}
+The following dialog fragments are implemented:
+\begin{compactenum}
+    \item Package confirmation dialog
+    \item Package edit dialog
+\end{compactenum}
+
+\bigskip
+The following column fragments are added:
+\begin{compactenum}
+    \item Company column displays company logo and name.
+    \item Location columns displays combined storage and slot.
+    \item Type column displays type with icon.
+\end{compactenum}
+
+\bigskip
+The following components are implemented:
+\begin{compactenum}
+    \item Package confirmation dialog controller
+    \item Package edit dialog controller
+    \item Package pickup massage box controller
+\end{compactenum}
+
+\bigskip
+The following controller(s) are implemented:
+\begin{compactenum}
+    \item App master controller
+\end{compactenum}
+
+\bigskip
+The following cascading style sheets(s) are added:
+\begin{compactenum}
+    \item style.css
+\end{compactenum}
+
 
 \subsection{Register Package}
-\subsubsection{Manifest}
-\subsubsection{Components}
+
+Register Package is the app for packages managements within package handling solution and is a freestyle UI.
+The application consumes the \textbf{RegistrationService} back-end services.
+The implementation of the app
+located in the \textbf{registerpackage} module and under the name space of
+\textbf{com.sap.internal.digitallab.packagehandling.app.register.packages}.
+
+\subsubsection{Models}
+The default model of the application is the OData model based on the \textbf{RegistrationService}. There is also a local json model \textbf{"localData"} which stores the dynamic package data and is bind to the package registration form.
+
+\subsubsection{Controllers}
+There are two controllers used by the application. \textbf{App.controller.js} is the framework's standard central controller. \textbf{Registration.controller.js} contains all application logic.
+
+\subsubsection{Views}
+There are two views used by the application. \textbf{App.view.xml} acts as the entry point of the application binding to the \textbf{App.controller.js} controller. \textbf{Registration.view.xml} contains the xml annotations of the registration page, binds to \textbf{Registration.controller.js} controller, and acts as the entry page of the application (rendered as the template when entering the application).
 
 \subsection{Pickup Package}
 
-Pickup Package is an utility for all end users to pick a confirmed package. It consumes the \textbf{PickupService} from the back-end services and is a two-screen freestyle UI5 application. The implementation of the app located in the \textbf{pickuppackage} module and under the name space of \textbf{com.sap.internal.digitallab.packagehandling.app.pickup.package}.
+Pickup Package is the app for all end users to pick a confirmed package. It consumes the \textbf{PickupService} from the back-end services and is a two-screen freestyle UI5 application. The implementation of the app located in the \textbf{pickuppackage} module and under the name space of \textbf{com.sap.internal.digitallab.packagehandling.app.pickup.package}.
 
-\subsubsection{Freestyle Module Explanation}
-The main implementation are under the \textbf{webapp} folder. The solution adapts MVC architecture and hence split futher into three parts: view, model and controller. Below is 
-\subsubsection{Manifest}
-\subsubsection{Components}
+\subsubsection{Models}
+The default model of the application is the OData model based on the \textbf{PickupService}. Local json model \textbf{"usr"} stores the dynamic user data. Local json model \textbf{"packages"} stores the freshest count of the retrieved packages from the \textbf{PickupService}. Both are bound by the overview and done views of the application.
+
+\subsubsection{Controllers}
+There are three controllers used by the application. \textbf{App.controller.js} is the framework's standard central controller. \textbf{Overview.controller.js} and \textbf{Done.controller.js} contain the application logic of corresponding pages.
+
+The application also utilized the standard message box component from the framework, whose handler is implemented under \textbf{component} folder.
+
+\subsubsection{Views}
+There are three views used by the application. \textbf{App.view.xml} acts as the entry point of the application binding to the \textbf{App.controller.js} controller. \textbf{Overview.view.xml} contains the xml annotations of the Overview page, binds to \textbf{Overview.controller.js} controller, and acts as the entry page of the application (rendered as the template when entering the application). \textbf{Done.view.xml} contains the xml annotations of the post pickup page. The navigation between two view is enabled with action buttons.
 
 \subsection{My Package}
-\subsubsection{Manifest}
-\subsubsection{Components}
+
+My Package is the app for packages managements within package handling solution and is a one page template UI.
+The application consumes the \textbf{HistoryService} back-end services.
+The implementation of the app
+located in the \textbf{browsepackage} module and under the name space of
+\textbf{com.sap.internal.digitallab.packagehandling.app.browse.package}.
+Entity \textbf{Package} exposed by  \textbf{HistoryService} is used as main OData entity.
+List Report is defined for packages.
+
+\subsubsection{Annotations}
+Labels are defined for every properties of entities exposed by \textbf{HistoryService} (StorageSlot, Package, PackageType, PackageStatus, DeliveryCompany). 
+Filter value helps are defined for \textbf{PackageType}, \textbf{PackageStatus}, \textbf{DeliveryCompany} as drop downs.
+Line items, filters displays are adjusted.
+
+\subsubsection{Extension}
+
+\bigskip
+The following column fragments are added:
+\begin{compactenum}
+    \item Company column displays company logo and name.
+    \item Type column displays type with icon.
+\end{compactenum}
+
+\bigskip
+The following cascading style sheets(s) are added:
+\begin{compactenum}
+    \item style.css
+\end{compactenum}
 
 
 \section{Services}
