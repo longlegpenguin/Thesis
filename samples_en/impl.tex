@@ -59,39 +59,23 @@ mvn spring-boot:run # THis will start the server at port 8084
 \end{lstlisting}
 
 
-\section{Analysis and Design}
+% \section{Analysis and Design}
 
-This chapter explains the reason of the need of this application and lists the analysed necessary capabilities of the developed application.
+% This chapter explains the reason of the need of this application and lists the analysed necessary capabilities of the developed application.
 
-\subsection{Business Context}
-The application is aimed to provide an end to end streamlined procedure from the moment a parcel arrived at the reception to the second user confirm the pickup (package management). It also provides humane functions to ease the management of any parcel related information (storage and delivery companies management).
+% \subsection{Business Context}
+% The application is aimed to provide an end to end streamlined procedure from the moment a parcel arrived at the reception to the second user confirm the pickup (package management). It also provides humane functions to ease the management of any parcel related information (storage and delivery companies management).
 
-These are detailed in the following sub-sections. For each management requirement, user stories and user diagrams are given.
+% These are detailed in the following sub-sections. For each management requirement, user stories and user diagrams are given.
 
-\subsection{Package Management}
-Package management is the most the and center function of the application. It is responsible for register a parcel, confirm a parcel, pickup a parcel and review the history of the parcel.
+% \subsection{Package Management}
+% Package management is the most the and center function of the application. It is responsible for register a parcel, confirm a parcel, pickup a parcel and review the history of the parcel.
 
 
 
-\subsection{Storage Management}
+% \subsection{Storage Management}
 
-\subsubsection{User Stories}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|p{2cm}|p{2.7cm}|p{2.7cm}|p{2.7cm}|p{2.7cm}|}
-\hline
-\textbf{As a} & \textbf{I Want To} & \textbf{Given} & \textbf{When} & \textbf{Then}\\
-\hline
-Player & Build a Road & I am in Road Construction mode. & I click on an empty general zone. & The program adds the road to the clicked zone. \\
-\hline
-Player & Build a Road & I am in Road Construction mode. & I click on a non-empty zone of any type & The program warns the player not able to build the road. \\
-\hline
-\end{tabular}
-\caption{User Stories}
-\end{table}
-
-\subsection{Companies Management}
+% \subsection{Companies Management}
 
 
 
@@ -139,42 +123,12 @@ root/
 The details of inner parts of each directory will be introduced later in corresponding sections.
 
 \section{Data Model}
-Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is seperated into 2 parts: solution specific data models and common data models, where the common data models are implemented separately of their own services. At the development time of this application, the common data service is not constructed yet, so they are implemented as part of the application as a PoC.
 
-\subsection{ER Digram}
-\subsubsection{Solution specific data model}
+Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is separated into 2 parts (name space): solution specific data models and common data models, where the common data models are implemented separately of their own services. At the development time of this application, the common data service is not constructed yet, so they are implemented as part of the application as a PoC.
 
-Here is a ER diagram of the solution specific data model.
-picture
-\subsubsection{General common data model}
-
-Here is a ER diagram of the common data model.
-picture
-
-\subsection{Implementation}
-All data models are modeled by CDS' definition language as a CDS view. Single entities are put into their own \textit{EntityName.cds} files. The main goal is to model out the exact relationships as illustrate in the specification section.
-
-Here list the structure of folders:
-\lstset{caption={Structure of folders - data model}, label=src:4}
-\begin{lstlisting}[language={bash}]
-root/
-    |- db/
-        |- data
-        |- model
-            |- packagehandling 
-                |- *.cds # Definition of solution specific data model
-            |- common
-                |- *.cds # Definition of common data model
-\end{lstlisting}
-
-The correctness of the relationship implementation can be checked by running a command:
-
-\lstset{caption={Generate schema from CDS view}, label=src:bash}
-\begin{lstlisting}[language={bash}]
-> cds compile ./db/models/common/ --to sql > schema.sql
-\end{lstlisting}
-
-In the root directory, one can find \textit{schema.sql} which will contains the DDLs of generated tables in HANA SQL.
+\subsection{CDL}
+All data models are modeled by CDS' definition language (CDL). Single entities are put into their own \textit{EntityName.cds} files. 
+At compilation time, a \textit{schema.sql} is generated from the models in the root directory, which will contains the DDLs of generated tables in HANA SQL. This file also includes the view generated for the services, eplained in the Service chapter.
 
 The namespaces (as mentioned in application structure section) of the solution-specific and common data models are defined accordingly at the top of each entity definition.
 
@@ -189,11 +143,11 @@ namespace com.sap.internal.digitallab.packagehandling.core;
 
 To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. It can be seen as "extend" in the object-orient way, or more speificly "interface" in Java. Aspects are defined in a similiar way as entities, consists of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extend" with its own properties. 
 
-\begin{definition}
-    \textbf{CDS's aspects} allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They're based on a mixin approach as known from Aspect-oriented Programming methods.
-\end{definition}
+\begin{description}
+    \item[CDS's aspects] allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They're based on a mixin approach as known from Aspect-oriented Programming methods.
+\end{description}
 
-Here records the common aspects used by this thesis. \textit{managed} comes with 4 elements: created, created, changed, changed, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides a out of box way of implementing enumeration like data structures and supports automatic localization.
+Three common aspects are used by this thesis. \textit{managed} comes with 4 elements: created, created, changed, changed, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides a out of box way of implementing enumeration like data structures and supports automatic localization.
 
 \lstset{caption={Aspect managed from @sap/cds/common}, label=src:7}
 \begin{lstlisting}[language={c++}]
@@ -225,7 +179,25 @@ aspect CodeList @(
 
 Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
 
-Below captures two examples from the thesis on usage of aspects coupled with the SQL DDL corresponding to the cds definition.
+Extra virtual fields are defined with \textit{virtual} keyword. These fields are not included in the database schema (not saved physically in the database), but will be calculated on request by the service implementations. 
+Extra calculated fields are defined with \textit{=} signed. These fields are not included the database schema (not stored physically in the database), but are calculated dynamically from the attributes of one of the associated fields.
+These two type of fields provides a short cut to frequently needed counts or fields and can be found (are grouped) at the bottom part of entity definitions.
+
+\lstset{caption={Virtual and Calculated Field Syntax}, label=src:90}
+\begin{lstlisting}[language={c++}]
+virtual <vf>  : <Type>;
+<cf>          : <Type> = <assoField>.<property>;
+\end{lstlisting}
+
+
+The correctness of the relationship implementation can be checked by running a command:
+
+\lstset{caption={Generate schema from CDS view}, label=src:bash}
+\begin{lstlisting}[language={bash}]
+> cds compile ./db/models/common/ --to sql > schema.sql
+\end{lstlisting}
+
+
 \lstset{caption={managed, cuid delivery company entity with unique constraint and corresponding SQL DDL}, label=src:10}
 \begin{lstlisting}[language={sql}]
 @assert.unique: {nbunique: [name]}
@@ -262,6 +234,30 @@ CREATE TABLE com_sap_internal_digitallab_packagehandling_core_PackageType (
   PRIMARY KEY(code)
 );
 \end{lstlisting}
+
+The location of the schema definition files is illustrated below:
+\lstset{caption={Structure of folders - data model}, label=src:4}
+\begin{lstlisting}[language={bash}]
+root/
+    |- db/
+        |- data
+        |- model
+            |- packagehandling 
+                |- *.cds # Definition of solution specific data model
+            |- common
+                |- *.cds # Definition of common data model
+\end{lstlisting}
+
+\subsection{Entity Relationship Diagram}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/DB/DB_Relationship.png}
+	\caption{Data Model - Entity Relationship Diagram}
+	\label{fig:db}
+\end{figure}
+
+
 \section{Security}
 The application is developed for internal use of SAP and can be accessed only from SAP devices. 
 Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot application.
@@ -636,7 +632,7 @@ As mentioned in the above sections, 6 OData end-points are maintain by the back-
 
 \subsection{Back-end Architecture Overview}
 
-\subsubsection{Things to Do}
+\subsubsection{Technologies}
 
 The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) and Java.
 
@@ -659,14 +655,13 @@ The second step is implementing the business logic using Java. CAP project provi
 	\item Implementations of actions and functions defined in CDS view.
 \end{compactenum}
 
-\subsubsection{Pre-knowledge}
-To fully understand how to write these implementation, one should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here lists the very necessary pre-knowledges and factors on the generate code, before continuing with implementations. 
+To fully understand how to write these implementations, one should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here lists the very necessary pre-knowledges and factors on the generate code, before continuing with implementations. 
 \begin{compactenum}
 	\item \textit{srv/gen} folder is generated from all the \textit{*.cds} files using in the \textit{index.cds} (recursively used), for an entity or a service definition.
     \item The generated code are in Java and are under the same package domain as specified in namespace of the \textit{*.cds} files.
     \item For each entity and service a couple of \textit{EntityName.java} and \textit{EntityName\_.java} interface being generated. 
     \item One can use \textit{EntityName\_.CDS\_NAME} in case of the need to clarify the usage of certain entity or service. Also \textit{EntityName\_.class} in CQN as an analogy of table names. 
-    \item One shall use \textit{EntityName} in case of the usage of the real entity or service, similiar to object model in JPA. Also in the case of CQN, constants of column names can be retrieved as static fields like this: \textit{EntityName.COLUMN\_NAME}, which should be encouraged over giving string expressions.
+    \item One shall use \textit{EntityName} in case of the usage of the real entity or service, similar to object model in JPA. Also in the case of CQN, constants of column names can be retrieved as static fields like this: \textit{EntityName.COLUMN\_NAME}, which should be encouraged over giving string expressions.
 \end{compactenum}
 
 \bigskip
@@ -712,9 +707,6 @@ To explicitly watch an event (CRUD, custom events/actions/functions), methods sh
 @After(event = {CqnService.EVENT_DELETE})
 public void afterDeleteEvent(EventContext context) { }
 \end{lstlisting}
-
-\bigskip
-**Note: The complete reference of supported annotations and arguments types can be find inside the CDS documentation, and would not be detailed in this thesis. Only syntax essential for reading the thesis codes are explained.
 
 \bigskip
 In the manager layer, a \textit{<EntityName>Manager} class is defined for every entities. Each class contains entity related methods to support the services. It holds every required calculations, processing, business logics partitioned by entities. It can be more or less analog to the service layer in a normal back-end spring-boot application.
@@ -813,10 +805,11 @@ root/
 \end{lstlisting}
 
 \subsection{Storage Service}
-Storage service serves the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. Entities being exposed by the service are:
+Storage service serves the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. 
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
+Entities being exposed by the service are:
 \begin{compactenum}
 	\item Storage (*)
     \item StorageSlot (*)
@@ -850,12 +843,12 @@ Reinforced foreign keys of storage service:
 \end{compactenum}
 
 \bigskip
-**Note: Storage.buildingFloor is not checked as a foreign key here, because in the plan its reference should be replaced by a central data service.
+\textbf{Note}: Storage.buildingFloor is not checked as a foreign key here, because in the plan its reference should be replaced by a central data service.
 
 
 A custom action \textit{massCreate} is implemented, which creates multiple slots at one shot. The implementation also watches the read events of \textbf{Storage} and \textbf{StorageSlot}, after which virtual fields (\textit{total packages}, \textit{current packages}) and virtual action control fields (\textit{delete ac}) are calculated dynamically.
 
-\subsubsection{UML}
+\subsubsection{Java}
 
 Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
 \begin{figure}[!h]
@@ -869,7 +862,7 @@ Classes and methods related to storage service is illustrated in the UML. Privat
 \subsection{Company Service}
 Company service provides the possibilities for facaulty managers and administrators to CRUD the delivery companies and is exposed under the end-point \textbf{api/CompanySerive}.
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
 Enities being exposed by the service are:
 \begin{compactenum}
@@ -885,10 +878,10 @@ Mandatory fields of storage service:
 	\item DeliveryCompany.name
 \end{compactenum}
 
-\subsubsection{CRUD}
+\bigskip
 CRUD are supported for a delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
 
-\subsubsection{UML}
+\subsubsection{Java}
 
 Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
 \begin{figure}[!h]
@@ -905,7 +898,7 @@ Classes and methods related to storage service is illustrated in the UML. Privat
 \subsection{Package Service}
 Package service provides receptionists, faculty managers and administrators the abilities to update and delete a package and reads its related information. It is exposed at OData end-point \textit{api/PackageService} 
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
 Enities being exposed by the service are:
 \begin{compactenum}
@@ -948,15 +941,15 @@ Two custom unbounded actions \textit{confirm} and \textit{pickup} are also defin
 \bigskip
 An useful detail here is that, the pickup action in the package service shall be used by receptionist and facility manager only, when the end-user cannot access to the pickup service (will be introduced later in the chapter). While both service have the same pickup action, the \textit{pickup\_ac} in package is shared by the two service.
 
-\subsubsection{CRUD}
+\bigskip
 Read, update and delete possibilities of an package entity are guaranteed by the package service. For the other exposed entities, only read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{PackageService.cds}. 
 
 \bigskip
-An useful note here is that, the create operation of the package is missing in this service, as there is a seperated registration service which is only responsible for the creation of new package, which will be detailed later.
+An useful note here is that, the create operation of the package is missing in this service, as there is a separated registration service which is only responsible for the creation of new package, which will be detailed later.
 
-\subsubsection{UML}
+\subsubsection{Java}
 
-The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related slasses and methods can be checked in the UML. 
+The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related classes and methods can be checked in the UML. 
 
 \begin{figure}[!h]
     \centering
@@ -978,7 +971,7 @@ Registration service provides receptionists, faculty managers and administrators
 \bigskip
 One thing to remember is that at this stage a package is only created but not stored, the status is all new and the storage details shall be determined in the previous package service. More details of the business logic can be check in the user documentation.
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
 Enities being exposed by the service are:
 \begin{compactenum}
@@ -1011,11 +1004,10 @@ Reinforced foreign keys of package service:
 	\item Package.type
 \end{compactenum}
 
-
-\subsubsection{CRUD}
+\bigskip
 Create possibility of an package entity is guaranteed by the registration service. For the other exposed entities, only read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{RegistrationService.cds}. The reason behind these restrictions had already been discussed in the previous sector.
 
-\subsubsection{UML}
+\subsubsection{Java}
 
 This is a simpler service compare to the previous ones. No actions or action controls are defined for this service. Only a pre-processing (pre-fill the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML. 
 
@@ -1037,7 +1029,7 @@ This is a simpler service compare to the previous ones. No actions or action con
 
 While the previous 4 services are doing uninteresting administration stuff and can be accessed only by nominated roles, here comes finally 2 service, opening to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception. It is exposed at OData end-point \textit{api/PickupService}. It is designed to be optimized for mobile use but this will be left to be discussed in the UI chapter.
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
 Entities being exposed in this service is almost the same as in the package service, with a little bit reduction, providing user with just enough necessary information. Entities exposed by the service are:
 \begin{compactenum}
@@ -1052,10 +1044,10 @@ Entities being exposed in this service is almost the same as in the package serv
 \bigskip
 In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything, other than click a confirm pickup button. As for the future pickup button, an action \textit{pickup} is defined. Its entanglement with the \textit{pickup\_ac} used by package service are discussed in the previous sector.
 
-\subsubsection{CRUD}
+\bigskip
 The same idea goes in the CRUD possibilities - only read operation is supported for any entity.
 
-\subsubsection{UML}
+\subsubsection{Java}
 
 A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML. 
 
@@ -1073,7 +1065,7 @@ A default filter read operation and the custom action are implemented in the Jav
 \subsection{History Service}
 History service serves for any authenticated user to check their package history.
 
-\subsubsection{Details}
+\subsubsection{CDS View}
 
 Entities being exposed in this service is almost the same as in the registration service, with every details, providing user with as much information as could. Entities exposed by the service are:
 \begin{compactenum}
@@ -1086,12 +1078,8 @@ Entities being exposed in this service is almost the same as in the registration
 \bigskip
 In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything. Nevertheless, a restriction makes user to only read about hos or her own package is defined with a \textit{where} statement in the projection view. Codes can be checked in \textit{HistoryService.cds} file.
 
-\subsubsection{CRUD}
+\bigskip
 The same idea goes in the CRUD possibilities - only read operation is supported for any entity and this is enforced by a \textit{@readonly} annotation on every entity projection.
-
-\subsubsection{UML}
-
-There are no need of Java code to support the behaviour of the history service and hence no UML is included here.
 
 
 \section{Testing}
@@ -1103,7 +1091,7 @@ The csv containing the test data are located in two locations exclusively. The t
 
 \subsection{Unit Testing}
 
-Unit testing focus on the methods and line coverage of the manager and the repository layer. JUnit 4 and spring test stater pack is used to write the tests. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
+Unit testing focus on the methods and line coverage of the manager and the repository layer. JUnit 4 and spring test stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
 
 \bigskip
 A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. Each test class is written under the following logic.
@@ -1115,17 +1103,31 @@ A test class is created for each used class in the manager and repository layer.
     \item Intellij coverage test is executed at the end of implementation to ensure every branch / edge cases are covered.
 \end{compactenum}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{images/test/Unittests.png}
+    \caption{Unit Tests UML}
+    \label{fig:ut_uml}
+\end{figure}
+
 \bigskip
 \textbf{Extending Advice:} In case of any needs in the future that more test shall be added, it is advised to append completely new dedicated test data sets into csv. Delete or removing the existing data set can result in sever collapse of the current tests.
 
 \subsection{Integration Testing}
 Integration testing focus on the testing of back-end services, that is, on the handler layer. \textbf{Rest Assure} api testing framework is used in this scenario.
-The integration tests locate under \textit{srv/src/integration-test/java/<app/name/space>}. A base test class in implemented abstracts all the common necessary setups (ports, user entry, testing utility methods). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class. For each service, the following test ideas are followed:
+The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class. For each service, the following test ideas are followed:
 \begin{compactenum}
 	\item Correct access to service based on roles. (200/403).
     \item Correct restrictions of CRUD operation (200/201/204/409/405).
     \item Expected results of the action imports (200 and results check).
     \item Expected results of any customized CRUD operations (200/201/204/409/405 and results check).
 \end{compactenum}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/test/api.png}
+    \caption{Integration Tests UML}
+    \label{fig:it_uml}
+\end{figure}
 
 % \section{Technologies and Terms}
