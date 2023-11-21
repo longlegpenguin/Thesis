@@ -103,9 +103,18 @@ The details of inner parts of each directory will be introduced later in corresp
 \section{Data Model}
 \label{sec:D-db}
 
-The data model in this thesis is segregated into 2 parts (name space): \textbf{core} for solution specific data models and \textbf{common} for common data models 
-(these are planned to be replaced by dedicated applications in the future).
+The data model in this thesis is segregated into 2 parts (name space): \textbf{core} and \textbf{common}. 
+The \textbf{core} space includes solution specific data models. The \textbf{common} space includes common data models that could be shared among multiple applications (out of this thesis scope) and are implemented only as the prove of concepts. (See entity relationship diagram in \autoref{fig:db})
 
+\subsubsection{Entity Relationship Diagram}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/DB/DB_Relationship.png}
+	\caption{Data Model - Entity Relationship Diagram}
+	\label{fig:db}
+\end{figure}
+
+\subsubsection{CDL}
 All data models are modeled by CDS' definition language (CDL). Single entities are put into their own \textit{EntityName.cds} files. 
 At compilation time, a \textit{schema.sql} is generated from the models in the root directory, which will contains the DDLs of generated tables in HANA SQL. This file also includes the view generated for the services, eplained in the Service chapter.
 
@@ -220,20 +229,12 @@ The location of the schema definition files is illustrated below:
 \begin{lstlisting}[language={bash}]
 root/
     |- db/
-        |- data
         |- model
             |- packagehandling 
-                |- *.cds # Definition of solution specific data model
+                |- *.cds # solution specific data models
             |- common
-                |- *.cds # Definition of common data model
+                |- *.cds # common data models
 \end{lstlisting}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/DB/DB_Relationship.png}
-	\caption{Data Model - Entity Relationship Diagram}
-	\label{fig:db}
-\end{figure}
 
 
 \section{Security}
