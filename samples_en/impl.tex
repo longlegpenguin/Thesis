@@ -862,8 +862,9 @@ CRUD are supported for a delivery company entity. Custom Java code ensures the r
 
 \subsubsection{Java}
 
-Classes and methods related to storage service is illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
-\begin{figure}[!h]
+Classes and methods related to storage service is illustrated in the UML (\autoref{fig:company_service_uml}). Private utility methods are ignored for the sake of simplicity.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{images/service_class_diagrams/company_service_class_diagram.png}
     \caption{Company Service UML}
@@ -928,7 +929,7 @@ An useful note here is that, the create operation of the package is missing in t
 
 \subsubsection{Java}
 
-The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related classes and methods can be checked in the UML. 
+The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related classes and methods can be checked in the UML (\autoref{fig:package_service_uml}). 
 
 \begin{figure}[!h]
     \centering
@@ -988,9 +989,9 @@ Create possibility of an package entity is guaranteed by the registration servic
 
 \subsubsection{Java}
 
-This is a simpler service compare to the previous ones. No actions or action controls are defined for this service. Only a pre-processing (pre-fill the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML. 
+This is a simpler service compare to the previous ones. No actions or action controls are defined for this service. Only a pre-processing (pre-fill the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML (\autoref{fig:registration_service_uml}). 
 
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{images/service_class_diagrams/registration_service_class_diagram.png}
     \caption{Registration Service UML}
@@ -1028,9 +1029,9 @@ The same idea goes in the CRUD possibilities - only read operation is supported 
 
 \subsubsection{Java}
 
-A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML. 
+A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML (\autoref{fig:pickup_service_uml}). 
 
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{images/service_class_diagrams/pickup_service_class_diagram.png}
     \caption{Pickup Service UML}
@@ -1060,11 +1061,16 @@ In the service's CDS view, no input invalidation checks are defined, as the user
 \bigskip
 The same idea goes in the CRUD possibilities - only read operation is supported for any entity and this is enforced by a \textit{@readonly} annotation on every entity projection.
 
+\subsection*{Conclusion}
+
+By the end of \autoref{ch:impl}, a developer should have gained rich knowledge of how the implementations were conducted and should have a brief understanding of all the associated technologies. A developer should at this point be able to understand the complete codes of the projects and be able to extend the project from the original basis. 
+
+In the coming \autoref{sec:D-testing}, the testing approaches are explained in detail for the project, which is also a mandatory step of development in case any of the extension should be make in the back-end.
 
 \section{Testing}
 \label{sec:D-testing}
 
-This section focus on the testing of the application. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. By the end of this section, a developer shall get a full taste of the used test framework and be able to extend the test cases on the basis of the existing ones.
+This last section of \autoref{ch:impl} focuses on the testing of the application. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. By the end of this section, a developer shall get a full taste of the used test framework and be able to extend the test cases on the basis of the existing ones.
 
 \subsection{Test Data}
 \label{subsec:test-data}
@@ -1072,10 +1078,29 @@ In the CAP application, under development environment, test data is provided in 
 
 The csv files containing the test data for this thesis are located in two locations exclusively (i.e. no records of entry are repeated). The test data for any code list entities are located in \textit{/db/data/*.csv}, as they are fixed and final values and will be also loaded on deployment. The test data for other entites are located in \textit{/test/data/*.csv}. The entries here will only be loaded into database under local environment and will be ignored when deploying.
 
+A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the loading path of the initial data is different in the two environment.
+The additional property-value pairs can be checked in \autoref{tab:property-values}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Property} & \textbf{Value} \\
+\hline
+cds.csv.paths & ../test/data/** \\
+cds.security.mock.users.my\_uname & password: my-password \\
+cds.security.mock.users.my\_uname & roles: - my-role \\
+\hline
+\end{tabular}
+\caption{Description of Properties and Values}
+\label{tab:property-values}
+\end{table}
+
+
 \subsection{Unit Testing}
 \label{subsec:test-unit}
 
-Unit testing focus on the methods and line coverage of the manager and the repository layer (See \autoref{sec:D-AppStructure}). JUnit 4 and spring test stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
+Unit testing \cite{unit-test} of this project focuses on the methods and line coverage of the manager and the repository layer (See \autoref{sec:D-AppStructure}). JUnit 4 \cite{junit} and spring test \cite{spring-testing} stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. 
 
 \bigskip
 A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. Each test class is written under the following logic.
@@ -1087,21 +1112,52 @@ A test class is created for each used class in the manager and repository layer.
     \item Intellij coverage test is executed at the end of implementation to ensure every branch / edge cases are covered.
 \end{compactenum}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.95\linewidth]{images/test/Unittests.png}
-    \caption{Unit Tests UML}
-    \label{fig:ut_uml}
-\end{figure}
-
 \bigskip
 \textbf{Extending Advice:} In case of any needs in the future that more test shall be added, it is advised to append completely new dedicated test data sets into csv. Delete or removing the existing data set can result in sever collapse of the current tests.
+
+\bigskip
+See \autoref{src:150} for a sample skeleton of a unit test class. See \autoref{fig:ut_uml_mgr} and \autoref{fig:ut_uml_repo} for UMLs of test classes for the manager and repository layers.
+
+\lstset{caption={Unit Test Skeleton - Testing}, label=src:150}
+\begin{lstlisting}[language={java}]
+@SpringBootTest
+@ActiveProfiles("test")
+class EntityNameRepositoryTest {
+    private final EntityNameRepository repo; // tested instance
+
+    @Autowired // constructor injection
+    EntityNameRepositoryTest(EntityNameRepository repo) {
+        this.repo = repo; 
+    }
+
+    @Test
+    void testMethodName() {
+        repo.methodName();
+        Assertions.assertEquals(..., ...);
+    }
+}
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/test/manager_tests.png}
+    \caption{Unit Tests UML - Manager Tests}
+    \label{fig:ut_uml_mgr}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/test/repository_tests_white.png}
+    \caption{Unit Tests UML - Repository Tests}
+    \label{fig:ut_uml_repo}
+\end{figure}
+
 
 \subsection{Integration Testing}
 \label{subsec:test-api}
 
-Integration testing focus on the testing of back-end services, that is, on the handler layer. \textbf{Rest Assure} api testing framework is used in this scenario.
-The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class. For each service, the following test ideas are followed:
+Integration testing focus on the testing of back-end services, that is, on the handler layer. \textbf{Rest Assure} \cite{test-rest-asstured} api testing framework is used in this scenario. (See a sample api request using \textbf{Rest Assured} framework in \autoref{src:500}.)
+The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods) (\autoref{src:501}). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class. (See skeleton in \autoref{src:502}) For each service, the following test ideas are followed: (Check also the UML in \autoref{fig:it_uml})
 \begin{compactenum}
 	\item Correct access to service based on roles. (200/403).
     \item Correct restrictions of CRUD operation (200/201/204/409/405).
@@ -1109,9 +1165,54 @@ The integration tests locate under \textit{srv/src/integration-test/java}. The f
     \item Expected results of any customized CRUD operations (200/201/204/409/405 and results check).
 \end{compactenum}
 
+\bigskip
+
+\lstset{caption={Sample Rest Assured Request - Testing}, label=src:500}
+\begin{lstlisting}[language={java}]
+given()  
+	.auth().preemptive().basic("admin", "admin") // Authorization
+	.contentType("application/json")  // request body type
+	.body("{" + "}")  // request body
+.when()  
+	.post("http://localhost:" + port + "serviceUrl")  // request url
+.then()  
+	.statusCode(201) // check the return status
+	.body("field", Matchers.equalTo("something")); //check the return body
+\end{lstlisting}
+
+\lstset{caption={Integration Test Base Skeleton - Testing}, label=src:501}
+\begin{lstlisting}[language={java}]
+@SpringBootTest(  
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT  
+)  // This generate a random port for the app every run time 
+public class BaseServiceTest {  
+    protected String host = "http://localhost:"; 
+    @LocalServerPort  
+    protected Integer port; // access the random port
+
+    // User map initializations...
+    // CRUD methods...
+    // CRUD and status checking methods...
+}
+\end{lstlisting}
+
+\lstset{caption={Integration Test Child Skeleton - Testing}, label=src:502}
+\begin{lstlisting}[language={java}]
+public class SomeServiceTest extends BaseServiceTest {
+
+	@Test
+	void test1() {}
+	
+	@Test
+	void test1() {}
+	
+	...
+}
+\end{lstlisting}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{images/test/api.png}
+    \includegraphics[width=1\linewidth]{images/test/api_test_white.png}
     \caption{Integration Tests UML}
     \label{fig:it_uml}
 \end{figure}
