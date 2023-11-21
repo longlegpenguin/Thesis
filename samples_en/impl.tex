@@ -611,16 +611,37 @@ The following cascading style sheets(s) are added:
 \section{Services}
 \label{sec:D-srv}
 
-As mentioned in the above sections, 6 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages, steps of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
+As mentioned in the above sections, 6 OData end-points are maintain by the back-end. This section will first give an overview of the overall architecture and technology used (\autoref{subsec:D-srv-back-arch}), then will give more detailed and specific information on each of the service.
 
 \subsection{Back-end Architecture Overview}
+\label{subsec:D-srv-back-arch}
 
-\subsubsection{Technologies}
+The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) \cite{cap-cds-cdl} and Java \cite{java}. The concrete implementations are located under the \textit{/srv} folder as illustrated in \autoref{src:15}, in which the underneath components are further explained in \autoref{subsubsec:D-srv-design}. Before that, the general steps/requirements of implementing a service can be checked in \autoref{subsubsec:D-srv-steps}. 
 
-The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) and Java.
+\lstset{caption={Directories guide - Back-end}, label=src:15}
+\begin{lstlisting}[language={bash}]
+root/
+    |- srv/
+        |- src # Java codes for custom business logics
+            |- main/java/com/sap/internal/digitallab/
+                |- packagehandling
+                    |- handlers
+                        |- <ServiceName>Handler.java
+                    |- managers
+                        |- <EntityName>Manager.java
+                    |- repositories
+                        |- <EntityName>Repository.java
+        |- gen # generated java codes from CDS views
+        |- services # Service definitions in CDS annotation
+            |- ServiceName 
+                |- *.cds # otehr definition of service
+                |- *-auth.cds # Access restriction on roles.
+\end{lstlisting}
 
-\bigskip
-The first step of implementing any service is to define its CDS view using CDL, which provides instructions on:
+\subsubsection{General Steps of Implementation}
+\label{subsubsec:D-srv-steps}
+
+The \textbf{first step} of implementing any service is to define its CDS view using CDL, which provides instructions on:
 \begin{compactenum}
 	\item The data model in database to be exposed by the service.
 	\item The desired input validations.
@@ -631,13 +652,22 @@ The first step of implementing any service is to define its CDS view using CDL, 
 
 \bigskip
 
-The second step is implementing the business logic using Java. CAP project provides a out-of-box default implementation of simple CRUD operations, in some cases shall be override/replaced. In most of the cases it involves explicit interactions with the persistence service and in this case a Java supported CQN (Core Query Notation) is used. The Java codes should applies the following:
+The \textbf{second step} is implementing the business logic using Java. CAP project provides a out-of-box default implementation of simple CRUD \cite{crud} operations, in some cases shall be override/replaced. In most of the cases it involves explicit interactions with the persistence service and in this case a Java supported CQN (Core Query Notation) is used. The Java codes should applies the following:
 \begin{compactenum}
 	\item Implementations of custom CRUD operations
 	\item Implementations of virtual fields calculations
 	\item Implementations of actions and functions defined in CDS view.
 \end{compactenum}
 
+\bigskip
+To support debugging, a \textbf{Logger} is added to every class to provide logging statements.
+
+\lstset{caption={Logger - Backend}, label=src:2009}
+\begin{lstlisting}[language={java}]
+ private static final Logger LOGGER = LoggerFactory.getLogger("name_logger");
+\end{lstlisting}
+
+\bigskip
 To fully understand how to write these implementations, one should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here lists the very necessary pre-knowledges and factors on the generate code, before continuing with implementations. 
 \begin{compactenum}
 	\item \textit{srv/gen} folder is generated from all the \textit{*.cds} files using in the \textit{index.cds} (recursively used), for an entity or a service definition.
@@ -651,10 +681,9 @@ To fully understand how to write these implementations, one should first recogni
 It is also important to understand the event processing of CAP. CAP provides out of box handling of CRUD event for every entity and the costume logics are implemented using the idea: what should happen before, on and after the event, with the help of method annotation \textbf{@Before, @On, @After}. Methods annotated with \textbf{@Before} and \textbf{@After}, as the name suggested, implements preprocessing and postprocessing logic. \textbf{@On} can be seen as an override of the origin defalut implementation of the event. For a custom event or action, it is obligaory to provide an \textbf{@On} method.
 
 \subsubsection{Architecture Design}
+\label{subsubsec:D-srv-design}
 
-The back-end architecture follows the recommendations of CAP, Spring MVC and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) communicating with CQN execution engine. 
-
-\subsubsection{Layers in Details}
+The back-end architecture follows the recommendations of CAP, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine. (\autoref{fig:backArch})
 
 \begin{figure}[H]
 	\centering
@@ -663,7 +692,8 @@ The back-end architecture follows the recommendations of CAP, Spring MVC and mic
 	\label{fig:backArch}
 \end{figure}
 
-The blocks in blue of the above figure indicates the necessary Java implementation parts. In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service and each handler implements the \textbf{EventHandler} from cds's came along package \textit{com.sap.cds.services.handler}. This ensures that the handler class will be fed with received events from the Consuming API. Also a Java annotation \textbf{@ServiceName(SomeService\_.CDS\_NAME)} is added at class level, to provide information on which service the handler is handling. The handlers classes are also marked with \textbf{@Component} annotation from the spring framework as a Bean, to get the most out of Spring-boot's dependency control. A base skeleton of handler class is embedded below:
+The blocks in blue of the above \autoref{fig:backArch} indicates the necessary Java implementation parts. 
+In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service and each handler implements the \textbf{EventHandler} from cds's came along package \textit{com.sap.cds.services.handler}. This ensures that the handler class will be fed with received events from the Consuming API. Also a Java annotation \textbf{@ServiceName(SomeService\_.CDS\_NAME)} is added at class level, to provide information on which service the handler is handling. The handlers classes are also marked with \textbf{@Component} annotation from the spring framework as a Bean, to get the most out of Spring-boot \cite{springboot-doc}'s dependency control. A base skeleton of handler class is embedded in \autoref{src:2008}.
 
 \lstset{caption={Handler skeleton - Backend}, label=src:2008}
 \begin{lstlisting}[language={java}]
@@ -672,7 +702,7 @@ The blocks in blue of the above figure indicates the necessary Java implementati
 public class EnvolvedServiceHandler implements EventHandler { }
 \end{lstlisting}
 
-In case of necessary usage of manager layer, private field and auto-wired constructor injection combination is used, as supported by the spring-boot framework. A base skeleton of class association (composition in spring-boot implementation aspect) below:
+In case of necessary usage of manager layer, private field and auto-wired constructor injection combination is used, as supported by the spring-boot framework. See a base skeleton of class association (composition in spring-boot implementation aspect) in \autoref{src:2018}:
 
 \lstset{caption={Association class skeleton - Backend}, label=src:2018}
 \begin{lstlisting}[language={java}]
@@ -684,7 +714,7 @@ public CompanyServiceHandler(UsedEntityManager manager) {
 }
 \end{lstlisting}
 
-To explicitly watch an event (CRUD, custom events/actions/functions), methods should look like this:
+To explicitly watch an event (CRUD, custom events/actions/functions), methods should look like in \autoref{src:2019}:
 \lstset{caption={Listening method skeleton - Backend}, label=src:2019}
 \begin{lstlisting}[language={java}]
 @After(event = {CqnService.EVENT_DELETE})
@@ -693,8 +723,7 @@ public void afterDeleteEvent(EventContext context) { }
 
 \bigskip
 In the manager layer, a \textit{<EntityName>Manager} class is defined for every entities. Each class contains entity related methods to support the services. It holds every required calculations, processing, business logics partitioned by entities. It can be more or less analog to the service layer in a normal back-end spring-boot application.
-
-A base skeleton of manager class would be something like the following:
+See a base skeleton of manager class in \autoref{src:3000}
 
  \lstset{caption={Manager class skeleton - Backend}, label=src:3000}
 \begin{lstlisting}[language={java}]
@@ -720,10 +749,10 @@ public class OneEntityManager {
 
 \bigskip
 In the repository layer, a \textit{<EntityName>Repository} class is defined for every entities. This layer can be seen as the model layer in MVC architecture. It is responsible for any direct interaction with the database. In CAP, the connection to database is provided through a persistence service implementation (\textbf{com.sap.cds.services.persistence.PersistenceService}) so that different databases (sqlite at development environment, HANA at deployment) can be used and switched seamless. CQN builders are also provided under \textbf{com.sap.cds.ql.cqn} supporting a SQL like syntax for building a SQL statement in Java.
+A base skeleton of repository class is shown in \autoref{src:3202}.
+To interacted with the database, a CQN example is provided in \autoref{src:3001}.
 
- A base skeleton of repository class is shown below:
-
- \lstset{caption={Repository class skeleton - Backend}, label=src:3000}
+ \lstset{caption={Repository class skeleton - Backend}, label=src:3202}
 \begin{lstlisting}[language={java}]
 @Component
 public class DeliveryCompanyRepository {
@@ -735,8 +764,6 @@ public class DeliveryCompanyRepository {
     }
 }
 \end{lstlisting}
-
-To interacted with the database, a CQN example is provided here:
 
  \lstset{caption={CQN method skeleton - Backend}, label=src:3001}
 \begin{lstlisting}[language={java}]
@@ -754,38 +781,7 @@ public Result selectById(String id) {
 }
 \end{lstlisting}
 
-\subsubsection{Debug}
 
-To support debugging, a \textbf{Logger} is added to every class to provide logging statements.
-
-\lstset{caption={Logger - Backend}, label=src:2009}
-\begin{lstlisting}[language={java}]
- private static final Logger LOGGER = LoggerFactory.getLogger("name_logger");
-\end{lstlisting}
-
-
-\subsubsection{File structure}
-Below one can also find an illustration of the real folder structures.
-
-\lstset{caption={Directories guide - Back-end}, label=src:15}
-\begin{lstlisting}[language={bash}]
-root/
-    |- srv/
-        |- src # Java codes for custom business logics
-            |- main/java/com/sap/internal/digitallab/
-                |- packagehandling
-                    |- handlers
-                        |- <ServiceName>Handler.java
-                    |- managers
-                        |- <EntityName>Manager.java
-                    |- repositories
-                        |- <EntityName>Repository.java
-        |- gen # generated java codes from CDS views
-        |- services # Service definitions in CDS annotation
-            |- ServiceName 
-                |- *.cds # otehr definition of service
-                |- *-auth.cds # Access restriction on roles.
-\end{lstlisting}
 
 \subsection{Storage Service}
 Storage service serves the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. 
@@ -1068,14 +1064,18 @@ The same idea goes in the CRUD possibilities - only read operation is supported 
 \section{Testing}
 \label{sec:D-testing}
 
-Unit tests on methods and integration/api tests on services are implemented for the back-end of the application and the front-end is test manually by trying out every possible actions. The local tests consumes test data from csv. 
+This section focus on the testing of the application. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. By the end of this section, a developer shall get a full taste of the used test framework and be able to extend the test cases on the basis of the existing ones.
 
 \subsection{Test Data}
-The csv containing the test data are located in two locations exclusively. The test data for any codelist entities are located in \textit{/db/data/*.csv}, as they are fixed and final values and will be also loaded on deployment. The test data for other entites are located in \textit{/test/data/*.csv}. The entries here will only be loaded into database under local environment and will be ignored when deploying.
+\label{subsec:test-data}
+In the CAP application, under development environment, test data is provided in the format of csv \cite{csv} files. The first line of any csv collects the properties of data model (only those stored physically in database, see \autoref{sec:D-db}). The csv files are named in the format: <namespace>-<EntityName>.csv. Empty csv files (with only the first line) can be generated by the command \textit{cds add data}, which can then can be found in the \textit{/db/data/} folder. Later on the records of data can be appended to those csv files.
+
+The csv files containing the test data for this thesis are located in two locations exclusively (i.e. no records of entry are repeated). The test data for any code list entities are located in \textit{/db/data/*.csv}, as they are fixed and final values and will be also loaded on deployment. The test data for other entites are located in \textit{/test/data/*.csv}. The entries here will only be loaded into database under local environment and will be ignored when deploying.
 
 \subsection{Unit Testing}
+\label{subsec:test-unit}
 
-Unit testing focus on the methods and line coverage of the manager and the repository layer. JUnit 4 and spring test stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
+Unit testing focus on the methods and line coverage of the manager and the repository layer (See \autoref{sec:D-AppStructure}). JUnit 4 and spring test stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the initial data's loading path is different in the two environment.
 
 \bigskip
 A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. Each test class is written under the following logic.
@@ -1098,6 +1098,8 @@ A test class is created for each used class in the manager and repository layer.
 \textbf{Extending Advice:} In case of any needs in the future that more test shall be added, it is advised to append completely new dedicated test data sets into csv. Delete or removing the existing data set can result in sever collapse of the current tests.
 
 \subsection{Integration Testing}
+\label{subsec:test-api}
+
 Integration testing focus on the testing of back-end services, that is, on the handler layer. \textbf{Rest Assure} api testing framework is used in this scenario.
 The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class. For each service, the following test ideas are followed:
 \begin{compactenum}
