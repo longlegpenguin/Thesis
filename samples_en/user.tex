@@ -1,9 +1,14 @@
 \chapter{User documentation}
 \label{ch:user}
 
-\section{General Requisite}
+This chapter is dedicated for the potential users. In \autoref{sec:GeneralRequisite}, the requisite of opening and using the application is listed. It also gives an introduction to the types of user roles within the solution, to enable the users to navigating through the thesis and find their related information quickly.
 
-The application is for the internal usage within SAP for the parcel collection service providing to the employees. The solution consists of 6 applications as tiles on the Fiori launchpad: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storages} partitioned into 3 sections: \textbf{My Home}, \textbf{Pacel Handling}, \textbf{Administration}, as shown in the diagram.
+Then in the following sections (\autoref{sec:UdocEndUser}, \autoref{sec:UdocReceptionist}, \autoref{sec:UdocFacilityManager}, \autoref{sec:UdocAdministrator}), which are titled by the roles, collects the use guide of each accessible applications.
+
+\section{General Requisite}
+\label{sec:GeneralRequisite}
+
+The solution is for the internal usage within SAP for the parcel collection service providing to the employees. The solution consists of 6 applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storages} partitioned into 3 sections: \textbf{My Home}, \textbf{Pacel Handling}, \textbf{Administration}, as shown in the diagram.
 
 \begin{figure}[H]
 	\centering
@@ -15,22 +20,22 @@ The application is for the internal usage within SAP for the parcel collection s
 
 In order to use any of the application, one has to hold an SAP registered device (computer/tablet/phone) and is able to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, one has to hold an SAP registered smart phone. 
 
-In order to mock use the application in local environment, please move the the developer chapter. 
+In order to mock use the application in local environment, please move the the developer documentation (\autoref{ch:impl}). 
 
-Four different roles are specified for the application and one is limited to dedicated usage of the applications, depends on the role. In the coming sections the usage guides are documented partitioned by the roles. Hereby lists the meaning of each role under the thesis context:
+Four different roles are specified for the application and one is limited to dedicated usage of the applications, depends on the role. In the coming sections the usage guides are documented partitioned by the roles. Hereby lists the meaning of each role under the thesis context and feel ease to jump to the related section by clicking section links.
 
 \begin{description}
-	\item[End User] any SAP employee who holds an SAP registered device and would like to use the parcel collection service.
-	\item[Receptionist] Registered receptionist (in database) working at the reception and is responsible to serve the parcel collection service.
-	\item[Facility Manager] Authorised user who is responsible for maintaining the delivery companies and storage slots information.
-	\item[Administrator] The master user who can access to any of the applications.
+	\item[\autoref{sec:UdocEndUser} End User] any SAP employee who holds an SAP registered device and would like to use the parcel collection service.
+	\item[\autoref{sec:UdocReceptionist} Receptionist] Registered receptionist (in database) working at the reception and is responsible to serve the parcel collection service.
+	\item[\autoref{sec:UdocFacilityManager} Facility Manager] Authorised user who is responsible for maintaining the delivery companies and storage slots information.
+	\item[\autoref{sec:UdocAdministrator} Administrator] The master user who can access to any of the applications.
 \end{description}
 
-In case one is accessing the applications through browser from BTP platform, the login process is done automatically. Otherwise, if one is running the application locally, a browser pop up will appear and mock user should be entered. The different mock user login info can be find in the developer documentation security chapter.
+In case one is accessing the applications through browser from BTP platform \cite{btp}, the login process is done automatically. Otherwise, if one is running the application locally, a browser pop up will appear and mock user should be entered. The different mock user login info can be find in the developer documentation security chapter.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=200pt]{images/user_doc/overviews/localLogin.png}
+	\includegraphics[width=0.5\linewidth]{images/user_doc/overviews/localLogin.png}
 	\caption{Local Login Pop Up}
 	\label{fig:LocalLoginPopUp}
 \end{figure}
@@ -39,7 +44,7 @@ In the case of any user trying to accessing an unauthorised application, connect
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/overviews/ConnectionError1.png}
+	\includegraphics[width=0.5\linewidth]{images/user_doc/overviews/ConnectionError1.png}
 	\caption{Illegal Access to Unauthorised Applications - Possible Error}
 	\label{fig:IllegalAccesstoUnauthorised Applications}
 \end{figure}
@@ -47,8 +52,9 @@ In the case of any user trying to accessing an unauthorised application, connect
 \pagebreak
 
 \section{End User}
+\label{sec:UdocEndUser}
 
-As a logged in \textbf{End User}, one is granted to access the two applications under the \textbf{My Home} section, namely \textbf{My Packages} and \textbf{Package Pickup}. One can quick jump to the section by left clicking the "My Home" tab. One can enter the application by left click the tiles.
+As a logged in \textbf{End User}, one is granted to access the two applications under the \textbf{My Home} section, namely \textbf{My Packages} (\autoref{subsec:ph}) and \textbf{Package Pickup} (\autoref{subsec:pp}). \textbf{End User} can quick jump to the section by left clicking the "My Home" tab. \textbf{End User} can enter the application by left click the tiles. (\autoref{fig:EndUserApplications})
 
 \begin{figure}[H]
 	\centering
@@ -65,7 +71,7 @@ As a logged in \textbf{End User}, one is granted to access the two applications 
 \subsection{My Packages}
 \label{subsec:ph}
 
-The \textbf{My Packages} application is here for any \textbf{End User} who would want to check his/her own packages. One can only see one's own packages. 
+The \textbf{My Packages} application is here for any \textbf{End User} (See \autoref{sec:UdocEndUser} for all related applications) who would want to check his/her own packages. One can only see one's own packages. 
 The summarized main actions the \textbf{End User} can take within the application are listed here:
 
 \begin{compactenum}
@@ -77,7 +83,7 @@ The summarized main actions the \textbf{End User} can take within the applicatio
 \end{compactenum}
 
 \subsubsection{Home Screen - Overview}
-As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen", which is the main and only screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
+As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen" (\autoref{fig:HistoryHome}), which is the main and only screen of this application. The upper part displays the search bar and the possible filters. While the lower part displays the list of packages. The information provides for each packages are: \textbf{Type} (the type of the package, existing types are newspaper, letter and normal), \textbf{Status} (the status of the package, existing status are new, confirmed and picked up), \textbf{Delivery Company} (the delivery company of the package), \textbf{Delivery Time} (the confirmation time of the package, if applicable), \textbf{Pickup Time} (the picked up time of the package, if applicable).
 
 \begin{figure}[H]
 	\centering
@@ -87,7 +93,8 @@ As an \textbf{End User}, after clicking at the application tile, is redirected t
 \end{figure}
 
 \subsubsection{Home Screen - Filter Usage}
-One can type in free text of any possible content of the column in the "Search Bar". The free text supports in-completed keywords and is case insensitive. One can use the default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry). For drop down filters, one can click at the small drop down arrow and select zero to many options. For time entry, one shall click at the "double box" (filter help) on the right of the filter box. This will pops up a dialog, at where one can select the desired filtering option and enter the time with the clock uitility (as shown in the coming figure). One can also access to more filters (\textbf{Delivery Time} (time entry) by clicking at "Adapt Filters". WHile adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, run the filter by clicking the "Go" Button.
+One can type in free text of any possible content of the column in the "Search Bar" (\autoref{fig:mpSearchBar}). The free text supports in-completed keywords and is case insensitive. 
+One can use the default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry) (\autoref{fig:MPDF}). For drop down filters, one can click at the small drop down arrow and select zero to many options. For time entry, one shall click at the "double box" (filter help) on the right of the filter box. This will pops up a dialog, at where one can select the desired filtering option and enter the time with the clock uitility (\autoref{fig:MPAjustFilters}). One can also access to more filters (\textbf{Delivery Time} (time entry) by clicking at "Adapt Filters". (\autoref{fig:mpMOreFilterAdaption}) While adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, run the filter by clicking the "Go" Button. (\autoref{fig:MPAjustFilters-2})
 
 \begin{figure}[H]
 	\centering
@@ -111,7 +118,7 @@ One can type in free text of any possible content of the column in the "Search B
 	\subcaptionbox{Time Filter}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/timeFilter.png}}
 	\caption{My Package Home Screen - Default Filters}
-	\label{fig:MPHomeScreen-1}
+	\label{fig:MPDF}
 \end{figure}
 
 \begin{figure}[H]
@@ -122,6 +129,7 @@ One can type in free text of any possible content of the column in the "Search B
 	\subcaptionbox{Time Entry}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/timeFilter-Usage2.png}}
     \caption{Time Filter Dialog - Adjust Filters}
+    \label{fig:MPAjustFilters}
 \end{figure}
 
 
@@ -133,6 +141,7 @@ One can type in free text of any possible content of the column in the "Search B
 	\subcaptionbox{Clicked "Go"}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/FilterDoneScreen.png}}
     \caption{My Package Home Screen - Adjust Filters}
+    \label{fig:MPAjustFilters-2}
 \end{figure}
 
 \begin{figure}[H]
@@ -149,7 +158,7 @@ One can type in free text of any possible content of the column in the "Search B
 \label{subsec:pp}
 
 The \textbf{Package Pickup} application is used to pick up any confirmed parcels (registered at the reception and confirmed with a storage slot) of the logged in user. One can only see one's own confirmed packages. 
-The summarized main actions the \textbf{End User} can take within the application are listed here:
+The summarized main actions the \textbf{End User} (See \autoref{sec:UdocEndUser} for all related applications) can take within the application are listed here:
 
 \begin{compactenum}
 	\item Browse the owned packages that can be picked up.
@@ -161,9 +170,13 @@ The summarized main actions the \textbf{End User} can take within the applicatio
 
 
 \subsubsection{Home Screen - Selection}
-As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen". If there exists at least one package to pickup, the home screen shows the list of packages. The list items lists \textbf{the type with icon, the delivery company, the registration time and the location} of the packages. If no package exists to pickup, it shows only the no package info. The package list title shows the total number of packages that can be pickup.
+As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen". If there exists at least one package to pickup, the home screen shows the list of packages. 
+The list items lists \textbf{the type with icon, the delivery company, the registration time and the location} of the packages. 
+If no package exists to pickup, it shows only the no package info. 
+The package list title shows the total number of packages that can be pickup.
 In case there are existing packages, one can select one or multiple packages from the list to pickup. 
 In case there are existing packages, one can tick/untick the "Toggle All" selection box to select or deselect the package all at once. 
+(\autoref{fig:PickupHomeScreen-1}, \autoref{fig:PickupHomeScreen-2})
 
 \begin{figure}[H]
 	\centering
@@ -190,34 +203,12 @@ In case there are existing packages, one can tick/untick the "Toggle All" select
 	\subcaptionbox{Home Screen Deselect All}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/HomeScreenDeToggleAll.png}}
 	\caption{Pickup Home Screen - Package Selection Guide}
-	\label{fig:PickupHomeScreen-1}
+	\label{fig:PickupHomeScreen-2}
 \end{figure}
 
 
-% \begin{figure}[H]
-% 	\centering
-% 	\subcaptionbox{Home Screen Single Selection}{
-% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenSelectOne.png}}
-% 	\hspace{5pt}
-% 	\subcaptionbox{Home Screen Multiple Selection}{
-% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenMultiSelect.png}}
-% 	\caption{Pickup Home Screen - Selection Guide}
-% 	\label{fig:PickupHomeScreen-2}
-% \end{figure}
-
-% \begin{figure}[H]
-% 	\centering
-% 	\subcaptionbox{Home Screen Select All}{
-% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenToggleAll.png}}
-% 	\hspace{5pt}
-% 	\subcaptionbox{Home Screen Deselect All}{
-% 		\includegraphics[height=260pt]{images/user_doc/pickup/HomeScreenDeToggleAll.png}}
-% 	\caption{Pickup Home Screen - Selection Guide}
-% 	\label{fig:PickupHomeScreen-2}
-% \end{figure}
-
 \subsubsection{Home Screen - Pickup}
-The "Pickup" button at right bottom corner will only be enabled if at least one package is selected. In case it is enabled, one can pick up the selected packages by left clicking the "Pickup" button, which will trigger a confirmation dialog. If one choose "Cancel", the dialog closes and no modification is made. If one choose "OK", then all packages selected will be marked as pickup, removed from the list and the user will be navigated to the "Done Screen". At this point, the process of the picked up package will be closed, the package data will never be deleted and \textbf{End User} can always go to \textbf{My Packages} application to check the package history.
+The "Pickup" button at right bottom corner will only be enabled if at least one package is selected. In case it is enabled, one can pick up the selected packages by left clicking the "Pickup" button, which will trigger a confirmation dialog. If one choose "Cancel", the dialog closes and no modification is made. If one choose "OK", then all packages selected will be marked as pickup, removed from the list and the user will be navigated to the "Done Screen". At this point, the process of the picked up package will be closed, the package data will never be deleted and \textbf{End User} can always go to \textbf{My Packages} application to check the package history. (figure \ref{fig:PickupDialog})
 
 \begin{figure}[H]
 	\centering
@@ -226,11 +217,13 @@ The "Pickup" button at right bottom corner will only be enabled if at least one 
 	\label{fig:PickupDialog}
 \end{figure}
 
+
 \subsubsection{Done Screen}
 
 At the "Done Screen", if the \textbf{End User} still have packages to pickup, it will display the list of packages showing their \textbf{type with icon}, \textbf{delivery company} and \textbf{location info}. Otherwise, it displays no more packages. 
 User can always navigate back to "Home Screen" by left clicking the "Close" button at the right bottom corner of the page.
 From there, a new pickup iteration starts.
+(figure \ref{fig:PickupDoneScreen-1})
 
 \begin{figure}[H]
 	\centering
@@ -240,14 +233,15 @@ From there, a new pickup iteration starts.
 	\subcaptionbox{Done Screen without Packages}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/pickup/DoneScreenNoPackage.png}}
 	\caption{Pickup Done Screen - Package Existence Guide}
-	\label{fig:PickupHomeScreen-1}
+	\label{fig:PickupDoneScreen-1}
 \end{figure}
 
 \pagebreak
 
 \section{Receptionist}
+\label{sec:UdocReceptionist}
 
-As a logged in \textbf{Receptionist}, one is granted to access the two applications under the \textbf{Parcel Handling} section, namely \textbf{Register Packages} and \textbf{Manage Packages}. One can quick jump to the section by left clicking the "Parcel Handling" tab. One can enter the application by left click the tiles.
+As a logged in \textbf{Receptionist} (See \autoref{sec:GeneralRequisite} for all possible roles), one is granted to access the two applications under the \textbf{Parcel Handling} section, namely \textbf{Register Packages} (\autoref{subsec:rp}) and \textbf{Manage Packages} (\autoref{subsec:mp}). One can quick jump to the section by left clicking the "Parcel Handling" tab. One can enter the application by left click the tiles. (\autoref{fig:PHApplications})
 
 \begin{figure}[H]
 	\centering
@@ -712,6 +706,7 @@ When click "Save", the modified details are submitted, the dialog closes, a mess
 \pagebreak
 
 \section{Facility Manager}
+\label{sec:UdocFacilityManager}
 
 As a logged in \textbf{Facility Manager}, one is granted to access the two applications under the \textbf{Administration} section, namely \textbf{Manage Companies} and \textbf{Manage Storage}. One can quick jump to the section by left clicking the "Administration" tab. One can enter the application by left click the tiles.
 
@@ -1258,7 +1253,9 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 
 \section{Administrator}
-As a logged in \textbf{Administrator}, one has access to all the 6 applications. One shall move backward to dedicated sections depends on the needs. 
+\label{sec:UdocAdministrator}
+
+As a logged in \textbf{Administrator}, one has access to all the 6 applications. By clicking at the section code, one can reference backward to dedicated sections depends on the needs. 
 
 \begin{itemize}
     \item \ref{subsec:ph} My Packages
@@ -1268,3 +1265,7 @@ As a logged in \textbf{Administrator}, one has access to all the 6 applications.
     \item \ref{subsec:mc} Manage Companies
     \item \ref{subsec:ms} Manage Storage
 \end{itemize}
+
+\subsection*{Conclusion}
+
+By the end this chapter, one should have gained a comprehensive understanding of the capability of the developed solution. In the coming \autoref{ch:impl}, the underlying implementations are unveiled, where the freshest information on how the solution is built is provided.

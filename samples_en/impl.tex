@@ -1,28 +1,29 @@
 \chapter{Developer documentation}
 \label{ch:impl}
 
-This chapter gives the very details of involved technologies, development environment, analysis, implementations and considerations.
+This chapter dedicates to the developers and provides insights into the technical stack and implementation specifications. In \autoref{sec:D-env}, the possible development environment and tool versions are listed. Then the \autoref{sec:D-run} provides instructions on the local starting of the solution. After this in \autoref{sec:D-AppStructure}, a total overview of the architecture of the project is attached. Followed by this are \autoref{sec:D-db}, \autoref{sec:D-srv} and \autoref{sec:D-UI} which documented the data model, back-end and front-end accordingly. Right after these comes \autoref{sec:D-security} where role specifications and mock user data are noted. Finally, \autoref{sec:D-testing} is inserted focusing on the testing of the solution. 
 
 \section{Environment Requirements}
+\label{sec:D-env}
+
 The application is supported to be ran and developed both locally and with dedicated cloud application: 
 \begin{enumerate}
     \item Possible toolkit for Local environment
         \begin{itemize}
             \item Eclipse with Spring Tools and CAP extensions
             \item Visual Studio Code with SAP CAP extensions
-            \item Intellij with SAP CAP extensions (recommanded for java development)
+            \item Intellij with SAP CAP extensions (Recommended for java back-end development)
         \end{itemize}
     \item Possible toolkit for Cloud environment
         \begin{itemize}
-            \item SAP Business Application Studio with Full-Stack Development dev-space (recommanded, used in this thesis)
+            \item SAP Business Application Studio with Full-Stack Development dev-space (Recommended for database and UI development)
         \end{itemize}
 \end{enumerate}
 
-For local development, up to date Java JDK, node.js and CAP extensions are hard requirements. The specific set up can be find \hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{here}.
-
-This thesis used SAP Business Application Studio (BAS) as development tool, which is ready for use. 
-
-A snapshot of versions at the time of development:
+For front-end development, UI5 framework is used with fiori elements (More details in \ref{sec:D-UI}). 
+For back-end development, CAP Java flavor is chosen.
+Hence, for local development, up to date Java JDK, node.js and CAP extensions are hard requirements. The specific set up can be find here (\hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{link}).
+A snapshot of versions at the time of development is attached. (\autoref{src:1})
 
 \lstset{caption={Version check}, label=src:1}
 \begin{lstlisting}[language={bash}]
@@ -40,12 +41,13 @@ A snapshot of versions at the time of development:
 # @sap/cds-mtxs: 1.11.0
 # @sap/eslint-plugin-cds: 2.6.3
 # Node.js: v18.14.2
-
 \end{lstlisting}
 
 
 \section{Run}
-The following commands can be used to run the application for testing.
+\label{sec:D-run}
+
+The following commands can be used to start up the application quickly. It watches any change within the application and refresh automatically. Hence, it is useful for UI development. Note that in this case the Java back-end will not be included.
 
 \lstset{caption={Run commands}, label=src:22}
 \begin{lstlisting}[language={bash}]
@@ -54,63 +56,39 @@ cds watch # The quickest way to check the exposed services on a browser.
 
 If custom Java code is added, use the following command to run the services as a spring-boot application.
 \begin{lstlisting}[language={bash}]
-mvn clean install # This will compile *.cds files and create gen folder.
-mvn spring-boot:run # THis will start the server at port 8084
+mvn clean install # Compile *.cds files and create gen folder.
+mvn spring-boot:run # Start the server at port 8084
 \end{lstlisting}
-
-
-% \section{Analysis and Design}
-
-% This chapter explains the reason of the need of this application and lists the analysed necessary capabilities of the developed application.
-
-% \subsection{Business Context}
-% The application is aimed to provide an end to end streamlined procedure from the moment a parcel arrived at the reception to the second user confirm the pickup (package management). It also provides humane functions to ease the management of any parcel related information (storage and delivery companies management).
-
-% These are detailed in the following sub-sections. For each management requirement, user stories and user diagrams are given.
-
-% \subsection{Package Management}
-% Package management is the most the and center function of the application. It is responsible for register a parcel, confirm a parcel, pickup a parcel and review the history of the parcel.
-
-
-
-% \subsection{Storage Management}
-
-% \subsection{Companies Management}
-
-
 
 % -----------------------------------------------
 % Application Structure
 \section{Application Structure}
+\label{sec:D-AppStructure}
 
-The application is developed under the guidence of CAP (Cloud Application Programming Model) which is heavily based on CDS (Central Domain Service). Generally speaking, it contains one Java Spring-boot application as back-end and 7 Fiori UI applications dedicated to the 7 provided services. The communication between front-end and back-end is ensured under OData protocol over HTTPs. CDS views are used for data modelling and CDS annotations are used for service related definition and UI implementations.
+The application is developed using CAP (Cloud Application Programming Model) as the backbone. 
+All three essential parts of the application, front-end, back-end and database model are being developed at the same place/project/root directory. 
+The implementations and definitions located in different directories of the project are logically packaged into seperate namespaces (namespace in CDS, package declaration in Java) (See folder structure in \autoref{src:3}).
 
-\subsection{App structure}
+% (\autoref{fig:packStruc})
 
-The overall view of the application is the following:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[height=250px]{images/Application_Structure.png}
-	\caption{Application Structure Overview}
-	\label{fig:appStruct}
-\end{figure}
-
-\subsection{Development Component}
-
-All three essential parts of the application, front-end, back-end and database model are being developed at the same place/project/root directory. The implementations and definitions located in different directories of the project are logically packaged into seperate namespaces (namespace in CDS, package declaration in Java), as shown following:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[height=400px]{images/Package_Diagram.png}
-	\caption{Namespace Diagram}
-	\label{fig:packStruc}
-\end{figure}
+The back-end consumes database service through CAP's provided persistence service library, while the front-end communicates with back-end through the OData protocol.
 
 
-\subsection{Project Structure}
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[height=250px]{images/Application_Structure.png}
+% 	\caption{Application Structure Overview}
+% 	\label{fig:appStruct}
+% \end{figure}
 
-The general directory structure of the application, which is a default CAP project set-up, can be peeked as the following:
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[height=400px]{images/Package_Diagram.png}
+% 	\caption{Namespace Diagram}
+% 	\label{fig:packStruc}
+% \end{figure}
+
 
 \lstset{caption={Base project folders}, label=src:3}
 \begin{lstlisting}[language={bash}]
@@ -123,14 +101,16 @@ root/
 The details of inner parts of each directory will be introduced later in corresponding sections.
 
 \section{Data Model}
+\label{sec:D-db}
 
-Since Digital Lab provides more then one solutions and to ensure the maximum reuse of models, data model is separated into 2 parts (name space): solution specific data models and common data models, where the common data models are implemented separately of their own services. At the development time of this application, the common data service is not constructed yet, so they are implemented as part of the application as a PoC.
+The data model in this thesis is segregated into 2 parts (name space): \textbf{core} for solution specific data models and \textbf{common} for common data models 
+(these are planned to be replaced by dedicated applications in the future).
 
-\subsection{CDL}
 All data models are modeled by CDS' definition language (CDL). Single entities are put into their own \textit{EntityName.cds} files. 
 At compilation time, a \textit{schema.sql} is generated from the models in the root directory, which will contains the DDLs of generated tables in HANA SQL. This file also includes the view generated for the services, eplained in the Service chapter.
 
-The namespaces (as mentioned in application structure section) of the solution-specific and common data models are defined accordingly at the top of each entity definition.
+
+The namespaces of the solution-specific and common data models are defined accordingly at the top of each entity definition.
 
 \lstset{caption={cds namespaces for data model}, label=src:6}
 \begin{lstlisting}[language={c++}]
@@ -248,8 +228,6 @@ root/
                 |- *.cds # Definition of common data model
 \end{lstlisting}
 
-\subsection{Entity Relationship Diagram}
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{images/DB/DB_Relationship.png}
@@ -259,6 +237,8 @@ root/
 
 
 \section{Security}
+\label{sec:D-security}
+
 The application is developed for internal use of SAP and can be accessed only from SAP devices. 
 Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot application.
 
@@ -312,6 +292,7 @@ The following mock users are set up for the local development and testing:
 \end{table}
 
 \section{UI}
+\label{sec:D-UI}
 
 The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language. This chapter explains in details the used framework concepts and the structure of each module.
 
@@ -627,6 +608,7 @@ The following cascading style sheets(s) are added:
 
 
 \section{Services}
+\label{sec:D-srv}
 
 As mentioned in the above sections, 6 OData end-points are maintain by the back-end. This section will first give an general overview of the folders, packages, steps of implementing a service, which are shared by every provided service, then will give more detailed and specific information on each of the service.
 
@@ -1083,6 +1065,7 @@ The same idea goes in the CRUD possibilities - only read operation is supported 
 
 
 \section{Testing}
+\label{sec:D-testing}
 
 Unit tests on methods and integration/api tests on services are implemented for the back-end of the application and the front-end is test manually by trying out every possible actions. The local tests consumes test data from csv. 
 
