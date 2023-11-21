@@ -10,19 +10,19 @@ The application is supported to be ran and developed both locally and with dedic
 \begin{enumerate}
     \item Possible toolkit for Local environment
         \begin{itemize}
-            \item Eclipse with Spring Tools and CAP extensions
-            \item Visual Studio Code with SAP CAP extensions
-            \item Intellij with SAP CAP extensions (Recommended for java back-end development)
+            \item Eclipse \cite{eclipse} with Spring Tools and CAP extensions
+            \item Visual Studio Code \cite{vscode} with SAP CAP extensions
+            \item Intellij \cite{intellij} with SAP CAP extensions (Recommended for java back-end development)
         \end{itemize}
     \item Possible toolkit for Cloud environment
         \begin{itemize}
-            \item SAP Business Application Studio with Full-Stack Development dev-space (Recommended for database and UI development)
+            \item SAP Business Application Studio \cite{bas} with Full-Stack Development dev-space (Recommended for database and UI development)
         \end{itemize}
 \end{enumerate}
 
-For front-end development, UI5 framework is used with fiori elements (More details in \ref{sec:D-UI}). 
-For back-end development, CAP Java flavor is chosen.
-Hence, for local development, up to date Java JDK, node.js and CAP extensions are hard requirements. The specific set up can be find here (\hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{link}).
+For front-end development, UI5 framework \cite{ui5-toolkit} is used with fiori elements \cite{fiorielements} (More details in \ref{sec:D-UI}). 
+For back-end development, CAP Java \cite{cap-about}\cite{cap-java} flavor is chosen.
+Hence, for local development, up to date Java JDK \cite{java}, node.js \cite{nodejs} and CAP extensions are hard requirements. The specific set up can be find here (\hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{link}) \cite{proj-setup-intellij}.
 A snapshot of versions at the time of development is attached. (\autoref{src:1})
 
 \lstset{caption={Version check}, label=src:1}
@@ -65,13 +65,13 @@ mvn spring-boot:run # Start the server at port 8084
 \section{Application Structure}
 \label{sec:D-AppStructure}
 
-The application is developed using CAP (Cloud Application Programming Model) as the backbone. 
+The application is developed using CAP (Cloud Application Programming Model) \cite{cap-welcome} as the backbone. 
 All three essential parts of the application, front-end, back-end and database model are being developed at the same place/project/root directory. 
-The implementations and definitions located in different directories of the project are logically packaged into seperate namespaces (namespace in CDS, package declaration in Java) (See folder structure in \autoref{src:3}).
+The implementations and definitions located in different directories of the project are logically packaged into separate name spaces (name space in CDS, package declaration in Java) (See folder structure in \autoref{src:3}).
 
 % (\autoref{fig:packStruc})
 
-The back-end consumes database service through CAP's provided persistence service library, while the front-end communicates with back-end through the OData protocol.
+The back-end consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}, while the front-end communicates with back-end through the OData protocol \cite{odata}.
 
 
 % \begin{figure}[H]
@@ -115,13 +115,13 @@ The \textbf{core} space includes solution specific data models. The \textbf{comm
 \end{figure}
 
 \subsubsection{CDL}
-All data models are modeled by CDS' definition language (CDL). Single entities are put into their own \textit{EntityName.cds} files. 
-At compilation time, a \textit{schema.sql} is generated from the models in the root directory, which will contains the DDLs of generated tables in HANA SQL. This file also includes the view generated for the services, eplained in the Service chapter.
+All data models are modeled by CDS' definition language (CDL) \cite{cap-cds-cdl}. Single entities are put into their own \textit{EntityName.cds} files. 
+At compilation time, a \textit{schema.sql} is generated from the models in the root directory, which will contains the DDLs of generated tables in HANA SQL \cite{hanasql}. This file also includes the view generated for the services, explained in the Service chapter.
 
 
-The namespaces of the solution-specific and common data models are defined accordingly at the top of each entity definition.
+The name spaces of the solution-specific and common data models are defined accordingly at the top of each entity definition.
 
-\lstset{caption={cds namespaces for data model}, label=src:6}
+\lstset{caption={cds name spaces for data model}, label=src:6}
 \begin{lstlisting}[language={c++}]
 // namespace for reused
 namespace com.sap.internal.digitallab.packagehandling.common; 
@@ -130,10 +130,10 @@ namespace com.sap.internal.digitallab.packagehandling.core;
 \end{lstlisting}
 
 
-To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. It can be seen as "extend" in the object-orient way, or more speificly "interface" in Java. Aspects are defined in a similiar way as entities, consists of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extend" with its own properties. 
+To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. \cite{cap-cds-common-aspects} It can be seen as "extend" in the object-orient way, or more speificly "interface" in Java. Aspects are defined in a similiar way as entities, consists of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extend" with its own properties. 
 
 \begin{description}
-    \item[CDS's aspects] allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They're based on a mixin approach as known from Aspect-oriented Programming methods.
+    \item[CDS's aspects] allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They're based on a mixin approach as known from Aspect-oriented Programming methods. \cite{cap-cds-common-aspects}
 \end{description}
 
 Three common aspects are used by this thesis. \textit{managed} comes with 4 elements: created, created, changed, changed, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides a out of box way of implementing enumeration like data structures and supports automatic localization.
@@ -166,7 +166,7 @@ aspect CodeList @(
 }
 \end{lstlisting}
 
-Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
+Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations \cite{cap-cds-common-annotations} at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
 
 Extra virtual fields are defined with \textit{virtual} keyword. These fields are not included in the database schema (not saved physically in the database), but will be calculated on request by the service implementations. 
 Extra calculated fields are defined with \textit{=} signed. These fields are not included the database schema (not stored physically in the database), but are calculated dynamically from the attributes of one of the associated fields.
@@ -241,7 +241,7 @@ root/
 \label{sec:D-security}
 
 The application is developed for internal use of SAP and can be accessed only from SAP devices. 
-Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot application.
+Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot \cite{springboot-doc} application.
 
 \subsection{Roles Specification}
 The role-base access restriction on services are defined in \textit{root/srv/services/*-auth.cds} files using cds annotations. Bellow illustrated the exact locations of the auth files.
@@ -295,16 +295,17 @@ The following mock users are set up for the local development and testing:
 \section{UI}
 \label{sec:D-UI}
 
-The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language. This chapter explains in details the used framework concepts and the structure of each module.
+The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state to art Fiori elements (template UI application) supported by CDS' annotation language. \cite{fiori-design} This chapter explains in details the used framework concepts and the structure of each module.
 
 \begin{description}
-	\item[SAP UI5] is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more. \cite{fiorielements}
+	\item[SAP UI5] is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more. \cite{ui5}
  
 	\item[SAP Fiori elements] is a framework that comprises the most commonly used floorplan templates and is designed to:
          \begin{compactenum}
-        	\item Speed up development by reducing the amount of frontend code needed to build SAP Fiori apps.
+        	\item Speed up development by reducing the amount of front-end code needed to build SAP Fiori apps.
         	\item Drive UX consistency and compliance with the latest SAP Fiori design guidelines.
         \end{compactenum}
+        \cite{fiorielements}
 \end{description}
 
 \subsection{Front-end Architecture Overview}
@@ -330,7 +331,7 @@ Three other not so involved folders are \textbf{i18n} (in case of text translati
 
 \subsubsection{Template Module Explanation}
 
-For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for customizing fiori elements templates) folders.
+For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for customizing fiori elements templates \cite{fiori-showcase}\cite{fiori-design}\cite{fiori-toolkit}) folders.
 
 \bigskip
 Under the \textbf{webapp} collects almost the same set of folders / files as in the \textbf{webapp} of freestyle UIs. The main difference here is that there is no longer normal views (\textbf{view} folder) for the application, instead the common fiori element templates (List Report Page \& Object Page in this thesis) are defined in the \textbf{manifest.js}. Those templates are loaded from SAP UI5 standard library as the view of the application. They use their own standard controllers and would consume the entity data directly from the OData v2 / v4 models defined in the \textbf{manifest.json}. Hence, the ordinary \textbf{model}, \textbf{view}, \textbf{controller} folders no longer exists directly \textbf{webapp}.
@@ -616,7 +617,7 @@ As mentioned in the above sections, 6 OData end-points are maintain by the back-
 \subsection{Back-end Architecture Overview}
 \label{subsec:D-srv-back-arch}
 
-The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) \cite{cap-cds-cdl} and Java \cite{java}. The concrete implementations are located under the \textit{/srv} folder as illustrated in \autoref{src:15}, in which the underneath components are further explained in \autoref{subsubsec:D-srv-design}. Before that, the general steps/requirements of implementing a service can be checked in \autoref{subsubsec:D-srv-steps}. 
+The implementation of back-end services are done using a combination of two languages: CDL (CDS' definition language) \cite{cap-cds-lang} and Java \cite{java}. The concrete implementations are located under the \textit{/srv} folder as illustrated in \autoref{src:15}, in which the underneath components are further explained in \autoref{subsubsec:D-srv-design}. Before that, the general steps/requirements of implementing a service can be checked in \autoref{subsubsec:D-srv-steps}. 
 
 \lstset{caption={Directories guide - Back-end}, label=src:15}
 \begin{lstlisting}[language={bash}]
@@ -652,7 +653,7 @@ The \textbf{first step} of implementing any service is to define its CDS view us
 
 \bigskip
 
-The \textbf{second step} is implementing the business logic using Java. CAP project provides a out-of-box default implementation of simple CRUD \cite{crud} operations, in some cases shall be override/replaced. In most of the cases it involves explicit interactions with the persistence service and in this case a Java supported CQN (Core Query Notation) is used. The Java codes should applies the following:
+The \textbf{second step} is implementing the business logic using Java. CAP project provides a out-of-box default implementation of simple CRUD \cite{crud} operations, in some cases shall be override/replaced. In most of the cases it involves explicit interactions with the persistence service and in this case a Java supported CQN (Core Query Notation) \cite{cap-cds-cqn} is used. The Java codes should applies the following:
 \begin{compactenum}
 	\item Implementations of custom CRUD operations
 	\item Implementations of virtual fields calculations
@@ -683,7 +684,7 @@ It is also important to understand the event processing of CAP. CAP provides out
 \subsubsection{Architecture Design}
 \label{subsubsec:D-srv-design}
 
-The back-end architecture follows the recommendations of CAP, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine. (\autoref{fig:backArch})
+The back-end architecture follows the recommendations of CAP \cite{cap-java-architecture}, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine. (\autoref{fig:backArch})
 
 \begin{figure}[H]
 	\centering
@@ -693,7 +694,7 @@ The back-end architecture follows the recommendations of CAP, Spring MVC \cite{s
 \end{figure}
 
 The blocks in blue of the above \autoref{fig:backArch} indicates the necessary Java implementation parts. 
-In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service and each handler implements the \textbf{EventHandler} from cds's came along package \textit{com.sap.cds.services.handler}. This ensures that the handler class will be fed with received events from the Consuming API. Also a Java annotation \textbf{@ServiceName(SomeService\_.CDS\_NAME)} is added at class level, to provide information on which service the handler is handling. The handlers classes are also marked with \textbf{@Component} annotation from the spring framework as a Bean, to get the most out of Spring-boot \cite{springboot-doc}'s dependency control. A base skeleton of handler class is embedded in \autoref{src:2008}.
+In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined for every service and each handler implements the \textbf{EventHandler} \cite{cap-java-event-handler} from cds's came along package \textit{com.sap.cds.services.handler}. This ensures that the handler class will be fed with received events from the Consuming API. Also a Java annotation \textbf{@ServiceName(SomeService\_.CDS\_NAME)} is added at class level, to provide information on which service the handler is handling. The handlers classes are also marked with \textbf{@Component} annotation from the spring framework as a Bean, to get the most out of Spring-boot \cite{springboot-doc}'s dependency control. A base skeleton of handler class is embedded in \autoref{src:2008}.
 
 \lstset{caption={Handler skeleton - Backend}, label=src:2008}
 \begin{lstlisting}[language={java}]
@@ -1007,7 +1008,7 @@ This is a simpler service compare to the previous ones. No actions or action con
 %  -----------------------------------
 \subsection{Pickup Service}
 
-While the previous 4 services are doing uninteresting administration stuff and can be accessed only by nominated roles, here comes finally 2 service, opening to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception. It is exposed at OData end-point \textit{api/PickupService}. It is designed to be optimized for mobile use but this will be left to be discussed in the UI chapter.
+While the previous 4 services are doing uninteresting administration stuff and can be accessed only by nominated roles, here comes finally 2 service, opening to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception. It is exposed at OData end-point \textit{api/PickupService}. 
 
 \subsubsection{CDS View}
 
