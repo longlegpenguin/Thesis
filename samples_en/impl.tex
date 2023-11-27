@@ -70,16 +70,16 @@ All three essential parts of the application, front-end, back-end and database m
 The implementations and definitions located in different directories of the project are logically packaged into separate name spaces (name space in CDS, package declaration in Java) (See folder structure in \autoref{src:3}).
 
 % (\autoref{fig:packStruc})
+In total, 6 applications are maintained and used by the parcel collection service. This is designed, so the authorizations can be enforced application-wise (accessibility of a role to a specific application). Each application unit consists of a front-end application and a back-end service.
+The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP. (\autoref{fig:appStruct})
 
-The back-end consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}, while the front-end communicates with back-end through the OData protocol \cite{odata}.
 
-
-% \begin{figure}[H]
-% 	\centering
-% 	\includegraphics[height=250px]{images/Application_Structure.png}
-% 	\caption{Application Structure Overview}
-% 	\label{fig:appStruct}
-% \end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/app_struct_new.jpg}
+	\caption{Application Structure Overview}
+	\label{fig:appStruct}
+\end{figure}
 
 
 % \begin{figure}[H]
@@ -1063,9 +1063,7 @@ In the service's CDS view, no input invalidation checks are defined, as the user
 The same idea goes in the CRUD possibilities - only read operation is supported for any entity and this is enforced by a \textit{@readonly} annotation on every entity projection.
 
 \subsection*{Conclusion}
-
-By the end of \autoref{ch:impl}, a developer should have gained rich knowledge of how the implementations were conducted and should have a brief understanding of all the associated technologies. A developer should at this point be able to understand the complete codes of the projects and be able to extend the project from the original basis. 
-
+Hereby the introduction of the core implementation part of \autoref{ch:impl} is completed.
 In the coming \autoref{sec:D-testing}, the testing approaches are explained in detail for the project, which is also a mandatory step of development in case any of the extension should be make in the back-end.
 
 \section{Testing}
@@ -1219,3 +1217,9 @@ public class SomeServiceTest extends BaseServiceTest {
 \end{figure}
 
 % \section{Technologies and Terms}
+
+\subsection*{Conclusion}
+
+By the end of \autoref{ch:impl}, a developer should have gained rich knowledge of how the implementations were conducted and should have a brief understanding of all the associated technologies. A developer should at this point be able to understand the complete codes of the projects and be able to extend the project from the original basis. 
+
+In the coming \autoref{ch:sum}, the thesis is eventually concluded.

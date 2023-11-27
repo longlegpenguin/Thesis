@@ -8,7 +8,7 @@ Then in the following sections (\autoref{sec:UdocEndUser}, \autoref{sec:UdocRece
 \section{General Requisite}
 \label{sec:GeneralRequisite}
 
-The solution is for the internal usage within SAP for the parcel collection service providing to the employees. The solution consists of 6 applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storages} partitioned into 3 sections: \textbf{My Home}, \textbf{Pacel Handling}, \textbf{Administration}, as shown in \autoref{fig:ApplicationLaunchScreen}.
+This solution is designed for the internal usage within SAP supporting the parcel collection service providing to the employees. The solution enables the complete digitalization and standardization of the parcel signing and management processes. The service provided by the solution can be summarised into three parts: the management of possible storage locations of the parcels (administration side), the management of possible companies of the parcels  (administration side) and the management of the packages (both receptionist side and user side).  The solution is realized through six applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storages} partitioned into 3 sections: \textbf{My Home}, \textbf{Pacel Handling}, \textbf{Administration}, as shown in \autoref{fig:ApplicationLaunchScreen}.
 
 \begin{figure}[H]
 	\centering
@@ -1047,6 +1047,7 @@ Under the title it displays important info of the storage (location, total utili
 
 The bottom body part displays the list of slots contained by the given storage. The list of slots displays the following columns / information: \textbf{Name} (slot name), \textbf{Total Number of Packages} (total number of the packages stored in the slot since its creation date), \textbf{status} (the status of the slot). The availiable status of the slot are: inuse (indicates there is currently at least one package stored inside), empty (indicates there is no package inside) and unavailable (indicates the slot cannot be used due to some reasons).
 (\autoref{fig:MSstorageObjSlotList})
+In case a slot is edited and the table content is not reflected, refresh the entire page.
 
 \begin{figure}[H] % slotList
 	\centering
