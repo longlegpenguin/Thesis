@@ -1,14 +1,23 @@
 \chapter{User documentation}
 \label{ch:user}
 
-This chapter is dedicated for the potential users. In \autoref{sec:GeneralRequisite}, the requisite of opening and using the application is listed. It also gives an introduction to the types of user roles within the solution, to enable the users to navigating through the thesis and find their related information quickly.
+This chapter is dedicated for the potential users. Firstly, a brief introduction of the intention of the solution is explained in \autoref{sec:BusinessContext}. Then in \autoref{sec:GeneralRequisite}, the requisite of opening and using the application is listed. It also gives an introduction to the types of user roles within the solution, to enable the users to navigating through the thesis and find their related information quickly.
+Finally in the following sections (\autoref{sec:UdocEndUser}, \autoref{sec:UdocReceptionist}, \autoref{sec:UdocFacilityManager}, \autoref{sec:UdocAdministrator}), which are titled by the roles, collects the use guide of each accessible applications.
 
-Then in the following sections (\autoref{sec:UdocEndUser}, \autoref{sec:UdocReceptionist}, \autoref{sec:UdocFacilityManager}, \autoref{sec:UdocAdministrator}), which are titled by the roles, collects the use guide of each accessible applications.
+\section{Business Context}
+\label{sec:BusinessContext}
 
-\section{General Requisite}
-\label{sec:GeneralRequisite}
+This solution is designed for the internal usage within SAP supporting the parcel collection service providing to the employees, with the help of which employees can deliver their personal parcels first to the reception, then pick them up at any desired time from the reception. The solution enables the complete digitalization and standardization of the parcel signing and management processes. The solution is realized through six applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storage} partitioned into 3 sections: \textbf{My Home}, \textbf{Parcel Handling}, \textbf{Administration} (\autoref{fig:ApplicationLaunchScreen}).
+The main logic of the complete parcel collection cycle can be summarized as the following:
 
-This solution is designed for the internal usage within SAP supporting the parcel collection service providing to the employees. The solution enables the complete digitalization and standardization of the parcel signing and management processes. The service provided by the solution can be summarised into three parts: the management of possible storage locations of the parcels (administration side), the management of possible companies of the parcels  (administration side) and the management of the packages (both receptionist side and user side).  The solution is realized through six applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storages} partitioned into 3 sections: \textbf{My Home}, \textbf{Pacel Handling}, \textbf{Administration}, as shown in \autoref{fig:ApplicationLaunchScreen}.
+\begin{compactenum}
+    \item New parcels arrive at the SAP reception, the parcel collection process starts.
+    \item \textit{Register}: Receptionists log into \textbf{Register Packages} and register the newly arrived parcels into system.
+    \item \textit{Confirm}: Receptionists confirm the parcel's availability to be picked up in \textbf{Manage Packages} by choosing the storage slots for the arrived parcels. Receptionists place the parcel into selected physical storage slot. (From this point, employees may pickup the parcel.)
+    \item Employees recognize the parcels to be picked up (confirmed) from \textbf{Pickup Packages}.
+    \item \textit{Pickup}: Employees come in for the parcel. Receptionists retrieve the parcel from the physical storage slot, hand over the parcel and make sure that the employees confirm the pickup using \textbf{Pickup Packages}. In case employees cannot confirm at the moment by themselves, receptionists help them with the pickup function in \textbf{Manage Packages}.
+    \item The parcel collection process is finished.
+\end{compactenum}
 
 \begin{figure}[H]
 	\centering
@@ -17,6 +26,9 @@ This solution is designed for the internal usage within SAP supporting the parce
 	\label{fig:ApplicationLaunchScreen}
 \end{figure}
 
+
+\section{General Requisite}
+\label{sec:GeneralRequisite}
 
 In order to use any of the application, one has to hold an SAP registered device (computer/tablet/phone) and is able to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, one has to hold an SAP registered smart phone. 
 
@@ -53,7 +65,7 @@ In the case of any user trying to accessing an unauthorised application, connect
 \section{End User}
 \label{sec:UdocEndUser}
 
-As a logged in \textbf{End User}, one is granted to access the two applications under the \textbf{My Home} section, namely \textbf{My Packages} (\autoref{subsec:ph}) and \textbf{Package Pickup} (\autoref{subsec:pp}). \textbf{End User} can quick jump to the section by left clicking the "My Home" tab. \textbf{End User} can enter the application by left click the tiles. (\autoref{fig:EndUserApplications})
+As a logged in \textbf{End User}, one is granted to access the two applications under the \textbf{My Home} section, namely \textbf{My Packages} (\autoref{subsec:ph}) and \textbf{Package Pickup} (\autoref{subsec:pp}). \textbf{End User} can quick jump to the section by left clicking the "My Home" tab. \textbf{End User} can enter the application by left click the tiles (\autoref{fig:EndUserApplications}).
 
 \begin{figure}[H]
 	\centering
@@ -240,7 +252,7 @@ From there, a new pickup iteration starts.
 \section{Receptionist}
 \label{sec:UdocReceptionist}
 
-As a logged in \textbf{Receptionist} (See \autoref{sec:GeneralRequisite} for all possible roles), one is granted to access the two applications under the \textbf{Parcel Handling} section, namely \textbf{Register Packages} (\autoref{subsec:rp}) and \textbf{Manage Packages} (\autoref{subsec:mp}). One can quick jump to the section by left clicking the "Parcel Handling" tab. One can enter the application by left click the tiles. (\autoref{fig:PHApplications})
+As a logged in \textbf{Receptionist} (See \autoref{sec:GeneralRequisite} for all possible roles), one is granted to access the two applications under the \textbf{Parcel Handling} section, namely \textbf{Register Packages} (\autoref{subsec:rp}) and \textbf{Manage Packages} (\autoref{subsec:mp}). One can quick jump to the section by left clicking the "Parcel Handling" tab. One can enter the application by left click the tiles (\autoref{fig:PHApplications}).
 
 \begin{figure}[H]
 	\centering

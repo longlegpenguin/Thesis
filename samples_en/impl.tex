@@ -437,13 +437,13 @@ The following components are implemented:
     \item Slot edit dialog controller
     \item Storage edit dialog controller
     \item Slot mass creation dialog controller
+    \item Slot deletion message box controller
 \end{compactenum}
 
 \bigskip
 The following controller(s) are implemented:
 \begin{compactenum}
     \item App master controller
-    \item Slot deletion message box controller
 \end{compactenum}
 
 \subsection{Manage Company}
@@ -1102,7 +1102,7 @@ cds.security.mock.users.my\_uname & roles: - my-role \\
 Unit testing \cite{unit-test} of this project focuses on the methods and line coverage of the manager and the repository layer (See \autoref{sec:D-AppStructure}). JUnit 4 \cite{junit} and spring test \cite{spring-testing} stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. 
 
 \bigskip
-A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. Each test class is written under the following logic.
+A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. The test classes are created almost at the same time with the implementations. The implementations of both happens in an iteration way: test cases created based on code and requirements, code is fixed based on test results, test cases involves based on the modified code, and so on. Each test class is written under the following logic.
 
 \begin{compactenum}
 	\item An autowired instance of the class it is testing.
