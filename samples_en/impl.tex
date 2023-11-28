@@ -1,7 +1,7 @@
 \chapter{Developer documentation}
 \label{ch:impl}
 
-This chapter dedicates to the developers and provides insights into the technical stack and implementation specifications. In \autoref{sec:D-env}, the possible development environment and tool versions are listed. Then the \autoref{sec:D-run} provides instructions on the local starting of the solution. After this in \autoref{sec:D-AppStructure}, a total overview of the architecture of the project is attached. Followed by this are \autoref{sec:D-db}, \autoref{sec:D-srv} and \autoref{sec:D-UI} which documented the data model, back-end and front-end accordingly. Right after these comes \autoref{sec:D-security} where role specifications and mock user data are noted. Finally, \autoref{sec:D-testing} is inserted focusing on the testing of the solution. 
+This chapter dedicates to the developers and provides insights into the technical stack and implementation specifications. In \autoref{sec:D-env}, the possible development environment and tool versions are listed. Then the \autoref{sec:D-run} provides instructions on the local starting of the solution. After this in \autoref{sec:D-AppStructure}, a total overview of the architecture of the project is attached. Followed by this are \autoref{sec:D-db}, \autoref{sec:D-UI} and \autoref{sec:D-srv} which documented the data model, front-end and back-end accordingly. Right after these comes \autoref{sec:D-security} where role specifications and mock user data are noted. Finally, \autoref{sec:D-testing} is inserted focusing on the testing of the solution. 
 
 \section{Environment Requirements}
 \label{sec:D-env}
@@ -12,11 +12,11 @@ The application is supported to be ran and developed both locally and with dedic
         \begin{itemize}
             \item Eclipse \cite{eclipse} with Spring Tools and CAP extensions
             \item Visual Studio Code \cite{vscode} with SAP CAP extensions
-            \item Intellij \cite{intellij} with SAP CAP extensions (Recommended for java back-end development)
+            \item Intellij \cite{intellij} with SAP CAP extensions (Used by this thesis for java back-end development)
         \end{itemize}
     \item Possible toolkit for Cloud environment
         \begin{itemize}
-            \item SAP Business Application Studio \cite{bas} with Full-Stack Development dev-space (Recommended for database and UI development)
+            \item SAP Business Application Studio \cite{bas} with Full-Stack Development dev-space (Used by this thesis for database and UI development)
         \end{itemize}
 \end{enumerate}
 
@@ -47,7 +47,7 @@ A snapshot of versions at the time of development is attached. (\autoref{src:1})
 \section{Run}
 \label{sec:D-run}
 
-The following commands can be used to start up the application quickly. It watches any change within the application and refresh automatically. Hence, it is useful for UI development. Note that in this case the Java back-end will not be included.
+The following commands can be used to start up the application quickly. It watches any change within the application and refreshes automatically. Hence, it is useful for UI development. Note that in this case the Java back-end will not be included.
 
 \lstset{caption={Run commands}, label=src:22}
 \begin{lstlisting}[language={bash}]
@@ -71,7 +71,7 @@ The implementations and definitions located in different directories of the proj
 
 % (\autoref{fig:packStruc})
 In total, 6 applications are maintained and used by the parcel collection service. This is designed, so the authorizations can be enforced application-wise (accessibility of a role to a specific application). Each application unit consists of a front-end application and a back-end service.
-The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP. (\autoref{fig:appStruct})
+The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP \cite{http}. (\autoref{fig:appStruct})
 
 
 \begin{figure}[H]
@@ -236,62 +236,6 @@ root/
                 |- *.cds # common data models
 \end{lstlisting}
 
-
-\section{Security}
-\label{sec:D-security}
-
-The application is developed for internal use of SAP and can be accessed only from SAP devices. 
-Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot \cite{springboot-doc} application.
-
-\subsection{Roles Specification}
-The role-base access restriction on services are defined in \textit{root/srv/services/*-auth.cds} files using cds annotations. Bellow illustrated the exact locations of the auth files.
-
-\lstset{caption={File locations - Security}, label=src:12}
-\begin{lstlisting}[language={bash}]
-root/
-    |- srv/
-        |- src
-        |- gen
-        |- services
-            |- ServiceName 
-                |- *.cds # Definition of service
-                |- *-auth.cds # Access restriction on roles.
-    |- xs-security.json # list of roles
-\end{lstlisting}
-
-The access rules of the 4 roles are listed below:
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|c|m{2.1cm}|m{2.1cm}|m{2.1cm}|m{2.5cm}|} \hline 
-         & End-User & Receptionist & Facility Manager & Administrator     \\ \hline 
-         Manage Storage          & No & No & Yes & Yes \\ \hline 
-         Manage Companies         & No & No & Yes & Yes \\ \hline 
-         Manage Packages          & No & Yes & No  & Yes \\ \hline 
-         Register Package       & No & Yes & No  & Yes \\ \hline 
-         Pickup Package           & Yes & Yes & Yes & Yes \\ \hline
-         My Package               & Yes & Yes & Yes & Yes \\ \hline
-    \end{tabular}
-    \caption{Roles Access Rules}
-    \label{tab:Access Rule}
-\end{table}
-\subsection{Mock Users}
-
-The following mock users are set up for the local development and testing:
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|m{2.5cm}|m{2.5cm}|m{3.5cm}|} \hline 
-        \textbf{Name/ID} & \textbf{Password} & \textbf{Role(s)} \\ \hline 
-        admin & admin & Administrator \\ \hline 
-        I111111 & user & User \\ \hline 
-        manager & manager & FacilityManager \\ \hline 
-        recep & recep & Receptionist \\ \hline 
-        I333333 & user & User \\ \hline
-    \end{tabular}
-    \caption{Mock Users for Local Testing \& Development}
-\end{table}
-
 \section{UI}
 \label{sec:D-UI}
 
@@ -336,7 +280,7 @@ For a template application, the main implementations are under \textbf{webapp} (
 \bigskip
 Under the \textbf{webapp} collects almost the same set of folders / files as in the \textbf{webapp} of freestyle UIs. The main difference here is that there is no longer normal views (\textbf{view} folder) for the application, instead the common fiori element templates (List Report Page \& Object Page in this thesis) are defined in the \textbf{manifest.js}. Those templates are loaded from SAP UI5 standard library as the view of the application. They use their own standard controllers and would consume the entity data directly from the OData v2 / v4 models defined in the \textbf{manifest.json}. Hence, the ordinary \textbf{model}, \textbf{view}, \textbf{controller} folders no longer exists directly \textbf{webapp}.
 
-However, in most of the cases custom actions / columns have to be added to the used templates (mostly as buttons). The location of action buttons / columns (within the template page) is defined in the \textbf{manifest.json}, while their business logics / representations are implemented under the \textbf{webapp/ext} folder. Here splits into three more folders: \textbf{component} (the controllers for corresponding dialog fragments), \textbf{view} (the fragment xml of column or dialog used by the actions), \textbf{controller} (the master collection of action handler functions).
+However, in most of the cases custom actions / columns have to be added to the used templates (mostly as buttons). The location of action buttons / columns (within the template page) is defined in the \textbf{manifest.json}, while their business logics / representations are implemented under the \textbf{webapp/ext} folder. Here splits into three more folders: \textbf{component} (the controllers for corresponding dialog fragments), \textbf{view} (the fragment xml of column or dialog used by the actions), \textbf{controller} (the master collection of action handler functions, the extended controller of fiori element templates if necessary).
 
 \bigskip
 Last but not least, under the \textbf{annotations} collects the cds annotations on the entities, which are combined with the base templates during the rendering.
@@ -444,6 +388,7 @@ The following components are implemented:
 The following controller(s) are implemented:
 \begin{compactenum}
     \item App master controller
+    \item Fiori object page extended controller
 \end{compactenum}
 
 \subsection{Manage Company}
@@ -1064,7 +1009,62 @@ The same idea goes in the CRUD possibilities - only read operation is supported 
 
 \subsection*{Conclusion}
 Hereby the introduction of the core implementation part of \autoref{ch:impl} is completed.
-In the coming \autoref{sec:D-testing}, the testing approaches are explained in detail for the project, which is also a mandatory step of development in case any of the extension should be make in the back-end.
+In the coming \autoref{sec:D-security} and \autoref{sec:D-testing}, the security aspects and the testing approaches for the project are explained in detail, which are also important knowledge and steps of development in case any of the extension should be make in the back-end.
+
+\section{Security}
+\label{sec:D-security}
+
+The application is developed for internal use of SAP and can be accessed only from SAP devices. 
+Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot \cite{springboot-doc} application.
+
+\subsection{Roles Specification}
+The role-base access restriction on services are defined in \textit{root/srv/services/*-auth.cds} files using cds annotations. Bellow illustrated the exact locations of the auth files.
+
+\lstset{caption={File locations - Security}, label=src:12}
+\begin{lstlisting}[language={bash}]
+root/
+    |- srv/
+        |- src
+        |- gen
+        |- services
+            |- ServiceName 
+                |- *.cds # Definition of service
+                |- *-auth.cds # Access restriction on roles.
+    |- xs-security.json # list of roles
+\end{lstlisting}
+
+The access rules of the 4 roles are listed below:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|m{2.1cm}|m{2.1cm}|m{2.1cm}|m{2.5cm}|} \hline 
+         & End-User & Receptionist & Facility Manager & Administrator     \\ \hline 
+         Manage Storage          & No & No & Yes & Yes \\ \hline 
+         Manage Companies         & No & No & Yes & Yes \\ \hline 
+         Manage Packages          & No & Yes & No  & Yes \\ \hline 
+         Register Package       & No & Yes & No  & Yes \\ \hline 
+         Pickup Package           & Yes & Yes & Yes & Yes \\ \hline
+         My Package               & Yes & Yes & Yes & Yes \\ \hline
+    \end{tabular}
+    \caption{Roles Access Rules}
+    \label{tab:Access Rule}
+\end{table}
+\subsection{Mock Users}
+
+The following mock users are set up for the local development and testing:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|m{2.5cm}|m{2.5cm}|m{3.5cm}|} \hline 
+        \textbf{Name/ID} & \textbf{Password} & \textbf{Role(s)} \\ \hline 
+        admin & admin & Administrator \\ \hline 
+        I111111 & user & User \\ \hline 
+        manager & manager & FacilityManager \\ \hline 
+        recep & recep & Receptionist \\ \hline 
+        I333333 & user & User \\ \hline
+    \end{tabular}
+    \caption{Mock Users for Local Testing \& Development}
+\end{table}
 
 \section{Testing}
 \label{sec:D-testing}

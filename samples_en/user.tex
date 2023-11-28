@@ -30,9 +30,17 @@ The main logic of the complete parcel collection cycle can be summarized as the 
 \section{General Requisite}
 \label{sec:GeneralRequisite}
 
-In order to use any of the application, one has to hold an SAP registered device (computer/tablet/phone) and is able to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, one has to hold an SAP registered smart phone. 
+In order to use any of the deployed solution (the deployment is out of scope of this thesis and should be carry on only after), one has to hold an SAP registered device (computer/tablet/phone) and is able to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, one has to hold an SAP registered smart phone. 
 
-In order to mock use the application in local environment, please move the the developer documentation (\autoref{ch:impl}) and follow the set up steps. 
+In order to mock use the application in local environment, please first move the the developer documentation (\autoref{ch:impl}) and checkout the tools and mininumn software version. After the proper installations, clone the repository and run the following commands (\autoref{src:5020}).
+
+\lstset{caption={Commands for Local Running of the Solution}, label=src:5020}
+\begin{lstlisting}[language={bash}]
+> git clone https://github.tools.sap/DigitalLabHungary/packagehandling.git
+> npm install
+> mvn clean install
+> mvn spring-boot:run
+\end{lstlisting}
 
 Four different roles are specified for the application and an authenticated user is limited to applications dedicated to their assigned roles. In the coming sections the usage guides are documented sectioned by the roles. Hereby lists the meaning of each role under the thesis context and feel ease to jump to the related section by clicking section links.
 
@@ -105,7 +113,7 @@ As an \textbf{End User}, after clicking at the application tile, is redirected t
 
 \subsubsection{Home Screen - Filter Usage}
 One can type in free text of any possible content of the column in the "Search Bar" (\autoref{fig:mpSearchBar}). The free text supports in-completed keywords and is case insensitive. 
-One can use the default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry) (\autoref{fig:MPDF}). For drop down filters, one can click at the small drop down arrow and select zero to many options. For time entry, one shall click at the "double box" (filter help) on the right of the filter box. This will pops up a dialog, at where one can select the desired filtering option and enter the time with the clock uitility (\autoref{fig:PHAjustTimeFilters}). One can also access to more filters (\textbf{Delivery Time} (time entry) by clicking at "Adapt Filters". (\autoref{fig:mpMOreFilterAdaption}) While adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, run the filter by clicking the "Go" Button. (\autoref{fig:PHAjustFilters-2})
+One can use the default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry) (\autoref{fig:MPDF}). For drop down filters, one can click at the small drop down arrow and select zero to many options. For time entry, one shall click at the "double box" (filter help) on the right of the filter box. This will pops up a dialog, at where one can select the desired filtering option and enter the time with the clock uitility (\autoref{fig:PHAjustTimeFilters}). One can also access to more filters (\textbf{Delivery Time} (time entry)) by clicking at "Adapt Filters". (\autoref{fig:mpMOreFilterAdaption}) While adjusting the filtering values, the list view is temporarily locked. After adjusting the filtering values, run the filter by clicking the "Go" Button. (\autoref{fig:PHAjustFilters-2})
 
 \begin{figure}[H]
 	\centering
@@ -182,7 +190,7 @@ The summarized main actions the \textbf{End User} (See \autoref{sec:UdocEndUser}
 
 \subsubsection{Home Screen - Selection}
 As an \textbf{End User}, after clicking at the application tile, is redirected to the "Home Screen". If there exists at least one package to pickup, the home screen shows the list of packages. 
-The list items lists \textbf{the type with icon, the delivery company, the registration time and the location} of the packages. 
+The list items lists \textbf{the type with icon}, \textbf{the delivery company}, \textbf{the registration time} and \textbf{the location} of the packages. 
 If no package exists to pickup, it shows only the no package info. 
 The package list title shows the total number of packages that can be pickup.
 In case there are existing packages, one can select one or multiple packages from the list to pickup. 
@@ -1041,7 +1049,7 @@ When the \textbf{FM} click at one item of the table, the \textbf{FM} is redirect
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageReportPage/storageObjWithSlots.png}
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/updatedSlotEditDelete/StorageObjectOverview.png}
 	\caption{Manage Storage Storage Detail Screen - Overview}
 	\label{fig:MSdetailOVerview}
 \end{figure}
@@ -1057,29 +1065,21 @@ Under the title it displays important info of the storage (location, total utili
 	\label{fig:MSstorageObjHeader}
 \end{figure}
 
-The bottom body part displays the list of slots contained by the given storage. The list of slots displays the following columns / information: \textbf{Name} (slot name), \textbf{Total Number of Packages} (total number of the packages stored in the slot since its creation date), \textbf{status} (the status of the slot). The availiable status of the slot are: inuse (indicates there is currently at least one package stored inside), empty (indicates there is no package inside) and unavailable (indicates the slot cannot be used due to some reasons).
+The bottom body part displays the list of slots contained by the given storage. 
+The list of slots displays the following columns / information: \textbf{Name} (slot name), \textbf{Total Number of Packages} (total number of the packages stored in the slot since its creation date), \textbf{status} (the status of the slot). The available status of the slot are: inuse (indicates there is currently at least one package stored inside), empty (indicates there is no package inside) and unavailable (indicates the slot cannot be used due to some reasons).
+The list table tool bar contains two action buttons: \textbf{Create} (\autoref{subsubsec:addSlot}) and \textbf{Mass Create} (\autoref{subsubsec:batchAddSlot}) for single and batch creation of the slot. 
+At the end of each line items two (or one depends on the status) actions buttons are displayed for the edition (\autoref{subsubsec:editSlot}) and deletion (\autoref{subsubsec:deleteSlot}) of the slot.
 (\autoref{fig:MSstorageObjSlotList})
-In case a slot is edited and the table content is not reflected, refresh the entire page.
+In case a slot is edited or deleted and the table content is not reflected, refresh the entire page.
 
 \begin{figure}[H] % slotList
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/storage/StorageObjectPage/slotList.png}
+	\includegraphics[width=1\linewidth]{images/user_doc/storage/updatedSlotEditDelete/StorageObjectSlotTable.png}
 	\caption{Manage Storage Storage Detail Screen - Slot List}
 	\label{fig:MSstorageObjSlotList}
 \end{figure}
 
 \bigskip
-
-When the \textbf{FM} clicks on one slot item in the slot list, the \textbf{FM} is redirected to slot's "Slot Detail Page". 
-(\autoref{fig:MSslotObjOverview})
-
-\begin{figure}[H] % slotObjOverview
-	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/storage/SlotObjectPage/slotObjOverview.png}
-	\caption{Manage Storage Slot Detail Screen}
-	\label{fig:MSslotObjOverview}
-\end{figure}
-
 
 \subsubsection{Add Storage}
 
@@ -1185,6 +1185,7 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 
 
 \subsubsection{Add Storage Slot}
+\label{subsubsec:addSlot}
 
 \textbf{FM} can add new storage slot to the system at "Storage Detail Screen" by clicking the "Create" button on the top right corner of the slot list.
 When the "Create" button is clicked, a creation dialog pops up. The \textbf{Name} waits for input of free text of the storage slot and should not be left empty. The \textbf{Available} selection box sets if the slot will be in an unavailable status.
@@ -1203,7 +1204,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
   
     \vspace{10pt}
     \subcaptionbox{Step 3: Post Creation}{
-		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/StorageObjectPage/createdSlotToast.png}}
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/updatedSlotEditDelete/singleSlotCreateToast.png}}
     
     \caption{Manage Storage Storage Detail Screen - Create Slot Dialog Guide}
 	\label{fig:MSobjCreateSlotGuide}
@@ -1211,6 +1212,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 
 
 \subsubsection{Batch Add Storage Slot}
+\label{subsubsec:batchAddSlot}
 
 \textbf{FM} can add multiple new storage slots in a matrix way to the system at "Storage Detail Screen" by clicking the "Mass Create" button on the top right corner of the slot list.
 When the "Mass Create" button is clicked, a creation dialog pops up. The \textbf{Number of Rows} and \textbf{Number of Columns} waits for numeric integer inputs of desired number of rows and columns to create. The \textbf{Type of Row Identifiers} and \textbf{Type of Column Identifiers} has two options: Number and Letter, indicates how the created matrix of slot will be named (Row - Column). If "Letter" is selected then "A-Z" will be used, otherwise, "1-9". For example, an entry of (1, Letter, 2, Number) will create (A - 1, A - 2). The selection of row and column type should not be the same.
@@ -1233,15 +1235,16 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 
     \vspace{10pt}
     \subcaptionbox{Step 2.1: Data Entry - Row Type Selection}{
-		\includegraphics[width=0.90\linewidth]{images/user_doc/storage/StorageObjectPage/massCreateSuccessToast.png}}
+		\includegraphics[width=0.90\linewidth]{images/user_doc/storage/updatedSlotEditDelete/MassCreateToast.png}}
     \caption{Manage Storage Storage Detail Screen - Mass Create Slot Dialog Guide}
 	\label{fig:MSobjmassCreateSlotGuide}
 \end{figure}
 
 
 \subsubsection{Edit Storage Slot}
-\textbf{FM} can edit a slot at "Slot Detail Screen".
-In case the \textbf{FM} is at "Slot Detail Screen" and want to edit the displayed slot, the \textbf{FM} can use the "Edit" button at top right corner (page header). 
+\label{subsubsec:editSlot}
+\textbf{FM} can edit a slot at "Storage Detail Screen".
+In case the \textbf{FM} is at "Storage Detail Screen" and want to edit a slot in the slot list, the \textbf{FM} can use the "Edit" (icon with pen) at the end of the slot row. 
 When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{FM} to modified the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot.
 When click "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects on the "Storage Detail Screen". When click "Close", any changes will be discard, the dialog simply closes.
 (\autoref{fig:MSSlotDetailEditBtn})
@@ -1253,30 +1256,31 @@ When click "Save", the modified details are submitted, the dialog closes, a mess
 		\includegraphics[width=0.30\linewidth]{images/user_doc/storage/SlotObjectPage/editSlotDlg.png}}
     \hspace{5pt}
     \subcaptionbox{Step 2: Post Success Edit}{
-		\includegraphics[width=0.60\linewidth]{images/user_doc/storage/SlotObjectPage/editedslotToast.png}}
-    \caption{Manage Storage Slot Detail Screen - Edit Dialog Guide}
+		\includegraphics[width=0.60\linewidth]{images/user_doc/storage/updatedSlotEditDelete/updatedSlotToast.png}}
+    \caption{Manage Storage Storage Detail Screen - Edit Dialog Guide}
 	\label{fig:MSSlotDetailEditBtn}
 \end{figure}
 
 \subsubsection{Delete Storage Slot}
+\label{subsubsec:deleteSlot}
 
-\textbf{FM} can delete a storage slot at "Slot Detail Screen". 
+\textbf{FM} can delete a storage slot at "Storage Detail Screen". 
 The deletion of a storage slot implies that, the storage slot will be removed completely from the system. The deletion action is irreversible. 
 
-In case the \textbf{FM} is at "Slot Detail Screen" and want to delete the displayed storage, the "Delete" button at the top right corner (page header) shall be used. 
+In case the \textbf{FM} is at "Storage Detail Screen" and want to delete the displayed storage, the "Delete" button (icon displaying a rubbish bin) at the end of the slot list row shall be used. The "Delete" icon is displayed only if the slot is not of status \textit{inuse} (i.e. it is not currently occupied by parcel(s))
 
-Once clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete the displayed slot. If "Delete" is clicked, the storage will be deleted. The message box will be closed, \textbf{FM} got navigated back to "Storage Detail Screen" and a message toast indicates the success deletion. \textbf{FM} should refresh the page to see the slot disappears from the slot list. If "Cancel" is clicked, the message box is closed and nothing happens.
+Once clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete the displayed slot. If "Delete" is clicked, the storage will be deleted. The message box will be closed, the slot is removed from the list (and system) and a message toast indicates the success deletion. In case the deletion is not reflected immediately, \textbf{FM} should refresh the page to see the slot disappears from the slot list. If "Cancel" is clicked, the message box is closed and nothing happens.
 (\autoref{fig:MSslotObjDeleteGuide})
 
 \begin{figure}[H]
 	\centering
 	\subcaptionbox{On Click "Delete" - Deletion Verification}{
-		\includegraphics[width=0.50\linewidth]{images/user_doc/storage/SlotObjectPage/deleteSlotDlg.png}}
-
+		\includegraphics[width=0.50\linewidth]{images/user_doc/storage/updatedSlotEditDelete/DeleteSlotMsgBox.png}}
+  
     \vspace{10pt}
     
     \subcaptionbox{Post Deletion - Navigated Back}{
-		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/SlotObjectPage/deletedSlotToast.png}}
+		\includegraphics[width=0.95\linewidth]{images/user_doc/storage/updatedSlotEditDelete/DeletedSlotToast.png}}
     \caption{Manage Storage Slot Detail Screen - Delete Slot Guide}
 	\label{fig:MSslotObjDeleteGuide}
 \end{figure}
