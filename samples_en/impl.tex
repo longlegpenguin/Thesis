@@ -23,7 +23,8 @@ The application is supported to be ran and developed both locally and with dedic
 For front-end development, UI5 framework \cite{ui5-toolkit} is used with fiori elements \cite{fiorielements} (More details in \ref{sec:D-UI}). 
 For back-end development, CAP Java \cite{cap-about}\cite{cap-java} flavor is chosen.
 Hence, for local development, up to date Java JDK \cite{java}, node.js \cite{nodejs} and CAP extensions are hard requirements. The specific set up can be find here (\hyperlink{https://developers.sap.com/tutorials/btp-app-prepare-dev-environment-cap.html}{link}) \cite{proj-setup-intellij}.
-A snapshot of versions at the time of development is attached. (\autoref{src:1})
+For mocking the application, Firefox \cite{firefox} browser is used by this thesis.
+A snapshot of versions at the time of development is attached (\autoref{src:1}). 
 
 \lstset{caption={Version check}, label=src:1}
 \begin{lstlisting}[language={bash}]
@@ -47,7 +48,7 @@ A snapshot of versions at the time of development is attached. (\autoref{src:1})
 \section{Run}
 \label{sec:D-run}
 
-The following commands can be used to start up the application quickly. It watches any change within the application and refreshes automatically. Hence, it is useful for UI development. Note that in this case the Java back-end will not be included.
+The following commands can be used to start up the project quickly. It watches any change within the project and refreshes automatically. Hence, it is useful for UI development. Note that in this case the Java back-end will not be included.
 
 \lstset{caption={Run commands}, label=src:22}
 \begin{lstlisting}[language={bash}]
@@ -61,23 +62,23 @@ mvn spring-boot:run # Start the server at port 8084
 \end{lstlisting}
 
 % -----------------------------------------------
-% Application Structure
-\section{Application Structure}
+% Project Structure
+\section{Project Structure}
 \label{sec:D-AppStructure}
 
-The application is developed using CAP (Cloud Application Programming Model) \cite{cap-welcome} as the backbone. 
-All three essential parts of the application, front-end, back-end and database model are being developed at the same place/project/root directory. 
+The project is developed using CAP (Cloud Application Programming Model) \cite{cap-welcome} as the backbone. 
+All three essential parts of the project, front-end, back-end and database model are being developed at the same place/project/root directory. 
 The implementations and definitions located in different directories of the project are logically packaged into separate name spaces (name space in CDS, package declaration in Java) (See folder structure in \autoref{src:3}).
 
 % (\autoref{fig:packStruc})
 In total, 6 applications are maintained and used by the parcel collection service. This is designed, so the authorizations can be enforced application-wise (accessibility of a role to a specific application). Each application unit consists of a front-end application and a back-end service.
-The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP \cite{http}. (\autoref{fig:appStruct})
+The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP \cite{http} (\autoref{fig:appStruct}). 
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{images/app_struct_new.jpg}
-	\caption{Application Structure Overview}
+	\caption{Project Structure Overview}
 	\label{fig:appStruct}
 \end{figure}
 
@@ -104,7 +105,7 @@ The details of inner parts of each directory will be introduced later in corresp
 \label{sec:D-db}
 
 The data model in this thesis is segregated into 2 parts (name space): \textbf{core} and \textbf{common}. 
-The \textbf{core} space includes solution specific data models. The \textbf{common} space includes common data models that could be shared among multiple applications (out of this thesis scope) and are implemented only as the prove of concepts. (See entity relationship diagram in \autoref{fig:db})
+The \textbf{core} space includes solution specific data models. The \textbf{common} space includes common data models that could be shared among multiple applications (out of this thesis scope) and are implemented only as the prove of concepts (see entity relationship diagram in \autoref{fig:db}). 
 
 \subsubsection{Entity Relationship Diagram}
 \begin{figure}[H]
@@ -592,7 +593,7 @@ The \textbf{first step} of implementing any service is to define its CDS view us
 	\item The data model in database to be exposed by the service.
 	\item The desired input validations.
 	\item The capabilites of action controls.
-    \item The role restrictions on the access of the application.
+    \item The role restrictions on the access of the services.
     \item (Optional) actions and functions dedicated to the service.
 \end{compactenum}
 
@@ -629,7 +630,7 @@ It is also important to understand the event processing of CAP. CAP provides out
 \subsubsection{Architecture Design}
 \label{subsubsec:D-srv-design}
 
-The back-end architecture follows the recommendations of CAP \cite{cap-java-architecture}, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine. (\autoref{fig:backArch})
+The back-end architecture follows the recommendations of CAP \cite{cap-java-architecture}, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine (\autoref{fig:backArch}). 
 
 \begin{figure}[H]
 	\centering
@@ -669,7 +670,7 @@ public void afterDeleteEvent(EventContext context) { }
 
 \bigskip
 In the manager layer, a \textit{<EntityName>Manager} class is defined for every entities. Each class contains entity related methods to support the services. It holds every required calculations, processing, business logics partitioned by entities. It can be more or less analog to the service layer in a normal back-end spring-boot application.
-See a base skeleton of manager class in \autoref{src:3000}
+See a base skeleton of manager class in \autoref{src:3000}.
 
  \lstset{caption={Manager class skeleton - Backend}, label=src:3000}
 \begin{lstlisting}[language={java}]
@@ -1014,8 +1015,8 @@ In the coming \autoref{sec:D-security} and \autoref{sec:D-testing}, the security
 \section{Security}
 \label{sec:D-security}
 
-The application is developed for internal use of SAP and can be accessed only from SAP devices. 
-Authorization of the application is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot \cite{springboot-doc} application.
+The project is developed for internal use of SAP and can be accessed only from SAP devices. 
+Authorization of the project is enforced through a role based accessibility to the specific services. Four roles are defined, namely Administrator, Facility Manager, Receptionist and End-User. The assignment of roles will be done centrally on the Business Technology Platform (BTP) upon deployment. As for local development, mock users are defined in \textit{<path-to>/application.yaml} in case of running as spring boot \cite{springboot-doc} application.
 
 \subsection{Roles Specification}
 The role-base access restriction on services are defined in \textit{root/srv/services/*-auth.cds} files using cds annotations. Bellow illustrated the exact locations of the auth files.
@@ -1069,16 +1070,16 @@ The following mock users are set up for the local development and testing:
 \section{Testing}
 \label{sec:D-testing}
 
-This last section of \autoref{ch:impl} focuses on the testing of the application. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. By the end of this section, a developer shall get a full taste of the used test framework and be able to extend the test cases on the basis of the existing ones.
+This last section of \autoref{ch:impl} focuses on the testing of the project. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. By the end of this section, a developer shall get a full taste of the used test framework and be able to extend the test cases on the basis of the existing ones.
 
 \subsection{Test Data}
 \label{subsec:test-data}
-In the CAP application, under development environment, test data is provided in the format of csv \cite{csv} files. The first line of any csv collects the properties of data model (only those stored physically in database, see \autoref{sec:D-db}). The csv files are named in the format: <namespace>-<EntityName>.csv. Empty csv files (with only the first line) can be generated by the command \textit{cds add data}, which can then can be found in the \textit{/db/data/} folder. Later on the records of data can be appended to those csv files.
+In a CAP application, under development environment, test data is provided in the format of csv \cite{csv} files. The first line of any csv collects the properties of data model (only those stored physically in database, see \autoref{sec:D-db}). The csv files are named in the format: <namespace>-<EntityName>.csv. Empty csv files (with only the first line) can be generated by the command \textit{cds add data}, which can then can be found in the \textit{/db/data/} folder. Later on the records of data can be appended to those csv files.
 
 The csv files containing the test data for this thesis are located in two locations exclusively (i.e. no records of entry are repeated). The test data for any code list entities are located in \textit{/db/data/*.csv}, as they are fixed and final values and will be also loaded on deployment. The test data for other entites are located in \textit{/test/data/*.csv}. The entries here will only be loaded into database under local environment and will be ignored when deploying.
 
 A test dedicated spring application environment is also defined in the \textit{application.yaml}. The main reason behind is that the loading path of the initial data is different in the two environment.
-The additional property-value pairs can be checked in \autoref{tab:property-values}
+The additional property-value pairs can be checked in \autoref{tab:property-values}.
 
 \begin{table}[ht]
 \centering

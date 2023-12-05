@@ -28,7 +28,7 @@ The main logic of the complete parcel collection cycle can be summarized as the 
 
 \section{General Requisite}
 \label{sec:GeneralRequisite}
-In order to use any of the deployed applications (the deployment is out of scope of this thesis and should be carried on only after), a user has to hold an SAP registered device (computer/tablet/phone) and has to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, a user has to hold a smart phone registered by SAP. 
+In order to use any of the deployed applications (the deployment is out of scope of this thesis and should be carried on only after), a user has to hold an SAP registered device (computer/tablet/phone) and has to use a supported browser (determined by SAP) with stable internet connection. In order to use \textbf{Pickup packages} application, a user has to hold a smart phone registered by SAP. 
 
 To mock the project in local environment, please first move to the developer documentation (\autoref{ch:impl}) and checkout the tools and the minimum software version. After the proper installations, clone the repository and run the following commands (\autoref{src:5020}).
 
@@ -40,7 +40,7 @@ To mock the project in local environment, please first move to the developer doc
 > mvn spring-boot:run
 \end{lstlisting}
 
-The project specifies four different roles: end user, receptionist, facility manager, and administrator. An authenticated user is restricted to accessing applications dedicated to their assigned role only. The assignment of the roles will be done centrally by a dedicated security component on the BTP (Business Technology Platform) \cite{btp}, where the solution is planned to be deployed (out of scope of this thesis). In the upcoming sections the documentation is sectioned by these roles. Herein, the meanings of each role within the thesis context are listed. Readers can navigate to the relevant sections by clicking on the provided section links.
+The project specifies four different roles: end user, receptionist, facility manager, and administrator. An authenticated user is restricted to accessing project applications dedicated to their assigned role only. The assignment of the roles will be done centrally by a dedicated security component on the BTP (Business Technology Platform) \cite{btp}, where the solution is planned to be deployed (out of scope of this thesis). In the upcoming sections the documentation is sectioned by these roles. Herein, the meanings of each role within the thesis context are listed. Readers can navigate to the relevant sections by clicking on the provided section links.
 
 \begin{description}
 	\item[End User (\autoref{sec:UdocEndUser})] Any SAP employee who holds an SAP registered device and would like to use the parcel collection service.
@@ -49,8 +49,8 @@ The project specifies four different roles: end user, receptionist, facility man
 	\item[Administrator (\autoref{sec:UdocAdministrator})] The master user who can access any of the applications. Assigned "Administrator" role on BTP.
 \end{description}
 
-In case the user is accessing the applications through browser from BTP \cite{btp}, the login process is done automatically. Otherwise, if a user is running the application locally, a browser pop up will be displayed (\autoref{fig:LocalLoginPopUp}) and a mock user (see existing mock credentials in \autoref{sec:D-security}) should be entered.
-If any user trying to access an unauthorised application, then the connection will fail (\autoref{fig:IllegalAccesstoUnauthorised Applications}). 
+In case the user is accessing the project applications through browser from BTP \cite{btp}, the login process is done automatically. Otherwise, if a user is running the project locally, a browser pop up will be displayed (\autoref{fig:LocalLoginPopUp}) and a mock user (see existing mock credentials in \autoref{sec:D-security}) should be entered.
+If any user trying to access an unauthorised application of the project, then the connection will fail (\autoref{fig:IllegalAccesstoUnauthorised Applications}). 
 
 \begin{figure}[H]
 	\centering
@@ -1230,8 +1230,8 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 \subsubsection{Edit Storage Slot}
 \label{subsubsec:editSlot}
 A storage can be edited at the "Storage Detail Screen" using the "Edit" (icon with pen) at the end of each slot row. 
-When the "Edit" button is clicked, a editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot.
-if "Save" is clicked, the modified details are submitted, the dialog is closed, a message toast pops up indicating the success and the changes are reflected on the "Storage Detail Screen". If "Close" is clicked, any changes will be discarded, the dialog is simply closed (\autoref{fig:MSSlotDetailEditBtn}).
+When the "Edit" button is clicked, a editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot. Additionally, the \textbf{Available} selection box is displayed only if the slot is in \textit{inuse} status.
+If "Save" is clicked, the modified details are submitted, the dialog is closed, a message toast pops up indicating the success and the changes are reflected on the "Storage Detail Screen". If "Close" is clicked, any changes will be discarded, the dialog is simply closed (\autoref{fig:MSSlotDetailEditBtn}).
 
 \begin{figure}[htb!]
 	\centering
