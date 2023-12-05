@@ -19,17 +19,15 @@ The main logic of the complete parcel collection cycle can be summarized as the 
     \item The parcel collection process is finished. At this point, the parcel is of \textit{picked up} status and the parcel details can no longer be removed from the system. The parcel details can be reviewed either from the \textbf{Manage packages} application by authorized party, or from the \textbf{My packages} application, in which the owned parcels of the logged in user is displayed.
 \end{compactenum}
 
-\begin{figure}[H]
+\begin{figure}[htb!]
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/overviews/sandbox.png}
+	\includegraphics[width=0.95\linewidth]{images/user_doc/lanchpadNewNew.png}
 	\caption{Application Launch Screen}
 	\label{fig:ApplicationLaunchScreen}
 \end{figure}
 
-
 \section{General Requisite}
 \label{sec:GeneralRequisite}
-
 In order to use any of the deployed applications (the deployment is out of scope of this thesis and should be carried on only after), a user has to hold an SAP registered device (computer/tablet/phone) and has to use a supported browser with stable internet connection. In order to use \textbf{Pickup packages} application, a user has to hold a smart phone registered by SAP. 
 
 To mock the project in local environment, please first move to the developer documentation (\autoref{ch:impl}) and checkout the tools and the minimum software version. After the proper installations, clone the repository and run the following commands (\autoref{src:5020}).
@@ -113,9 +111,13 @@ An \textbf{End User}, after clicking at the application tile, is redirected to t
 
 \subsubsection{Home Screen - Filter Usage}
 The user can search for entries by typing in free text of any possible content of the columns in the "Search Bar" (\autoref{fig:mpSearchBar}). The free text supports in-completed keywords and is case insensitive. 
-The default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry) can be used to narrow down the table results (\autoref{fig:MPDF}). For any drop down filters, the user can click at the small drop down arrow and select zero to many options. To set the time filter, the user should click at the "double box" (filter help) on the right of the filter box. This will pop up a dialog, at where the user can select the desired filtering option and enter the time with the clock utility (\autoref{fig:PHAjustTimeFilters}). More filters (\textbf{Delivery Time} (time entry)) can be accessed by clicking at "Adapt Filters" (\autoref{fig:mpMOreFilterAdaption}). While adjusting the filtering values, the list view is temporarily locked. By clicking the "Go" Button, the adjusted filters are run and results are displayed (\autoref{fig:PHAjustFilters-2}).
+The default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \textbf{Delivery Company} (drop down) and \textbf{Pickup Time} (time entry) can be used to narrow down the table results (\autoref{fig:MPDF}). 
 
-\begin{figure}[htb]
+For any drop down filters, the user can click at the small drop down arrow and select zero to many options. To set the time filter, the user should click at the "double box" (filter help) on the right of the filter box. This will pop up a dialog, at where the user can select the desired filtering option and enter the time with the clock utility (\autoref{fig:PHAjustTimeFilters}). 
+
+More filters (\textbf{Delivery Time} (time entry)) can be accessed by clicking at "Adapt Filters" (\autoref{fig:mpMOreFilterAdaption}). While adjusting the filtering values, the list view is temporarily locked. By clicking the "Go" Button, the adjusted filters are run and results are displayed (\autoref{fig:PHAjustFilters-2}).
+
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.9\linewidth]{images/user_doc/myPack/searchbar.png}
 	\caption{My Package Home Screen - Search Bar}
@@ -123,7 +125,7 @@ The default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \te
 \end{figure}
 
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 	\centering
 	\subcaptionbox{Status Filter}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/statusFIlter.png}}
@@ -152,7 +154,7 @@ The default filters (\textbf{Status} (drop down), \textbf{Type} (drop down), \te
 \end{figure}
 
 
-\begin{figure}[H]
+\begin{figure}[htb!]
 		\centering
 	\subcaptionbox{While Adjusting the Filter}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/myPack/filterAdaptionScreen.png}}
@@ -192,9 +194,11 @@ The summarized main actions the \textbf{End User} (see \autoref{sec:UdocEndUser}
 After clicking on the application tile, an \textbf{End User} is redirected to the 'Home Screen'. A list of packages is displayed, if there exists at least one package to pickup. 
 The list displays \textbf{the type with icon}, \textbf{the delivery company}, \textbf{the registration time} and \textbf{the location} of the packages. 
 If no package exists to pickup, a no package message is shown. 
-The total number of packages that can be pickup can be found at the title of the package list.
+The total number of packages that can be pickup can be found at the title of the package list (\autoref{fig:PickupHomeScreen-1}).
+
+
 In case there are existing packages, one or multiple packages can be selected from the list to pickup. 
-The "Toggle All" selection box can also be used to select or deselect all packages at once(\autoref{fig:PickupHomeScreen-1}, \autoref{fig:PickupHomeScreen-2}). 
+The "Toggle All" selection box can also be used to select or deselect all packages at once (\autoref{fig:PickupHomeScreen-2}). 
 
 
 \begin{figure}[H]
@@ -261,7 +265,7 @@ From there, a new pickup iteration may start.
 
 A \textbf{Receptionist} (See \autoref{sec:GeneralRequisite} for all possible roles) is granted the access to the two applications under the \textbf{Parcel Handling} section, namely \textbf{Register Packages} (\autoref{subsec:rp}) and \textbf{Manage Packages} (\autoref{subsec:mp}). A receptionist can quick jump to the section by left clicking the "Parcel Handling" tab. A receptionist can enter the application by left clicking the tiles (\autoref{fig:PHApplications}).
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=1\linewidth]{images/user_doc/overviews/ParcelHandlingTab.png}
 	\caption{Parcel Handling Applications}
@@ -285,7 +289,7 @@ The summarized main actions the \textbf{Receptionist} can take within the applic
 
 When the \textbf{Receptionist} clicks on the \textbf{Register Packages} application tile, he or she is redirected to the main screen, the 'Package Registration Form' (see \autoref{fig:RPOverview}). At this point, \textbf{Recipient}, \textbf{Type}, \textbf{Delivery Company} and optionally \textbf{Comment} of the package are required by the form. (\autoref{fig:RPformEntry})
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/user_doc/registration/overview.png}
 	\caption{Package Registration Form}
@@ -293,7 +297,7 @@ When the \textbf{Receptionist} clicks on the \textbf{Register Packages} applicat
 \end{figure}
 
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 	\centering
 	\subcaptionbox{Step 1: Choose Recipient}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/registration/entry1.png}}
@@ -338,7 +342,7 @@ If the "Discard" button is clicked, the form is reset to default state and \text
     \label{fig:RPsaveOp}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 	\centering
     \begin{subfigure}{1\linewidth}
         \centering
@@ -479,7 +483,7 @@ A list of packages is displayed at the lower part. The information provided for 
 A package can be selected by ticking the selection box before the listed package item. A receptionist can also select and de-select all packages by toggling the selection box at the left corner of the list header (\autoref{fig:MPListSelection}).
 By clicking on the \textbf{recipient} column item, a contact card will pop up displaying  the email and phone number of the recipient (\autoref{fig:MPReportCOntactCard}).
 
-\begin{figure}[H]
+\begin{figure}[htb!]
 	\centering
 	\subcaptionbox{Select All}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/managePack/ReportScreen/browse/listSelectAll.png}}
@@ -490,7 +494,7 @@ By clicking on the \textbf{recipient} column item, a contact card will pop up di
 	\label{fig:MPListSelection}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[height=200pt]{images/user_doc/managePack/ReportScreen/browse/contactcard.png}
 	\caption{Manage Packages Report Screen - Report List - Contact Card Show Case}
@@ -695,15 +699,7 @@ In case the \textbf{Receptionist} is at "Detail Screen" and want to edit the dis
 When the "Edit" button is clicked, a editing dialog pops up, allowing \textbf{Receptionist} to modify the \textbf{Recipient}, \textbf{Type}, \textbf{Delivery Company}, \textbf{Comment} of the package (\autoref{fig:MPDetailEditBtn}). 
 When clicking "Save", the modified details are submitted, the dialog closes, a message toast pops up indicating the success and the changes reflects on the "Detail Screen". When clicking "Close", any changes will be discarded, the dialog is simply closed (\autoref{fig:MPReportEditDone}).
 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/managePack/DetailScreen/edit/editToast.png}
-	\caption{Manage Packages Detail Screen - Edited}
-	\label{fig:MPReportEditDone}
-\end{figure}
-
-\begin{figure}[H]
+\begin{figure}[htb!]
 	\centering
     \vspace{5pt}
 	\subcaptionbox{Step 1: Edit Dialog}{
@@ -720,7 +716,12 @@ When clicking "Save", the modified details are submitted, the dialog closes, a m
 	\label{fig:MPDetailEditBtn}
 \end{figure}
 
-
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/user_doc/managePack/DetailScreen/edit/editToast.png}
+	\caption{Manage Packages Detail Screen - Edited}
+	\label{fig:MPReportEditDone}
+\end{figure}
 
 \pagebreak
 
@@ -1206,7 +1207,7 @@ When the "Mass Create" button is clicked, a creation dialog pops up. Numeric int
 
 After filling the dialog form, if "Create" is clicked, the entered info will be submitted, the dialog will be closed, a success message toast is displayed and the created storage slots are shown in the table on the "Storage Detail Screen". If "Cancel" is clicked, the dialog will be closed, the entered data is discarded (\autoref{fig:MSobjmassCreateSlotGuide}).
 
-\begin{figure}[htb] % MSobjmassCreateSlotGuide
+\begin{figure}[htb!] % MSobjmassCreateSlotGuide
 	\centering
 	\subcaptionbox{Step 1: Open Create Dialog}{
 		\includegraphics[width=0.45\linewidth]{images/user_doc/storage/StorageObjectPage/masCreateDlg.png}}
@@ -1232,7 +1233,7 @@ A storage can be edited at the "Storage Detail Screen" using the "Edit" (icon wi
 When the "Edit" button is clicked, a editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot.
 if "Save" is clicked, the modified details are submitted, the dialog is closed, a message toast pops up indicating the success and the changes are reflected on the "Storage Detail Screen". If "Close" is clicked, any changes will be discarded, the dialog is simply closed (\autoref{fig:MSSlotDetailEditBtn}).
 
-\begin{figure}[H]
+\begin{figure}[htb!]
 	\centering
     \vspace{5pt}
 	\subcaptionbox{Step 1: Edit Dialog}{
