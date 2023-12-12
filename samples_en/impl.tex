@@ -9,10 +9,10 @@ This chapter is dedicated to the developers and provides insights into the techn
 The application uses the combination of Intellij \cite{intellij} locally (for java back-end development) and of SAP's cloud based development application, SAP Business Application Studio \cite{bas} with Full-Stack Development dev-space (for database and UI development).
 For front-end development, UI5 framework \cite{ui5-toolkit} is used with fiori elements \cite{fiorielements} (more details in \ref{sec:D-UI}). 
 For back-end development, CAP Java \cite{cap-about}\cite{cap-java} flavor is chosen.
-Hence, for local development, up to date Java JDK \cite{java}, node.js \cite{nodejs} and CAP extensions are hard requirements. 
+Hence, for the local development, up to date Java JDK \cite{java}, node.js \cite{nodejs} and CAP extensions are hard requirements. 
 The SAP Business Application Studio came with all required software and plugins, so no need for further configurations. The specific set up of Intellij can be found \href{https://github.com/SAP-samples/cloud-cap-samples-java\#using-intellij-idea-community-and-ultimate}{here} \cite{proj-setup-intellij}.
-Firefox \cite{firefox} browser is used by the thesis for mock display/test of UI. The project also uses the maven build system \cite{maven}, which is preinstalled in SAP Business Application Studio (can be used from command line) and is supported by Intellij (can be used from application UI). 
-A snapshot of versions at the time of development is attached (\autoref{src:1}). To install the project for local development, the developer can reference to \autoref{sec:GeneralRequisite}.
+Firefox \cite{firefox} browser (on windows 11) and Safari \cite{safari} (on Mac OS) are used by the thesis for running the UI. The project also uses the maven build system \cite{maven}, which is preinstalled in SAP Business Application Studio (can be used from command line) and is supported by Intellij (can be used from application UI). 
+A snapshot of versions at the time of development is attached (\autoref{src:1}). To install the project for local development, the developer can reference to \autoref{sec:GeneralRequisite} of the user's documentation.
 
 \lstset{caption={Version check}, label=src:1}
 \begin{lstlisting}[language={bash}]
@@ -35,14 +35,14 @@ A snapshot of versions at the time of development is attached (\autoref{src:1}).
 \section{Run}
 \label{sec:D-run}
 
-The following commands can be used to start up the project quickly. It watches any front-end and data model changes within the project and refreshes automatically. and is useful for UI development. Note that in this case the Java back-end will not be included.
+The following command starts up the project quickly. It watches any front-end and data model changes within the project and refreshes automatically. It is useful for UI development. Note that using this the Java back-end will not be included.
 
 \lstset{caption={Run commands}, label=src:22}
 \begin{lstlisting}[language={bash}]
 cds watch 
 \end{lstlisting}
 
-To include the custom Java back-end added, the following command from maven can be used to start the project as a spring-boot application in the SAP Business Application Studio. In Intellij, the project can be started by first clicking at the install goal from the maven tab, and then the top level run button on the menu to start the spring-boot server at port 8084.
+To include the custom Java back-end added, the following commands from maven can be used to compile and start the project as a spring-boot application in the SAP Business Application Studio. In Intellij, the project can be started by first clicking at the install goal from the maven tab, and then the top level run button on the menu to start the spring-boot server at port 8084.
 \begin{lstlisting}[language={bash}]
 mvn clean install # Compile *.cds files and create gen folder.
 mvn spring-boot:run # Start the server at port 8084
@@ -65,7 +65,7 @@ The implementations and definitions located in different directories of the proj
 \end{figure}
 
 % (\autoref{fig:packStruc})
-In total, 6 applications are maintained and used by the parcel collection service. This is designed, so the authorizations can be enforced application-wise (accessibility of a role to a specific application). Each application unit consists of a front-end application and a back-end service.
+In total, 6 micro applications are maintained and used by the parcel collection service (see \autoref{sec:BusinessContext}). This is designed, so the authorizations can be enforced application-wise (accessibility of a role to a specific application). Each application unit consists of a front-end application and a back-end service.
 The back-end services all build upon the same CAP back-end implementation, which consumes database service through CAP's provided persistence service library \cite{cap-java-persistencesrv}. The front-end runs on the browser and communicates with back-end through the OData protocol \cite{odata} through HTTP \cite{http} (\autoref{fig:appStruct}). 
 
 
@@ -91,15 +91,9 @@ The details of inner parts of each directory will be introduced later in corresp
 \label{sec:D-db}
 
 The data model in this thesis is segregated into 2 parts (name space): \textbf{core} and \textbf{common}. 
-The \textbf{core} space includes solution specific data models. The \textbf{common} space includes common data models that could be shared among multiple applications (out of this thesis scope) and are implemented only as proof of concept (see entity relationship diagram in \autoref{fig:db}). 
+The \textbf{core} space includes solution specific data models. The \textbf{common} space includes common data models that could be shared among multiple applications (out of this thesis scope) and are implemented only as proof of concept The full entity relationship diagram of the database schema of the project can be checked in \autoref{appx:diagram} - \autoref{fig:db}. 
 
-\subsection{Entity Relationship Diagram}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/DB/DB_Relationship.png}
-	\caption{Data Model - Entity Relationship Diagram}
-	\label{fig:db}
-\end{figure}
+% \subsection{Entity Relationship Diagram}
 
 \subsection{CDL}
 \label{subsec:db-cdl}
@@ -129,10 +123,10 @@ Three common aspects are used by this thesis. \textit{managed} comes with 4 elem
 \lstset{caption={Aspect managed from @sap/cds/common}, label=src:7}
 \begin{lstlisting}[language={c++}]
 aspect managed {
-  createdAt  : Timestamp @cds.on.insert : $now;
-  createdBy  : User      @cds.on.insert : $user;
-  modifiedAt : Timestamp @cds.on.insert : $now  @cds.on.update : $now;
-  modifiedBy : User      @cds.on.insert : $user @cds.on.update : $user;
+  createdAt: Timestamp @cds.on.insert: $now;
+  createdBy: User      @cds.on.insert: $user;
+  modifiedAt: Timestamp@cds.on.insert: $now  @cds.on.update: $now;
+  modifiedBy: User     @cds.on.insert: $user @cds.on.update: $user;
 }
 \end{lstlisting}
 
@@ -155,17 +149,15 @@ aspect CodeList @(
 \end{lstlisting}
 
 Unique constraints are modeled with \textit{@assert.unique.<constraintName>} annotations \cite{cap-cds-common-annotations} at model level, enforcing uniqueness checks on all possible CREATE and UPDATE operations.
-
-\autoref{src:10} shows how a unique constraint and the fields of the managed aespect are reflected by given a pair of example of CDL definitions and the according generated HANA SQL DDL.
+\autoref{src:10} shows how a unique constraint and the fields of the managed aspect are reflected by given a pair of example of CDL definitions and the according generated HANA SQL DDL.
 
 \lstset{caption={managed, cuid delivery company entity with unique constraint and corresponding SQL DDL}, label=src:10}
 \begin{lstlisting}[language={sql}]
 @assert.unique: {nbunique: [name]}
-entity DeliveryCompany : cuid, managed {
+entity EntityName : cuid, managed {
     name     : String(255) not null;
 }
-
-CREATE TABLE com_sap_internal_digitallab_packagehandling_core_DeliveryCompany (
+CREATE TABLE EntityName (
   ID NVARCHAR(36) NOT NULL,
   createdAt TIMESTAMP(7),
   createdBy NVARCHAR(255),
@@ -173,20 +165,19 @@ CREATE TABLE com_sap_internal_digitallab_packagehandling_core_DeliveryCompany (
   modifiedBy NVARCHAR(255),
   name NVARCHAR(255) NOT NULL,
   PRIMARY KEY(ID),
-  CONSTRAINT core_DeliveryCompany_nbunique UNIQUE (name)
+  CONSTRAINT core_EntityName_nbunique UNIQUE (name)
 ); 
 \end{lstlisting}
 
 
-In \autoref{src:11}, how the code list is implemented in normal SQL is illustrated.
+In \autoref{src:11}, how the code list is implemented in normal SQL is illustrated. It can be observed that by implementing the \textit{CodeList} aspect, two fields, name and descr are added. In addition to this, the enum entity will be localization enabled, which means the displayed text at UI level will be translated according to the system language automatically.
 
 \lstset{caption={codelist package type entity and corresponding SQL DDL}, label=src:11}
 \begin{lstlisting}[language={sql}]
-entity PackageType : sap.common.CodeList {
+entity EnumEntity : sap.common.CodeList {
     key code : String(255) not null;
 }
-
-CREATE TABLE com_sap_internal_digitallab_packagehandling_core_PackageType (
+CREATE TABLE EnumEntity (
   name NVARCHAR(255),
   descr NVARCHAR(1000),
   code NVARCHAR(255) NOT NULL,
@@ -266,14 +257,12 @@ Three other not so involved folders are \textbf{i18n} (in case of text translati
 
 For a template application, the main implementations are under \textbf{webapp} (custom js implementations) and \textbf{annotations} (cds support for customizing Fiori elements templates \cite{fiori-showcase}\cite{fiori-design}\cite{fiori-toolkit}) folders.
 
-\bigskip
 Under the \textbf{webapp} collects almost the same set of folders / files as in the \textbf{webapp} of freestyle UIs. The main difference here is that there is no longer normal views (\textbf{view} folder) for the application, instead the common fiori element templates (List Report Page \& Object Page in this thesis) are defined in the \textbf{manifest.js}. Those templates are loaded from SAP UI5 standard library as the view of the application. They use their own standard controllers and would consume the entity data directly from the OData v2 / v4 models defined in the \textbf{manifest.json}. 
 
 % Hence, the ordinary \textbf{model}, \textbf{view}, \textbf{controller} folders no longer exists directly \textbf{webapp}.
 
-However, in most of the cases custom actions / columns have to be added to the used templates (mostly as buttons). The location of action buttons / columns (within the template page) is defined in the \textbf{manifest.json}, while their business logics / representations are implemented under the \textbf{webapp/ext} folder. Here splits into three more folders: \textbf{component} (the controllers for corresponding dialog fragments), \textbf{view} (the fragment xml of column or dialog used by the actions), \textbf{controller} (the master collection of action handler functions, the extended controller of fiori element templates if necessary).
+In most of the cases, custom actions / columns have to be added to the used templates (mostly as buttons). The location of action buttons / columns (within the template page) is defined in the \textbf{manifest.json}, while their business logics / representations are implemented under the \textbf{webapp/ext} folder. Here it splits into three more folders: \textbf{component} (the controllers for corresponding dialog fragments), \textbf{view} (the fragment xml of column or dialog used by the actions), \textbf{controller} (the master collection of action handler functions, the extended controller of fiori element templates if necessary).
 
-\bigskip
 Last but not least, the \textbf{annotations} collect the cds annotations on the entities, which are combined with the base templates during the rendering.
 Those annotations, based on their usages / effects, are put into three cds files (\textbf{labels.cds, ui.cds, value-help.cds}) and are aggregated with an \textbf{index.cds} file.
 The following customizations are done using the annotations:
@@ -281,9 +270,9 @@ The following customizations are done using the annotations:
 \begin{compactenum}
     \item Label text of properties of displayed entities.
     \item Displayed filters and fields. (default/non-default/hidden)
-    \item highlighting/linking/quick previews of fields.
+    \item Highlighting/linking/quick previews of fields.
     \item Define section facets/components of templates.
-    \item value helps for property filters.
+    \item Value helps for property filters.
     \item Quick variant based on fields values.
 \end{compactenum}
 
@@ -333,9 +322,10 @@ root/
 \end{lstlisting}
 
 \subsection{Manage Storage}
+\label{subsec:dev-ui-ms}
 
-Manage Storage is an utility for facility managers to maintain the information regarding the possible storage and slots storing the packages and is a template UI.
-The application consumes the \textbf{StorageService} back-end services.
+Manage Storage is an utility for facility managers to maintain the information regarding the possible storage and slots storing the packages and is a template UI (see \autoref{subsec:ms} for more information on the UX).
+The application consumes the \textbf{StorageService} back-end service (\autoref{subsec:back-ms}).
 The implementation of the app
 located in the \textbf{managestorage} module and under the name space of
 \textbf{com.sap.internal.digitallab.packagehandling.app.manage.storages}.
@@ -349,6 +339,10 @@ Line items and facets, filters displays are customized for storage and slot.
 
 \subsubsection{Extension}
 
+Besides the standard app master controller, a Fiori object page extended controller is also added to enable the handling of the custom column buttons on the storage object page. The map column is added as a column fragment to be rendered as a link to external site.
+
+\bigskip
+\noindent
 The following dialog fragments are implemented:
 \begin{compactenum}
     \item Slot creation dialog
@@ -357,14 +351,8 @@ The following dialog fragments are implemented:
     \item Storage edit dialog
     \item Slot mass creation dialog
 \end{compactenum}
-
 \bigskip
-The following column fragments are added:
-\begin{compactenum}
-    \item Map column with link to external site.
-\end{compactenum}
-
-\bigskip
+\noindent
 The following components are implemented:
 \begin{compactenum}
     \item Slot creation dialog controller
@@ -375,17 +363,12 @@ The following components are implemented:
     \item Slot deletion message box controller
 \end{compactenum}
 
-\bigskip
-The following controller(s) are implemented:
-\begin{compactenum}
-    \item App master controller
-    \item Fiori object page extended controller
-\end{compactenum}
 
 \subsection{Manage Company}
+\label{subsec:dev-ui-mc}
 
-Manage Company is an utility for facility managers to maintain the information regarding the possible companies delivering the packages and is a template UI.
-The application consumes the \textbf{CompanyService} back-end services.
+Manage Company is an utility for facility managers to maintain the information regarding the possible companies delivering the packages and is a template UI (see related UX in \autoref{subsec:mc}).
+The application consumes the \textbf{CompanyService} back-end services (\autoref{subsec:back-mc}).
 The implementation of the app
 located in the \textbf{managecompany} module and under the name space of
 \textbf{com.sap.internal.digitallab.packagehandling.app.manage.companies}.
@@ -404,13 +387,14 @@ A master app controller is implemented.
 Two dialog fragments are implemented in couple with their own dialog components for the creation and edition of the companies. Finally, a column fragment displaying together the company logo and name is added and a style.css cascading style sheets is used for its styling. 
 
 \subsection{Manage Package}
+\label{subsec:dev-ui-mp}
 
-Manage Package is the app for packages managements within package handling solution and is a template UI.
-The application consumes the \textbf{PackageService} back-end services.
+Manage Package is the app for packages managements within package handling solution and is a template UI (see related UX in \autoref{subsec:mp}).
+The application consumes the \textbf{PackageService} back-end services (\autoref{subsec:back-mp}).
 The implementation of the app
 located in the \textbf{managepackage} module and under the name space of
 \textbf{com.sap.internal.digitallab.packagehandling.app.manage.package}.
-Entity \textbf{Package} exposed by  \textbf{PackageService} is used as main OData entity.
+The entity \textbf{Package} exposed by  \textbf{PackageService} is used as main OData entity.
 List Report and Object Page are defined for packages: \textit{List Report of packages} navigates to \textit{Object Page of package}.
 
 \subsubsection{Annotations}
@@ -421,45 +405,26 @@ Contact card is defined for \textbf{User}.
 Three variants (new, confirmed, picked up) are defined based on the status of the \textbf{Package} entity.
 
 \subsubsection{Extension}
-The following dialog fragments are implemented:
-\begin{compactenum}
-    \item Package confirmation dialog
-    \item Package edit dialog
-\end{compactenum}
+
+A master controller is implemented collecting all handlers of custom actions. Two dialog fragments are added with their corresponding components (controllers) for the confirmation and edition of the packages. An extra component reusing the standard message box from UI5 library is also included for the option to pickup a package. 
+A cascading style sheet  is added for the styling of column fragments.
+
 
 \bigskip
-The following column fragments are added:
+\noindent
+List of column fragments that are added:
 \begin{compactenum}
     \item Company column displays company logo and name.
     \item Location columns displays combined storage and slot.
     \item Type column displays type with icon.
 \end{compactenum}
 
-\bigskip
-The following components are implemented:
-\begin{compactenum}
-    \item Package confirmation dialog controller
-    \item Package edit dialog controller
-    \item Package pickup massage box controller
-\end{compactenum}
-
-\bigskip
-The following controller(s) are implemented:
-\begin{compactenum}
-    \item App master controller
-\end{compactenum}
-
-\bigskip
-The following cascading style sheets(s) are added:
-\begin{compactenum}
-    \item style.css
-\end{compactenum}
-
 
 \subsection{Register Package}
+\label{subsec:dev-ui-rp}
 
-Register Package is the app for packages managements within package handling solution and is a freestyle UI.
-The application consumes the \textbf{RegistrationService} back-end services.
+Register Package is the app for packages managements within package handling solution and is a single-page freestyle UI (see related UX in \autoref{subsec:rp}).
+The application consumes the \textbf{RegistrationService} back-end services (\autoref{subsec:back-rp}).
 The implementation of the app
 located in the \textbf{registerpackage} module and under the name space of
 \textbf{com.sap.internal.digitallab.packagehandling.app.register.packages}.
@@ -474,8 +439,9 @@ There are two controllers used by the application. \textbf{App.controller.js} is
 There are two views used by the application. \textbf{App.view.xml} acts as the entry point of the application binding to the \textbf{App.controller.js} controller. \textbf{Registration.view.xml} contains the xml annotations of the registration page, binds to \textbf{Registration.controller.js} controller, and acts as the entry page of the application (rendered as the template when entering the application).
 
 \subsection{Pickup Package}
+\label{subsec:dev-ui-pp}
 
-Pickup Package is the app for all end users to pick a confirmed package. It consumes the \textbf{PickupService} from the back-end services and is a two-screen freestyle UI5 application. The implementation of the app located in the \textbf{pickuppackage} module and under the name space of \textbf{com.sap.internal.digitallab.packagehandling.app.pickup.package}.
+Pickup Package is the app for all end users to pick a confirmed package. It consumes the \textbf{PickupService} from the back-end services (\autoref{subsec:back-pp}) and is a two-screen freestyle UI5 application (see related UX in \autoref{subsec:pp}). The implementation of the app located in the \textbf{pickuppackage} module and under the name space of \textbf{com.sap.internal.digitallab.packagehandling.app.pickup.package}.
 
 \subsubsection{Models}
 The default model of the application is the OData model based on the \textbf{PickupService}. Local json model \textbf{"usr"} stores the dynamic user data. Local json model \textbf{"packages"} stores the freshest count of the retrieved packages from the \textbf{PickupService}. Both are bound by the overview and done views of the application.
@@ -489,13 +455,14 @@ The application also utilized the standard message box component from the framew
 There are three views used by the application. \textbf{App.view.xml} acts as the entry point of the application bound to the \textbf{App.controller.js} controller. \textbf{Overview.view.xml} contains the xml annotations of the Overview page, binds to \textbf{Overview.controller.js} controller, and acts as the entry page of the application (rendered as the template when entering the application). \textbf{Done.view.xml} contains the xml annotations of the post pickup page. The navigation between two view is enabled with action buttons.
 
 \subsection{My Package}
+\label{subsec:dev-ui-ph}
 
-My Package is the app for packages managements within package handling solution and it is a one page template UI.
-The application consumes the \textbf{HistoryService} back-end services.
+My Package is the app for packages managements within package handling solution and it is a one page template UI (see related UX in \autoref{subsec:ph}).
+The application consumes the \textbf{HistoryService} back-end services (\autoref{subsec:back-ph}).
 The implementation of the app
 located in the \textbf{browsepackage} module and under the name space of
 \textbf{com.sap.internal.digitallab.packagehandling.app.browse.package}.
-Entity \textbf{Package} exposed by  \textbf{HistoryService} is used as main OData entity.
+The entity \textbf{Package} exposed by  \textbf{HistoryService} is used as main OData entity.
 List Report is defined for packages.
 
 \subsubsection{Annotations}
@@ -505,24 +472,22 @@ Line items, filters displays are adjusted.
 
 \subsubsection{Extension}
 
+The My Package UI contains two column fragments and a cascading style sheet used by the fragments.
+
 \bigskip
-The following column fragments are added:
+\noindent
+List of the column fragments that are added:
 \begin{compactenum}
     \item Company column displays company logo and name.
     \item Type column displays type with icon.
 \end{compactenum}
 
-\bigskip
-The following cascading style sheets(s) are added:
-\begin{compactenum}
-    \item style.css
-\end{compactenum}
 
 
 \section{Services}
 \label{sec:D-srv}
 
-As mentioned in the above sections, 6 OData end-points are maintained by the back-end. This section will first give an overview of the overall architecture and technology used (\autoref{subsec:D-srv-back-arch}), then it will give more detailed and specific information on each of the services.
+As mentioned in \autoref{sec:D-AppStructure}, 6 OData end-points are maintained by the back-end. This section will first give an overview of the overall architecture and technology used (\autoref{subsec:D-srv-back-arch}), then it will give more detailed and specific information on each of the services.
 
 \subsection{Back-end Architecture Overview}
 \label{subsec:D-srv-back-arch}
@@ -579,13 +544,13 @@ To support debugging, a \textbf{Logger} is added to every class to provide loggi
 \end{lstlisting}
 
 \bigskip
-To fully understand how to write these implementations, one should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here we list the very necessary background knowledge and factors of the generated code, before continuing with implementations. 
+To fully understand how to write these implementations, the developer should first recognize the \textit{srv/gen} folder, which contains generated Java codes by cds builder. Here we list the very necessary background knowledge and factors of the generated code, before continuing with implementations. 
 \begin{compactenum}
 	\item \textit{srv/gen} folder is generated from all the \textit{*.cds} files using in the \textit{index.cds} (recursively used), for an entity or a service definition.
     \item The generated code are in Java and are under the same package domain as specified in namespace of the \textit{*.cds} files.
     \item For each entity and service a couple of \textit{EntityName.java} and \textit{EntityName\_.java} interface being generated. 
     \item The developer can use \textit{EntityName\_.CDS\_NAME} in case of the need to clarify the usage of certain entity or service. Also \textit{EntityName\_.class} in CQN as an analogy of table names. 
-    \item The developer should use \textit{EntityName} in case of the usage of the real entity or service, similar to object model in JPA. Also in the case of CQN, constants of column names can be retrieved as static fields like this: \textit{EntityName.COLUMN\_NAME}, which should be encouraged over giving string expressions.
+    \item The developer should use \textit{EntityName} in case of the usage of the real entity or service, similar to object model in JPA \cite{jpa}. Also in the case of CQN, constants of column names can be retrieved as static fields like this: \textit{EntityName.COLUMN\_NAME}, which should be encouraged over giving string expressions.
 \end{compactenum}
 
 \bigskip
@@ -596,7 +561,7 @@ It is also important to understand the event processing of CAP. CAP provides out
 
 The back-end architecture follows the recommendations of CAP \cite{cap-java-architecture}, Spring MVC \cite{spring-mvc} and microservices architecture principles. Its implementation is divided into 3 layers: handlers, managers and repositories. Upon a OData service request, queries are forwarded to the so called Consumption API which then triggers the generic event handlers of CAP passing a so called event context. At this point, handler layers came into play and dispatch the tasks associated with the event to manager layers, where business logics (processing/caculations) are coded. In case of a interaction with database models, the processing is delegated to the repository layer, which implements sets of database related operations at Java level using CQL (CDS Query Language) \cite{cap-cds-cql} communicating with CQN execution engine (\autoref{fig:backArch}). 
 
-\begin{figure}[H]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[height=400px]{images/backend_architecture.png}
 	\caption{Back-end architecture}
@@ -613,7 +578,7 @@ In the handler layer, a \textit{<ServiceName>ServiceHandler} class is defined fo
 public class EnvolvedServiceHandler implements EventHandler { }
 \end{lstlisting}
 
-In case of necessary usage of manager layer, private field and auto-wired constructor injection combination is used, as supported by the spring-boot framework. See a base skeleton of class association (composition in spring-boot implementation aspect) in \autoref{src:2018}:
+In case of necessary usage of manager layer, private field and auto-wired constructor injection combination is used, as supported by the spring-boot framework. See a base skeleton of class association (composition in spring-boot implementation aspect) in \autoref{src:2018}.
 
 \lstset{caption={Association class skeleton - Backend}, label=src:2018}
 \begin{lstlisting}[language={java}]
@@ -625,7 +590,7 @@ public CompanyServiceHandler(UsedEntityManager manager) {
 }
 \end{lstlisting}
 
-To explicitly watch an event (CRUD, custom events/actions/functions), methods should look like in \autoref{src:2019}:
+To explicitly watch an event (CRUD, custom events/actions/functions), methods should look like in \autoref{src:2019}.
 \lstset{caption={Listening method skeleton - Backend}, label=src:2019}
 \begin{lstlisting}[language={java}]
 @After(event = {CqnService.EVENT_DELETE})
@@ -644,14 +609,12 @@ public class OneEntityManager {
     private final OneOtherEntityRepository repo2;
     private final OtherEntityManager mgr;
     ...
-
     @Autowired
     public PackageManager(OneEntityRepository repo1, OneOtherEntityRepository repo2, OtherEntityManager mgr) {
         this.repo1 = repo1;
         this.repo2 = repo2;
         this.mgr = mgr;
     }
-
     public void someMethodHandlingTheRequestsFromHandlerClass() {}
     private void someHelperMethod() {}
 }
@@ -692,14 +655,18 @@ public Result selectById(String id) {
 }
 \end{lstlisting}
 
+So far the explanation on the technical stack of the back-end implementations is finished. The specification of each services follows.
 
 
 \subsection{Storage Service}
-Storage service has the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage. 
+\label{subsec:back-ms}
+
+Storage service has the purpose of holding information on the possible storage places and keep track of the usages of single storage slots with the storage (see more details of the business logic in \autoref{subsec:ms}). 
 
 \subsubsection{CDS View}
 
-Entities being exposed by the service are:
+\noindent
+List of entities being exposed by the service:
 \begin{compactenum}
 	\item Storage (*)
     \item StorageSlot (*)
@@ -709,27 +676,17 @@ Entities being exposed by the service are:
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
+In the service's CDS view, the association (foreign key validation) is reinforced by \textbf{@assert.target} on \textbf{StorageSlot.storage}, which will check the existence of the foreign key at runtime.
+ The input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields.
 
 \bigskip
-Mandatory fields of storage service:
+\noindent
+List of mandatory fields of storage service:
 \begin{compactenum}
 	\item Storage.name
     \item Storage.buildingFloor
     \item StorageSlot.name
     \item StorageSlot.storage
-\end{compactenum}
-
-\bigskip
-Read only fields of storage service:
-\begin{compactenum}
-	\item StorageSlot.status
-\end{compactenum}
-
-\bigskip
-Reinforced foreign keys of storage service:
-\begin{compactenum}
-	\item StorageSlot.storage
 \end{compactenum}
 
 \bigskip
@@ -740,27 +697,24 @@ A custom action \textit{massCreate} is implemented, which creates multiple slots
 
 \subsubsection{Java}
 
-Classes and methods related to storage service are illustrated in the UML. Private utility methods are ignored for the sake of simplicity.
-\begin{figure}[!h]
+Classes and methods related to storage service are illustrated in the UML (\autoref{fig:storage_service_uml}). Private utility methods are ignored for the sake of simplicity.
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{images/service_class_diagrams/storage_service_class_diagram.png}
     \caption{Storage Service UML}
     \label{fig:storage_service_uml}
 \end{figure}
-\pagebreak
 
 \subsection{Company Service}
-Company service provides the possibilities for facaulty managers and administrators to CRUD the delivery companies and is exposed under the end-point \textbf{api/CompanySerive}.
+\label{subsec:back-mc}
+
+Company service provides the possibilities for facaulty managers and administrators to CRUD the delivery companies and is exposed under the end-point \textbf{CompanySerive} (see more details of the business logic in \autoref{subsec:mc}).
 
 \subsubsection{CDS View}
+The company service exposes only one entity, \textbf{DeliveryCompany}, with all of its fields.
+The input invalidation checks are defined for the projected \textbf{name} field of the \textbf{DeliveryCompany} using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. 
 
-The entity \textbf{DeliveryCompany} is exposed with all of its fields.
-
-\bigskip
-In the service's CDS view, input invalidation checks are also defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. In the company service, the projected \textbf{name} field of the \textbf{DeliveryCompany} is defined as mandatory.
-
-\bigskip
-CRUD are supported for a delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
+CRUD are supported for a single delivery company entity. Custom Java code ensures the relevant packages' references to the company are deleted seamlessly upon the deletion of the company.
 
 \subsubsection{Java}
 
@@ -772,17 +726,20 @@ Classes and methods related to storage service is illustrated in the UML (\autor
     \caption{Company Service UML}
     \label{fig:company_service_uml}
 \end{figure}
-\pagebreak
+
 
 % -------------------------------------
 %  Package service
 %  -----------------------------------
 \subsection{Package Service}
-Package service provides receptionists, faculty managers and administrators the abilities to update and delete a package and reads its related information. It is exposed at OData end-point \textit{api/PackageService}.
+\label{subsec:back-mp}
+
+Package service provides receptionists, faculty managers and administrators the abilities to update and delete a package and reads its related information (see more details of the business logic in \autoref{subsec:mp}). It is exposed at OData end-point \textit{PackageService}.
 
 \subsubsection{CDS View}
 
-Entities being exposed by the service are:
+\noindent
+List of entities being exposed by the service:
 \begin{compactenum}
 	\item Package (*)
     \item PackageType (*)
@@ -792,12 +749,15 @@ Entities being exposed by the service are:
     \item DeliveryCompany (ID, name, logo)
     \item Building (ID, name, floors)
     \item BuildingFloor (ID, name, building)
+    \item Receptionist (*)
+    \item User (*)
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, input invalidation checks are defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
+The association (foreign key validation) is reinforced by \textbf{@assert.target} on \textbf{Package.type}, which implies the checking of the existence of the foreign key at runtime. The input invalidation checks are defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. 
 
 \bigskip
+\noindent
 Mandatory fields of package service:
 \begin{compactenum}
 	\item Package.recipient
@@ -805,93 +765,52 @@ Mandatory fields of package service:
     \item Package.receptionist
 \end{compactenum}
 
-\bigskip
-Read-only fields of package service:
-\begin{compactenum}
-	\item Package.recipient
-\end{compactenum}
-
-\bigskip
-Reinforced foreign keys of package service:
-\begin{compactenum}
-	\item Package.type
-\end{compactenum}
 
 \bigskip
 Two custom unbounded actions \textit{confirm} and \textit{pickup} are also defined in the CDS view, to facilitate the confirmation of a package (new -> confirmed) and the picked-up possibility of a package by a facility manager and administrator (confirmed -> pickup). Two action controls, \textit{confirm\_ac} and \textit{pickup\_ac} then are introduced coupling with the previous two actions, to make sure that the action button will only be available at desired time at the UI level. The bound is implemented with the \textit{@Capabilities} annotation. Furthermore, a delete action control is added on the package entity, which shall be activated only when a package is of status new / confirmed. This controls the activation of "delete" button at UI level specified by the \textit{@Capabilities} annotation. 
 
-\bigskip
-An useful detail here is that, the pickup action in the package service shall be used by receptionist and facility manager only, when the end-user cannot access to the pickup service (will be introduced later in the chapter). While both service have the same pickup action, the \textit{pickup\_ac} in package is shared by the two service.
 
-\bigskip
+An useful detail here is that, the pickup action in the package service shall be used by receptionist and facility manager only, when the end-user cannot access to the pickup service (see business scenario in \autoref{subsec:mp}). While both service have the same pickup action, the \textit{pickup\_ac} in package is shared by the two service.
+
 Read, update and delete possibilities of an package entity are guaranteed by the package service. For the other exposed entities, only read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{PackageService.cds}. 
 
-\bigskip
-An useful note here is that, the create operation of the package is missing in this service, as there is a separated registration service which is only responsible for the creation of new package, which will be detailed later.
+An useful reminder here is that, the create operation of the package is missing in this service, as there is a separated registration service which is only responsible for the creation of new package, which will be detailed later.
 
 \subsubsection{Java}
 
-The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related classes and methods can be checked in the UML (\autoref{fig:package_service_uml}). 
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/service_class_diagrams/package_service_class_diagram.png}
-    \caption{Package Service UML}
-    \label{fig:package_service_uml}
-\end{figure}
-\pagebreak
-
+The realization of the calculations of action control and the custom behaviour of actions are done in the Java part. The related classes and methods can be checked in the UML (\autoref{appx:diagram} -\autoref{fig:package_service_uml}). 
 
 
 % -------------------------------------
 %  Registration service
 %  -----------------------------------
 \subsection{Registration Service}
+\label{subsec:back-rp}
 
-Registration service provides receptionists, faculty managers and administrators the abilities to create (register) a package and reads its related information. It is exposed at OData end-point \textit{api/RegistrationService}. 
-
-\bigskip
-One thing to remember is that at this stage a package is only created but not stored, the status is all new and the storage details shall be determined in the previous package service. More details of the business logic can be check in the user documentation.
+Registration service provides receptionists, faculty managers and administrators the abilities to create (register) a package and reads its related information (see more details of the business logic in \autoref{subsec:rp}). 
+It is exposed at OData end-point \textit{RegistrationService}. 
 
 \subsubsection{CDS View}
 
-Enities being exposed by the service are:
+\noindent
+List of entities being exposed by the service are:
 \begin{compactenum}
 	\item Package (*)
     \item PackageType (*)
     \item PackageStatus (*)
     \item DeliveryCompany (id, name)
+    \item Receptionist (*)
+    \item User (*)
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, input invalidation checks are defined for mandatory fields using \textbf{@mandatory} annotation. This ensures the rejection of creation in case of missing fields. \textbf{@read-only} annotation is used to insure the non-editable fields and association (foreign key validation) is reinforced by \textbf{@assert.target}, which will check the existence of the foreign key at runtime.
+The same set of special annotations (\textbf{@mandatory}, \textbf{@assert.target}) are defined for the same projected properties for the registration service as the package service (\autoref{subsec:back-mp}).
 
-\bigskip
-Mandatory fields of package service:
-\begin{compactenum}
-	\item Package.recipient
-    \item Package.type
-    \item Package.receptionist
-\end{compactenum}
-
-\bigskip
-Read-only fields of package service:
-\begin{compactenum}
-	\item Package.recipient
-\end{compactenum}
-
-\bigskip
-Reinforced foreign keys of package service:
-\begin{compactenum}
-	\item Package.type
-\end{compactenum}
-
-\bigskip
-Creating the possibility of a package entity is guaranteed by the registration service. For the other exposed entities, only the read possibility is allowed. The reinforcement of CRUD capabilities can be checked in the \textbf{RegistrationService.cds}. The reason behind these restrictions had already been discussed in the previous sector.
+Creating the possibility of a package entity is guaranteed by the registration service (other operations are implemented already in the package service (\autoref{subsec:back-mp})). For the other exposed entities, only the read possibility is allowed. 
 
 \subsubsection{Java}
 
-This is a simpler service compare to the previous ones. No actions or action controls are defined for this service. Only a pre-processing (pre-fill the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML (\autoref{fig:registration_service_uml}). 
+No actions or action controls are defined for the registration service. Only a pre-processing (pre-filling the package status to new) is implemented at Java level and a simple handler class is pretty much all one would need. Nevertheless, the related classes and methods can be checked in the UML (\autoref{fig:registration_service_uml}). 
 
 \begin{figure}[H]
     \centering
@@ -908,12 +827,17 @@ This is a simpler service compare to the previous ones. No actions or action con
 %  Pickup service
 %  -----------------------------------
 \subsection{Pickup Service}
+\label{subsec:back-pp}
 
-While the previous 4 services are doing uninteresting administration stuff and can be accessed only by nominated roles, here comes finally 2 service, opening to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception. It is exposed at OData end-point \textit{api/PickupService}. 
+While the previous 4 services focuses on administration topics and can be accessed only by nominated roles, the finally 2 service are opened to all end-users with a proper company device. One of them is the pickup service. As the name suggest, it provides any authenticated user the abilities to check and pickup his or her own confirmed package at the reception (see more details of the business logic in \autoref{subsec:pp}). It is exposed at OData end-point \textit{PickupService}. 
 
 \subsubsection{CDS View}
 
-Entities being exposed in this service is almost the same as in the package service, with a little bit of reduction, providing user with just enough necessary information. Entities exposed by the service are:
+Entities being exposed in this service is almost the same as in the package service, with a little bit of reduction, providing user with just enough necessary information. 
+
+\bigskip
+\noindent
+List of entities exposed by the service:
 \begin{compactenum}
 	\item Package (*)
     \item PackageType (*)
@@ -924,48 +848,42 @@ Entities being exposed in this service is almost the same as in the package serv
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything, other than click a confirm pickup button. As for the future pickup button, an action \textit{pickup} is defined. Its entanglement with the \textit{pickup\_ac} used by package service are discussed in the previous sector.
+In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything, other than click a confirm pickup button. This is reinforced by limiting the CRUD possibilities - only read operation is supported for any entity. As for the future pickup button, an action \textit{pickup} is defined. Its entanglement with the \textit{pickup\_ac} used by package service are discussed in \autoref{subsec:back-mp}.
 
-\bigskip
-The same idea goes in the CRUD possibilities - only read operation is supported for any entity.
 
 \subsubsection{Java}
 
-A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML (\autoref{fig:pickup_service_uml}). 
+A default filter read operation and the custom action are implemented in the Java part. The pickup action itself basically reuse the same methods as the package service does. The related classes and methods can be checked in the UML (\autoref{appx:diagram} - \autoref{fig:pickup_service_uml}). 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{images/service_class_diagrams/pickup_service_class_diagram.png}
-    \caption{Pickup Service UML}
-    \label{fig:pickup_service_uml}
-\end{figure}
-\pagebreak
 
 % -------------------------------------
 %  History service
 %  -----------------------------------
 \subsection{History Service}
-History service serves for any authenticated user to check their package history.
+\label{subsec:back-ph}
+
+History service is used by any authenticated user to check their package history (see more details of the business logic in \autoref{subsec:ms}) and it is exposed at OData end-point \textit{HistoryService}.
 
 \subsubsection{CDS View}
 
-Entities being exposed in this service is almost the same as in the registration service, with every details, providing user with as much information as could. Entities exposed by the service are:
+Entities being exposed in this service is almost the same as in the registration service, with every details, providing user with as much information as could. The entities exposed by the service are:
 \begin{compactenum}
 	\item Package (*)
     \item PackageType (*)
     \item PackageStatus (*)
     \item DeliveryCompany (*)
+    \item Receptionist (*)
+    \item User (*)
 \end{compactenum}
 
 \bigskip
-In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything. Nevertheless, a restriction makes the user to only read about his or her own package is defined with a \textit{where} statement in the projection view. Codes can be checked in \textit{HistoryService.cds} file.
+In the service's CDS view, no input invalidation checks are defined, as the user will not be able to change anything. A restriction is made so that the user can only read his or her own package through a \textit{where} statement in the projection view.
 
-\bigskip
-The same idea goes in the CRUD possibilities - only read operation is supported for any entity and this is enforced by a \textit{@readonly} annotation on every entity projection.
+For all exposed entities, only read operation is supported. This is enforced by a \textit{@readonly} annotation on every entity projection.
 
-\subsection*{Conclusion}
+\subsection*{Quick Wrap Up}
 Hereby the introduction of the core implementation part of \autoref{ch:impl} is completed.
-In the coming \autoref{sec:D-security} and \autoref{sec:D-testing}, the security aspects and the testing approaches for the project are explained in detail, which are also important knowledge and steps of development in case any of the extension should be make in the back-end.
+In the coming \autoref{sec:D-security} and \autoref{sec:D-testing}, the security aspects and the testing approaches for the project are explained in detail.
 
 \section{Security}
 \label{sec:D-security}
@@ -980,8 +898,6 @@ The role-base access restriction on services are defined in \textit{root/srv/ser
 \begin{lstlisting}[language={bash}]
 root/
     |- srv/
-        |- src
-        |- gen
         |- services
             |- ServiceName 
                 |- *.cds # Definition of service
@@ -1028,7 +944,7 @@ The following mock users are set up in the development and test profiles for the
 \section{Testing}
 \label{sec:D-testing}
 
-This last section of \autoref{ch:impl} focuses on project tests. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. Finally in \autoref{subsec:test-exe} how to run and what is the result of the tests are explained. By the end of this section, a developer shall get a full taste of the used test framework and should be able to extend the test cases based on the existing ones.
+This last section of \autoref{ch:impl} focuses on project tests. First the locations of mock/test data are introduced (\autoref{subsec:test-data}). This is followed by \autoref{subsec:test-unit} for unit testing and \autoref{subsec:test-api} on the integration/api tests. In \autoref{subsec:test-exe} how to run and what is the result of the tests are explained. Finally in \autoref{subsec:test-ui} some manual test cases on UI are listed, which may provide an idea of the exact functions that are currently supported by the project. By the end of this section, a developer shall get a full overview of the used test framework and should be able to extend the test cases based on the existing ones.
 
 \subsection{Test Data}
 \label{subsec:test-data}
@@ -1060,7 +976,6 @@ cds.security.mock.users.my\_uname & roles: - my-role \\
 
 Unit testing \cite{unit-test} of this project focuses on the methods and line coverage of the manager and the repository layer (See \autoref{sec:D-AppStructure}). JUnit 4 \cite{junit} and spring test \cite{spring-testing} stater pack is used to write the tests. The unit tests located under maven's default \textit{test/java} folder. 
 
-\bigskip
 A test class is created for each used class in the manager and repository layer. Those who are merely a placeholder for structure usages are ignored. The test classes are created almost at the same time with the implementations. The implementations of both happen in an iterative way: test cases are created based on code and requirements, code is fixed based on test results, test cases evolve based on the modified code, and so on. Each test class is written under the following logic. (See \autoref{src:150} for a sample skeleton of a unit test class.)
 
 \begin{compactenum}
@@ -1073,7 +988,6 @@ A test class is created for each used class in the manager and repository layer.
 \bigskip
 \textbf{Extending Advice:} In case of any needs in the future that more test shall be added, it is advised to append completely new dedicated test data sets into csv. Deleting or removing the existing data set can result in sever collapse of the current tests.
 
-\bigskip
 \autoref{fig:ut_uml_mgr} and \autoref{fig:ut_uml_repo} contains the UMLs of test classes for the manager and repository layers, where the test cases can be deduced from the name of test methods at a glance. The test classes themselves do not have any dependencies or relations with another, except for their dependency on the manager or repository class that they are testing. These relations are not shown on the attached UML.
 
 \lstset{caption={Unit Test Skeleton - Testing}, label=src:150}
@@ -1082,7 +996,7 @@ A test class is created for each used class in the manager and repository layer.
 @ActiveProfiles("test")
 class EntityNameRepositoryTest {
     private final EntityNameRepository repo; // tested instance
-
+    
     @Autowired // constructor injection
     EntityNameRepositoryTest(EntityNameRepository repo) {
         this.repo = repo; 
@@ -1115,16 +1029,8 @@ class EntityNameRepositoryTest {
 \label{subsec:test-api}
 
 Integration testing of this project focuses on the correctness of the http connections back-end services, that is, on the handler layer. \textbf{Rest Assure} \cite{test-rest-asstured} api testing framework is used in this scenario. (See a sample api request using \textbf{Rest Assured} framework in \autoref{src:500}.)
-The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods) (\autoref{src:501}). One test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class (see skeleton in \autoref{src:502}). For each service, the underlying test ideas are followed: (Check also the UML in \autoref{fig:it_uml} for specific structure and methods of the test classes.)
-\begin{compactenum}
-	\item Correct access to service based on roles. (returning status code 200/403).
-    \item Correct restrictions of CRUD operation (returning status code 200/201/204/409/405).
-    \item Expected results of the action imports (returning status code 200 and results checking).
-    \item Expected results of any customized CRUD operations (returning status code 200/201/204/409/405 and results checking).
-\end{compactenum}
 
 \bigskip
-
 \lstset{caption={Sample Rest Assured Request - Testing}, label=src:500}
 \begin{lstlisting}[language={java}]
 given()  
@@ -1138,6 +1044,9 @@ given()
 	.body("field", Matchers.equalTo("something")); //check the return body
 \end{lstlisting}
 
+The integration tests locate under \textit{srv/src/integration-test/java}. The folder has been added to pom file as part of the test routine. A base test class is implemented abstracted all the common necessary setups (ports, user entry, testing utility methods) (\autoref{src:501}). 
+
+\bigskip
 \lstset{caption={Integration Test Base Skeleton - Testing}, label=src:501}
 \begin{lstlisting}[language={java}]
 @SpringBootTest(  
@@ -1154,6 +1063,9 @@ public class BaseServiceTest {
 }
 \end{lstlisting}
 
+
+One integration test class is then created for each service with the name \textbf{<ServiceName>Test.java} and extends from the base test class (see skeleton in \autoref{src:502}). 
+
 \lstset{caption={Integration Test Child Skeleton - Testing}, label=src:502}
 \begin{lstlisting}[language={java}]
 public class SomeServiceTest extends BaseServiceTest {
@@ -1168,16 +1080,18 @@ public class SomeServiceTest extends BaseServiceTest {
 }
 \end{lstlisting}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{images/test/api_test_white.png}
-    \caption{Integration Tests UML}
-    \label{fig:it_uml}
-\end{figure}
+For each service, the underlying test ideas are followed: (Check also the UML in \autoref{appx:diagram} - \autoref{fig:it_uml} for specific structure and methods of the test classes.)
+\begin{compactenum}
+	\item Correct access to service based on roles. (returning status code 200/403).
+    \item Correct restrictions of CRUD operation (returning status code 200/201/ 204/409/405).
+    \item Expected results of the action imports (returning status code 200 and results checking).
+    \item Expected results of any customized CRUD operations (returning status code 200/201/204/409/405 and results checking).
+\end{compactenum}
+
 
 \subsection{Execution of Tests}
 \label{subsec:test-exe}
-All the tests can be executed either from command line using \textit{mvn test} in the SAP business application studio or by clicking the test goal in the maven tab of Intellij. The result of the execution can be check in \autoref{fig:test_exe}.
+All the tests can be executed either from command line using \textit{mvn test} in the SAP business application studio or by clicking the test goal in the maven tab of Intellij. The expected results of the execution is shown in \autoref{fig:test_exe}.
 
 \begin{figure}[H]
     \centering

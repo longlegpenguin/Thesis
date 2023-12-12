@@ -1,13 +1,14 @@
 \chapter{User documentation}
 \label{ch:user}
 
-This chapter is dedicated to users. Firstly, a brief introduction of the intention of this project is explained in \autoref{sec:BusinessContext}. Then in \autoref{sec:GeneralRequisite}, the requisite of opening and using the applications of the project is listed. An introduction to the user roles is also given, to enable the users navigating through the thesis and finding the related information quickly.
+This chapter is dedicated to users. Firstly, a brief introduction of the intention of this project is explained in \autoref{sec:BusinessContext}. Then in \autoref{sec:GeneralRequisite}, the requisite of opening and using the applications of the project is listed. An introduction to the user roles is also given, to enable the users to navigate through the thesis and to find the related information quickly.
 Finally, \autoref{sec:UdocEndUser}, \autoref{sec:UdocReceptionist}, \autoref{sec:UdocFacilityManager}, \autoref{sec:UdocAdministrator}, titled by the respective roles, compile the user guides for each accessible application.
 
 \section{Business Context}
 \label{sec:BusinessContext}
 
-This thesis is designed for the internal usage within SAP supporting the parcel collection service provided to the employees, with the help of which employees can have delivered their personal parcels first to the reception, then pick them up at any desired time from the reception. The solution enables the complete digitalization and standardization of the parcel signing and of the management processes. The project is realized through six applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storage} logically grouped into 3 partitions: \textbf{My Home}, \textbf{Parcel Handling}, \textbf{Administration} (\autoref{fig:ApplicationLaunchScreen}).
+This thesis is designed for the internal usage within SAP supporting the parcel collection service provided to the employees, with the help of which employees can deliver their personal parcels first to the reception, then pick them up at any desired time from the reception. The solution enables the complete digitalization and standardization of the parcel signing and of the management processes. The project is realized through six small web applications as tiles on the Fiori launchpad \cite{flp}: \textbf{My packages}, \textbf{Pickup packages}, \textbf{Register Packages}, \textbf{Manage packages}, \textbf{Manage Companies} and \textbf{Manage Storage} logically grouped into 3 partitions: \textbf{My Home}, \textbf{Parcel Handling}, \textbf{Administration} (\autoref{fig:ApplicationLaunchScreen}) (check \autoref{sec:D-AppStructure} for more technical 
+ application structure details).
 The main logic of the complete parcel collection cycle can be summarized as the following:
 
 \begin{compactenum}
@@ -87,7 +88,7 @@ The \textbf{End User} is granted to access the two applications under the \textb
 \subsection{My Packages}
 \label{subsec:ph}
 
-The \textbf{My Packages} application is here for any \textbf{End User} (see \autoref{sec:UdocEndUser} for all related applications) who would want to check his/her own packages. 
+The \textbf{My Packages} application is here for any \textbf{End User} (see \autoref{sec:UdocEndUser} for all related applications) who would want to check his/her own packages. The reader can navigate to \autoref{subsec:dev-ui-ph} for more implementation details.
 The summarized main actions that can be taken within the application are listed here:
 
 \begin{compactenum}
@@ -178,15 +179,14 @@ More filters (\textbf{Delivery Time} (time entry)) can be accessed by clicking a
 \subsection{Package Pickup}
 \label{subsec:pp}
 
-The \textbf{Package Pickup} application is used by the \textbf{End User} to pick up any personal confirmed parcels (registered at the reception and confirmed with a storage slot). 
+The \textbf{Package Pickup} application is used by the \textbf{End User} to pick up any personal confirmed parcels (registered at the reception and confirmed with a storage slot). The reader can navigate to \autoref{subsec:dev-ui-pp} for more implementation details. 
 The summarized main actions the \textbf{End User} (see \autoref{sec:UdocEndUser} for all related applications) can take within the application are listed here:
-
 \begin{compactenum}
 	\item Browse the owned packages that can be picked up.
     \item Pickup the listed owned packages.
 \end{compactenum}
 
-\bigskip
+\noindent
 \textbf{Hint}: The application supports users accessing it from mobile devices. In case an employee is unable to access his or her mobile at the moment of pickup, he or she should ask the receptionist to pickup the package for him or her.
 
 
@@ -199,14 +199,13 @@ The total number of packages that can be pickup can be found at the title of the
 In case there are existing packages, one or multiple packages can be selected from the list to pickup. 
 The "Toggle All" selection box can also be used to select or deselect all packages at once (\autoref{fig:PickupHomeScreen-2}). 
 
-\bigskip
 \begin{figure}[H]
 	\centering
 	\subcaptionbox{Home Screen with Packages}{
-		\includegraphics[width=0.4\linewidth]{images/user_doc/pickup/HomeScreenList.png}}
-	\hspace{5pt}
+		\includegraphics[width=0.39\linewidth]{images/user_doc/pickup/HomeScreenList.png}}
+	\hspace{8pt}
 	\subcaptionbox{Home Screen without Packages}{
-		\includegraphics[width=0.4\linewidth]{images/user_doc/pickup/HomeScreenNoPackage.png}}
+		\includegraphics[width=0.39\linewidth]{images/user_doc/pickup/HomeScreenNoPackage.png}}
 	\caption{Pickup Home Screen - Package Existence Guide}
 	\label{fig:PickupHomeScreen-1}
 \end{figure}
@@ -270,7 +269,7 @@ A \textbf{Receptionist} (see \autoref{sec:GeneralRequisite} for all possible rol
 
 \begin{figure}[htb!]
 	\centering
-	\includegraphics[width=1\linewidth]{images/user_doc/overviews/ParcelHandlingTab.png}
+	\includegraphics[width=0.85\linewidth]{images/user_doc/overviews/ParcelHandlingTab.png}
 	\caption{Parcel Handling Applications}
 	\label{fig:PHApplications}
 \end{figure}
@@ -279,7 +278,7 @@ A \textbf{Receptionist} (see \autoref{sec:GeneralRequisite} for all possible rol
 \subsection{Register Packages}
 \label{subsec:rp}
 
-When the delivery person arrived at the reception with the new parcels, \textbf{Register Packages} application should be used by the \textbf{Receptionist} to register the newly arrived parcels into the system (see \autoref{sec:UdocReceptionist} for all receptionist related applications).  After the registration, \textbf{Receptionist} will be automatically redirected to  \textbf{Manage Packages}.
+When the delivery person arrived at the reception with the new parcels, \textbf{Register Packages} application should be used by the \textbf{Receptionist} to register the newly arrived parcels into the system (see \autoref{sec:UdocReceptionist} for all receptionist related applications). After the registration, \textbf{Receptionist} will be automatically redirected to \textbf{Manage Packages}. The reader can navigate to \autoref{subsec:dev-ui-rp} for more implementation details. 
 The summarized main actions the \textbf{Receptionist} can take within the application are listed here:
 
 \begin{compactenum}
@@ -290,7 +289,7 @@ The summarized main actions the \textbf{Receptionist} can take within the applic
 
 \subsubsection{Data Entry}
 
-When the \textbf{Receptionist} clicks on the \textbf{Register Packages} application tile, he or she is redirected to the main screen, the 'Package Registration Form' (see \autoref{fig:RPOverview}). At this point, \textbf{Recipient}, \textbf{Type}, \textbf{Delivery Company} and optionally \textbf{Comment} of the package are required by the form (\autoref{fig:RPformEntry}).
+When the \textbf{Receptionist} clicks on the \textbf{Register Packages} application tile, he or she is redirected to the main screen, the 'Package Registration Form' (see \autoref{fig:RPOverview}). At this point, \textbf{Recipient}, \textbf{Type} (package type), \textbf{Receptionist}, \textbf{Delivery Company} and optionally \textbf{Comment} of the package are required by the form (\autoref{fig:RPformEntry}).
 
 \begin{figure}[htb!]
 	\centering
@@ -371,7 +370,7 @@ If the "Discard" button is clicked, the form is reset to default state and \text
 \subsection{Manage Packages}                     
 \label{subsec:mp}
 
-The \textbf{Manage Packages} application is designed for the \textbf{Receptionist} (See \autoref{sec:UdocReceptionist} for all receptionist related applications) to edit, confirm, pickup, check the existing packages in the system. The summarized main actions a \textbf{Receptionist} can take are listed here:
+The \textbf{Manage Packages} application is designed for the \textbf{Receptionist} (See \autoref{sec:UdocReceptionist} for all receptionist related applications) to edit, confirm, pickup, check the existing packages in the system. The reader can navigate to \autoref{subsec:dev-ui-mp} for more implementation details. The summarized main actions a \textbf{Receptionist} can take are listed here:
 
 \begin{compactenum}
 	\item Browse the existing packages.
@@ -544,7 +543,7 @@ Once the \textbf{Receptionist} selected the packages (\autoref{fig:MPReportConfi
 
 The storage should be selected first from the \textbf{Storage} drop down list and after that the \textbf{Slot} drop down list. The \textbf{Slot} drop down shows always the available slots under the selected storage (\autoref{fig:MPReportConfirmDlgSelection}).
 
-After selecting the slot, if "Close" is clicked, nothing will happen and the dialog will be closed. If "Save" is clicked, the packages will be confirmed (i.e. filled with the selected slot info and status changed to confirmed). The dialog will be closed, a message toast indicates the success confirm and the package(s) will be moved from the current \textbf{New} variant to \textbf{Confirmed} Variant. (\autoref{fig:MPReportConfirmDlgButton})
+After selecting the slot, if "Close" is clicked, nothing will happen and the dialog will be closed. If "Save" is clicked, the packages will be confirmed (i.e. filled with the selected slot info and status changed to confirmed). The dialog will be closed, a message toast indicates the success confirm and the package(s) will be moved from the current \textbf{New} variant to \textbf{Confirmed} Variant (\autoref{fig:MPReportConfirmDlgButton}).
 
 At this point, the package(s) are ready to be picked up, by employee through \textbf{Package Pickup} (\autoref{subsec:pp}) application or by \textbf{Receptionist} using the pickup backup function (\autoref{subsubsec:MPpickup}) of this application.
 
@@ -588,7 +587,7 @@ Note that the confirm action is not irreversible, i.e. a \textit{confirmed} pack
 	\label{fig:MPReportConfirmDlgButton}
 \end{figure}
 
-\subsubsection{Pickup Package}
+\subsubsection{Pickup Packages}
 \label{subsubsec:MPpickup}
 
 The Pickup of a package happens when the recipients (package owners) came to the reception trying to pickup their confirmed packages and they are unable to access the \textbf{Pickup Packages} application on their own. In this case a \textbf{Receptionist} may pickup the package on behalf of the recipients. Only packages with \textit{confirmed} status can be confirmed (learn more about the status of the packages in \autoref{sec:BusinessContext}). Only one \textit{confirmed} package at one time can be picked up.
@@ -686,7 +685,7 @@ If the "Delete" button is activated and clicked, a warning message box pops up v
 	\label{fig:MPDetailDeleteGuide}
 \end{figure}
 
-\subsubsection{Edit Package}
+\subsubsection{Edit Packages}
 \label{subsubsec:MPedit}
 
 Editing a package can be done by the \textbf{Receptionist} at "Detail Screen" using the "Edit" button at top right corner (page header).
@@ -736,7 +735,7 @@ A facility manager can quick jump to the section by left clicking the "Administr
 \subsection{Manage Companies}
 \label{subsec:mc}
 
-The \textbf{Manage Companies} application is used by \textbf{Facility Manager} (in short \textbf{FM}) to maintain the information in the system of potential companies delivering packages. For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and are not editable by the \textbf{FM}. The summarized main actions the \textbf{FM} can take within the application are listed here:
+The \textbf{Manage Companies} application is used by \textbf{Facility Manager} (in short \textbf{FM}) to maintain the information in the system of potential companies delivering packages. For each delivery company, its name, optionally a logo and the administration data (creation time, creation user, last modified time, last modified user) are stored. The administration data are auto maintained and are not editable by the \textbf{FM}. The reader can navigate to \autoref{subsec:dev-ui-mc} for more implementation details. The summarized main actions the \textbf{FM} can take within the application are listed:
 
 \begin{compactenum}
 	\item Browse the delivery companies.
@@ -750,7 +749,7 @@ The \textbf{Manage Companies} application is used by \textbf{Facility Manager} (
     \item Delete package(s) which status is new or confirmed.
 \end{compactenum}
 
-\subsubsection{Browse}
+\subsubsection{Browse Companies}
 A Facility Manager \textbf{FM}, after clicking on the application tile, is redirected to the "Report Screen", which is the main screen of the application (\autoref{fig:CompanyOverview}). 
 
 \begin{figure}[H]
@@ -784,7 +783,7 @@ When the \textbf{FM} clicks on one item of the table, the \textbf{FM} is redirec
 
 The "Detail Screen" displays the company name as the title on the left and two action buttons, "Delete" and "Edit" at the right in the header, and its full administration data in the body (\autoref{fig:MCdetailOVerview}). 
 
-\subsubsection{Add}
+\subsubsection{Add Company}
 
 A new delivery company can be added to the system at "Report Screen" by clicking the "Create" button. 
 A creation dialog pops up when the "Create" button is clicked, where the \textbf{Name} and the \textbf{Logo} info of the company should be entered. The \textbf{Name} waits for input of free text of the company name and should not be left empty. The \textbf{Logo} waits for input of free text of a url to the image of the company's logo and can be left empty (\autoref{fig:MCreportCreateGuide} - a,b). 
@@ -889,9 +888,11 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 \subsection{Manage Storage}
 \label{subsec:ms}
 
-The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system (see \autoref{sec:UdocFacilityManager} for all facility manager related applications).  
-The summarized main actions the \textbf{FM} can take within the application are listed here:
+The \textbf{Manage Storage} application is used by \textbf{Facility Manager} (in short \textbf{FM}) maintaining the information of potential storage places and storage slots within certain storage holding the package in the system (see \autoref{sec:UdocFacilityManager} for all facility manager related applications). The reader can navigate to \autoref{subsec:dev-ui-ms} for more implementation details. 
 
+\bigskip
+\noindent
+List of the summarized main actions the \textbf{FM} can take within the application:
 \begin{compactenum}
 	\item Browse the storage and slots in the storage.
         \begin{compactenum}
@@ -1071,7 +1072,7 @@ In case a slot is edited or deleted and the table content is not reflected, refr
 
 \bigskip
 
-\subsubsection{Add Storage}
+\subsubsection{Add Storages}
 
 New storages can be added to the system by the \textbf{FM} at "Report Screen" using the "Create" button.
 A creation dialog pops up when the "Create" button is clicked. The \textbf{Name} field waits for input of free text of the storage and should not be left empty. The \textbf{Map} field waits for the input of free text of a url to the location of the storage and can be left empty.The free text input is required by the \textbf{Location Instruction} field and it can be left empty (\autoref{fig:MSreportCreateGuide1}).
@@ -1119,7 +1120,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
     \label{fig:MSreportCreateGuide2}
 \end{figure}
 
-\subsubsection{Edit Storage}
+\subsubsection{Edit Storages}
 
 A storage can be edited at "Storage Detail Screen" by the \textbf{FM} using the "Edit" button at top right corner (page header). 
 When the "Edit" button is clicked, a editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Building Floor}, \textbf{Map}, \textbf{Location Instructions} of the company. Initially the fields are filled with the current data of the storage. The entry rules are the same as creating a storage.
@@ -1139,7 +1140,7 @@ When clicking "Save", the modified details are submitted, the dialog is closed, 
 	\label{fig:MSDetailEditBtn}
 \end{figure}
 
-\subsubsection{Delete Storage}
+\subsubsection{Delete Storages}
 
 Deleting a storage can be done in two ways: batch deletions at the "Storage Report Screen" or single deletion at "Storage Detail Screen". 
 The deletion of a storage implies that, the storage will be removed completely from the system. The deletion action is irreversible. 
@@ -1182,7 +1183,7 @@ Once clicked, a warning message box pops up verifying the \textbf{FM}'s intentio
 \end{figure}
 
 
-\subsubsection{Add Storage Slot}
+\subsubsection{Add Storage Slots}
 \label{subsubsec:addSlot}
 
 A new storage slot can be added to the system at "Storage Detail Screen" by clicking the "Create" button on the top right corner of the slot list.
@@ -1219,7 +1220,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 \end{figure}
 
 
-\subsubsection{Batch Add Storage Slot}
+\subsubsection{Batch Add Storage Slots}
 \label{subsubsec:batchAddSlot}
 
 Multiple new storage slots can be added at one time in a matrix way at "Storage Detail Screen" by clicking the "Mass Create" button on the top right corner of the slot list.
@@ -1247,10 +1248,10 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 \end{figure}
 
 
-\subsubsection{Edit Storage Slot}
+\subsubsection{Edit Storage Slots}
 \label{subsubsec:editSlot}
-A storage can be edited at the "Storage Detail Screen" using the "Edit" (icon with pen) at the end of each slot row. 
-When the "Edit" button is clicked, an editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot. Additionally, the \textbf{Available} selection box is displayed only if the slot is in \textit{inuse} status (\autoref{fig:MSSlotDetailEditBtn}/a).
+A slot can be edited at the "Storage Detail Screen" using the "Edit" (icon with pen) at the end of each slot row. 
+When the "Edit" button is clicked, an editing dialog pops up, allowing the modification of the \textbf{Name}, \textbf{Available} of the slot. Initially the fields are filled with current data of the slot. The entry rules are the same as creating a single slot. Additionally, the \textbf{Available} selection box is non-editable if the slot is in \textit{inuse} status (\autoref{fig:MSSlotDetailEditBtn}/a).
 
 If "Save" is clicked, the modified details are submitted, the dialog is closed, a message toast pops up indicating the success and the changes are reflected on the "Storage Detail Screen". If "Close" is clicked, any changes will be discarded, the dialog is simply closed (\autoref{fig:MSSlotDetailEditBtn}/b).
 
@@ -1267,7 +1268,7 @@ If "Save" is clicked, the modified details are submitted, the dialog is closed, 
 	\label{fig:MSSlotDetailEditBtn}
 \end{figure}
 
-\subsubsection{Delete Storage Slot}
+\subsubsection{Delete Storage Slots}
 \label{subsubsec:deleteSlot}
 
 A storage slot can be deleted by the \textbf{FM} at "Storage Detail Screen" using the "Delete" button (icon displaying a rubbish bin) at the end of each slot list row. 
