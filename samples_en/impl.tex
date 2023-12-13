@@ -115,7 +115,7 @@ namespace com.sap.internal.digitallab.packagehandling.core;
 To optimize and standardize the outcome, common \textbf{aspects} (\textit{cuid, managed, User, CodeList}) from \textit{@sap/cds/common} are used in the definition. \cite{cap-cds-common-aspects} It can be seen as "extend" in the object-oriented way, or more specifically "interface" in Java. Aspects are defined in a similiar way as entities, they consist of fields/properties. Entities can "implement" zero to more aspects, "inheriting" aspect's properties and "extended" by their own properties. 
 
 \begin{description}
-    \item[CDS's aspects] allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They are based on a mix-in approach as known from aspect-oriented programming methods. \cite{cap-cds-common-aspects}
+    \item[CDS's aspects]\quote{"allow to flexibly extend definitions by new elements as well as overriding properties and annotations. They are based on a mix-in approach as known from aspect-oriented programming methods."} \cite{cap-cds-common-aspects}
 \end{description}
 
 Three common aspects are used by this thesis. \textit{managed} comes with 4 elements: created by, created on, changed by, changed on, and automatically updates them. \textit{cuid} automatically assigns UUID primary key to entity. \textit{CodeList} provides an out-of-box way of implementing enumeration like data structures and supports automatic localization.
@@ -221,14 +221,16 @@ root/
 
 The front-end of this thesis adapts the combination of SAP traditional UI5 framework (free-style UI application) and the state-of-the-art Fiori elements (template UI application) supported by CDS' annotation language. \cite{fiori-design} This chapter explains in details the used framework concepts and the structure of each module. The exact UX and behaviour of the UI applications should be referenced from \autoref{ch:user}.
 
-\begin{description}
-	\item[SAP UI5] is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more~\cite{ui5}.
- 
-	\item[SAP Fiori elements] is a framework that comprises the most commonly used floorplan templates and is designed to:
+\begin{description} 
+	\item[SAP UI5] \quote{"is a JavaScript framework and UI library that helps developers create cross-platform enterprise-ready web applications in an efficient way. It features more than 500 UI controls aligned with the latest SAP Fiori design guidelines and comes with built-in support for data binding, routing, message handling, and more"}~\cite{ui5}.
+
+\end{description}
+\begin{description} 
+	\item[SAP Fiori elements] \quote{"is a framework that comprises the most commonly used floorplan templates and is designed to:
          \begin{compactenum}
         	\item Speed up development by reducing the amount of front-end code needed to build SAP Fiori apps.
-        	\item Drive UX consistency and compliance with the latest SAP Fiori design guidelines~\cite{fiorielements}.
-        \end{compactenum}
+        	\item Drive UX consistency and compliance with the latest SAP Fiori design guidelines"~\cite{fiorielements}.
+        \end{compactenum}}
       
 \end{description}
 
@@ -862,7 +864,7 @@ A default filter read operation and the custom action are implemented in the Jav
 \subsection{History Service}
 \label{subsec:back-ph}
 
-History service is used by any authenticated user to check their package history (see more details of the business logic in \autoref{subsec:ms}) and it is exposed at OData end-point \textit{HistoryService}.
+History service is used by any authenticated user to check their package history (see more details of the business logic in \autoref{subsec:ph}) and it is exposed at OData end-point \textit{HistoryService}.
 
 \subsubsection{CDS View}
 

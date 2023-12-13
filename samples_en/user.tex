@@ -783,7 +783,7 @@ When the \textbf{FM} clicks on one item of the table, the \textbf{FM} is redirec
 
 The "Detail Screen" displays the company name as the title on the left and two action buttons, "Delete" and "Edit" at the right in the header, and its full administration data in the body (\autoref{fig:MCdetailOVerview}). 
 
-\subsubsection{Add Company}
+\subsubsection{Add Companies}
 
 A new delivery company can be added to the system at "Report Screen" by clicking the "Create" button. 
 A creation dialog pops up when the "Create" button is clicked, where the \textbf{Name} and the \textbf{Logo} info of the company should be entered. The \textbf{Name} waits for input of free text of the company name and should not be left empty. The \textbf{Logo} waits for input of free text of a url to the image of the company's logo and can be left empty (\autoref{fig:MCreportCreateGuide} - a,b). 
@@ -804,7 +804,7 @@ After filling the dialog form, if "Create" is clicked, the entered info will be 
 	\label{fig:MCreportCreateGuide}
 \end{figure}
 
-\subsubsection{Edit Company}
+\subsubsection{Edit Companies}
 
 A delivery company can be edited at "Detail Screen" by the \textbf{FM} using the "Edit" button at top right corner (page header). 
 When the "Edit" button is clicked, an editing dialog pops up, allowing \textbf{FM} to modified the \textbf{Name}, \textbf{Logo} of the company. Initially the fields are filled with current data of the company. The \textbf{Name} should contain free text of the company's name and should not be left empty. The \textbf{Logo} should contain free text of a url to the logo image and can be left empty.
@@ -834,7 +834,7 @@ When "Save" is clicked, the modified details are submitted, the dialog closes, a
 	\label{fig:MCDetailEditDlgBad}
 \end{figure}
 
-\subsubsection{Delete Company}
+\subsubsection{Delete Companies}
 
 Deleting an existing delivery company can be done in two ways: batch deletions at the "Report Screen" or single deletion at "Detail Screen". The deletion of a company implies that, the delivery company will be removed completely and any association of existing packages to this company is automatically removed as well. This means those packages will no longer hold any company information. The deleting action is irreversible. 
 
@@ -1145,7 +1145,7 @@ When clicking "Save", the modified details are submitted, the dialog is closed, 
 Deleting a storage can be done in two ways: batch deletions at the "Storage Report Screen" or single deletion at "Storage Detail Screen". 
 The deletion of a storage implies that, the storage will be removed completely from the system. The deletion action is irreversible. 
 
-To delete a storage at "Storage Report Screen", the "Delete" button at the list header should be used. The "Delete" button is deactivated until at least one storage is selected and no storage containing slots that stores a package is selected.
+To delete a storage at "Storage Report Screen", the "Delete" button at the list header should be used. The "Delete" button is deactivated until at least one storage is selected. A storage which contains slots storing packages cannot be deleted.
 
 Once the "Delete" button is activated and clicked, a warning message box pops up verifying the \textbf{FM}'s intention to delete a storage. If one more "Delete" is clicked, the selected storage will be deleted. The message box will be closed, a message toast is shown indicating the success deletion. If "Cancel" is clicked, the message box is closed and nothing happens (\autoref{fig:MSreportDeleteGuide}).
 
